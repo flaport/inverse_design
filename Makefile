@@ -19,6 +19,7 @@ serve:
 
 .PHONY: docs
 docs:
+	rm -rf docs/sidebar.json
 	jupyter nbconvert --execute --inplace index.ipynb
 	nbdev_build_docs
 
