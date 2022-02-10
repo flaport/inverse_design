@@ -95,11 +95,11 @@ jobs:
         run: conda env update -f environment.yml
       - name: Run notebooks
         run: find . -name "*.ipynb" | grep -v ipynb_checkpoints | xargs -I {} papermill -k python3 {} {}
-      - name: Expose 'nbs' as artifact
+      - name: Expose 'notebooks' as artifact
         uses: actions/upload-artifact@master
         with:
-          name: nbs
-          path: /github/workspace/nbs
+          name: notebooks
+          path: /github/workspace/notebooks
 
   docs:
     needs:
@@ -115,15 +115,13 @@ jobs:
         uses: actions/checkout@master
       - name: Install dependencies
         run: conda env update -f environment.yml
-      - name: Download 'nbs' artifact
+      - name: Download 'notebooks' artifact
         uses: actions/download-artifact@master
         with:
-          name: nbs
-          path: ./nbs
+          name: notebooks
+          path: ./notebooks
       - name: Build docs
         run: nbdev_build_docs
-        env:
-          PULUMI_TEST_MODE: true
       - name: Store artifacts
         uses: actions/upload-artifact@master
         with:
