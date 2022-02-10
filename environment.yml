@@ -4,16 +4,17 @@ channels:
   - fastai
 dependencies:
   - python=3.9
+  - pip
+  - fastcore
+  - ipykernel
   - jax
   - jaxlib
-  - numpy
   - matplotlib
-  - ipykernel
   - nbdev
-  - ca-certificates
-  - certifi
+  - nbstripout
+  - numpy
   - openssl
   - papermill
-  - nbstripout
   - pre-commit
+  - rsync
 prefix: /home/flaport/.anaconda/envs/x
