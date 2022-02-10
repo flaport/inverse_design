@@ -12,7 +12,7 @@ import jax
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
 from fastcore.basics import patch_to
-from .utils import batch_conv2d, dilute
+from .utils import batch_conv2d, conv2d, dilute
 from matplotlib.colors import ListedColormap
 
 # Cell
@@ -127,19 +127,22 @@ def _find_free_touches(touches_mask, pixels_mask):
     free_touches_mask = jnp.where(free_idxs[:, None, None], R, 0).sum(0, dtype=bool)
     return free_touches_mask ^ touches_mask
 
+@jax.jit
+def _find_required_pixels(pixel_map, brush):
+    mask = (~pixel_map) & (~dilute(pixel_map, brush))
+    return ~(dilute(mask, brush) | pixel_map)
+
 
 @jax.jit
 def add_void_touch(design, brush, pos):
-    if isinstance(pos, tuple):
-        void_touches_mask = design.void_touches.at[pos[0], pos[1]].set(TOUCH_EXISTING) == TOUCH_EXISTING
-    else:
-        void_touches_mask = pos
-    void_pixel_mask = dilute(void_touches_mask, brush)
+    void_touches_mask = design.void_touches.at[pos[0], pos[1]].set(TOUCH_EXISTING) == TOUCH_EXISTING
+    void_pixel_mask = dilute(void_touches_mask, brush) | (design.design == VOID)
+    required_void_pixel_mask = _find_required_pixels(void_pixel_mask, brush)
     diluted_mask = dilute(void_pixel_mask, brush)
-    free_void_touches_mask = _find_free_touches(void_touches_mask, void_pixel_mask)
+    free_void_touches_mask = _find_free_touches(void_touches_mask, void_pixel_mask | required_void_pixel_mask)
     return Design(
         design=jnp.where(void_pixel_mask, VOID, design.design),
-        void_pixels=jnp.where(void_pixel_mask, PIXEL_EXISTING, design.void_pixels),
+        void_pixels=jnp.where(required_void_pixel_mask, PIXEL_REQUIRED, jnp.where(void_pixel_mask, PIXEL_EXISTING, design.void_pixels)),
         solid_pixels=jnp.where(void_pixel_mask, PIXEL_IMPOSSIBLE, design.solid_pixels),
         void_touches=jnp.where(free_void_touches_mask, TOUCH_FREE, jnp.where(void_touches_mask, TOUCH_EXISTING, design.void_touches)),
         solid_touches=jnp.where(diluted_mask, TOUCH_INVALID, design.solid_touches),
