@@ -30,7 +30,8 @@ index = {"new_design": "02_algorithm.ipynb",
          "notched_square_brush": "02_algorithm.ipynb",
          "show_mask": "02_algorithm.ipynb",
          "visualize": "02_algorithm.ipynb",
-         "add_void_touch": "02_algorithm.ipynb"}
+         "add_void_touch": "02_algorithm.ipynb",
+         "take_free_void_touches": "02_algorithm.ipynb"}
 
 modules = ["core.py",
            "utils.py",

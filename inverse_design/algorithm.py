@@ -2,7 +2,8 @@
 
 __all__ = ['UNASSIGNED', 'VOID', 'SOLID', 'PIXEL_IMPOSSIBLE', 'PIXEL_EXISTING', 'PIXEL_POSSIBLE', 'PIXEL_REQUIRED',
            'TOUCH_REQUIRED', 'TOUCH_INVALID', 'TOUCH_EXISTING', 'TOUCH_VALID', 'TOUCH_FREE', 'TOUCH_RESOLVING',
-           'Design', 'new_design', 'circular_brush', 'notched_square_brush', 'show_mask', 'visualize', 'add_void_touch']
+           'Design', 'new_design', 'circular_brush', 'notched_square_brush', 'show_mask', 'visualize', 'add_void_touch',
+           'take_free_void_touches']
 
 # Internal Cell
 from typing import NamedTuple
@@ -40,6 +41,10 @@ class Design(NamedTuple):
     @property
     def shape(self):
         return self.design.shape
+
+    def copy(self, **kwargs):
+        kwargs = {name: kwargs.get(name, getattr(self, name)) for name in self._fields}
+        return Design(*kwargs.values())
 
 # Cell
 def new_design(shape):
@@ -109,29 +114,42 @@ def _repr_html_(self):
 
 # Cell
 
-def _apply_free_touches(void_touches_mask, void_pixels_mask):
-    r = jnp.zeros_like(void_touches_mask, dtype=bool)
+@jax.jit
+def _find_free_touches(touches_mask, pixels_mask):
+    r = jnp.zeros_like(touches_mask, dtype=bool)
     m, n = r.shape
     i, j = jnp.arange(m), jnp.arange(n)
     I, J = [idxs.ravel() for idxs in jnp.meshgrid(i, j)]
-    K = jnp.arange(m*n)
-    R = jnp.broadcast_to(r[None,:,:], (m*n, m, n)).at[K,I,J].set(True)
-    Rb = batch_conv2d(R, brush[None]) | void_pixels_mask
-    free_idxs = (Rb == void_pixels_mask).all((1,2))
-    return R[free_idxs].sum(0, dtype=bool)
+    K = jnp.arange(m * n)
+    R = jnp.broadcast_to(r[None, :, :], (m * n, m, n)).at[K, I, J].set(True)
+    Rb = batch_conv2d(R, brush[None]) | pixels_mask
+    free_idxs = (Rb == pixels_mask).all((1, 2))
+    free_touches_mask = jnp.where(free_idxs[:, None, None], R, 0).sum(0, dtype=bool)
+    return free_touches_mask ^ touches_mask
 
-def add_void_touch(design, brush, pos, apply_free_touches=True):
-    void_touches_mask = design.void_touches.at[pos].set(TOUCH_EXISTING) == TOUCH_EXISTING
-    mask = dilute(void_touches_mask, brush)
-    diluted_mask = dilute(mask, brush)
-    if apply_free_touches:
-        free_touches_mask = _apply_free_touches(void_touches_mask, mask)
+
+@jax.jit
+def add_void_touch(design, brush, pos):
+    if isinstance(pos, tuple):
+        void_touches_mask = design.void_touches.at[pos[0], pos[1]].set(TOUCH_EXISTING) == TOUCH_EXISTING
     else:
-        free_touches_mask = void_touches_mask
+        void_touches_mask = pos
+    void_pixel_mask = dilute(void_touches_mask, brush)
+    diluted_mask = dilute(void_pixel_mask, brush)
+    free_void_touches_mask = _find_free_touches(void_touches_mask, void_pixel_mask)
     return Design(
-        design=design.design.at[mask].set(VOID),
-        void_pixels=design.void_pixels.at[mask].set(PIXEL_EXISTING),
-        solid_pixels=design.solid_pixels.at[mask].set(PIXEL_IMPOSSIBLE),
-        void_touches=design.void_touches.at[free_touches_mask].set(TOUCH_EXISTING),
-        solid_touches=design.solid_touches.at[diluted_mask].set(TOUCH_INVALID),
+        design=jnp.where(void_pixel_mask, VOID, design.design),
+        void_pixels=jnp.where(void_pixel_mask, PIXEL_EXISTING, design.void_pixels),
+        solid_pixels=jnp.where(void_pixel_mask, PIXEL_IMPOSSIBLE, design.solid_pixels),
+        void_touches=jnp.where(free_void_touches_mask, TOUCH_FREE, jnp.where(void_touches_mask, TOUCH_EXISTING, design.void_touches)),
+        solid_touches=jnp.where(diluted_mask, TOUCH_INVALID, design.solid_touches),
+    )
+
+# Cell
+@jax.jit
+def take_free_void_touches(design, brush):
+    return design.copy(
+        void_touches=jnp.where(
+            design.void_touches == TOUCH_FREE, TOUCH_EXISTING, design.void_touches
+        )
     )
