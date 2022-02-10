@@ -65,17 +65,15 @@ def circular_brush(diameter):
     return brush
 
 # Cell
-def notched_square_brush(diameter):
-    if diameter != 5:
-        raise NotImplementedError("Can only create notched square brush of size 5")
-    radius = diameter / 2
-    X, Y = jnp.mgrid[-radius:radius:1j*diameter,-radius:radius:1j*diameter]
-    Z = jnp.ones_like(X)
-    Z = Z.at[0,0].set(0)
-    Z = Z.at[0,-1].set(0)
-    Z = Z.at[-1,0].set(0)
-    Z = Z.at[-1,-1].set(0)
-    return Z > 0.5
+def notched_square_brush(width, notch):
+    Z = jnp.ones((width, width), dtype=bool)
+    notch = abs(notch)
+    if notch > 0:
+        Z = Z.at[:notch,:notch].set(False)
+        Z = Z.at[:notch,-notch:].set(False)
+        Z = Z.at[-notch:,:notch].set(False)
+        Z = Z.at[-notch:,-notch:].set(False)
+    return Z
 
 # Cell
 def show_mask(brush):
@@ -110,7 +108,6 @@ def visualize(design):
 def _repr_html_(self):
     visualize(self)
     return ""
-
 
 # Cell
 
