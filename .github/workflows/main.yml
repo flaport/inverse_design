@@ -70,7 +70,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Install dependencies
-        run: conda env update -f environment.yml
+        run: conda env update -n base -f environment.yml
       - name: Test notebooks
         run: nbdev_test_nbs | tee nbdev_test_nbs.log
       - name: Expose 'nbdev_test_nbs.log' as artifact
@@ -92,7 +92,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Install dependencies
-        run: conda env update -f environment.yml
+        run: conda env update -n base -f environment.yml
       - name: Run notebooks
         run: find . -name "*.ipynb" | grep -v ipynb_checkpoints | xargs -I {} papermill -k python3 {} {}
       - name: Expose 'notebooks' as artifact
@@ -114,7 +114,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Install dependencies
-        run: conda env update -f environment.yml
+        run: conda env update -n base -f environment.yml
       - name: Download 'notebooks' artifact
         uses: actions/download-artifact@master
         with:
@@ -140,7 +140,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Install dependencies
-        run: conda env update -f environment.yml
+        run: conda env update -n base -f environment.yml
       - name: Download 'docs' artifact
         uses: actions/download-artifact@master
         with:
