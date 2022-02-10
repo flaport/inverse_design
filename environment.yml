@@ -1,0 +1,19 @@
+name: x
+channels:
+  - conda-forge
+  - fastai
+dependencies:
+  - python=3.9
+  - jax
+  - jaxlib
+  - numpy
+  - matplotlib
+  - ipykernel
+  - nbdev
+  - ca-certificates
+  - certifi
+  - openssl
+  - papermill
+  - nbstripout
+  - pre-commit
+prefix: /home/flaport/.anaconda/envs/x
