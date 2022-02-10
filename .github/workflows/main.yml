@@ -1,0 +1,155 @@
+name: main
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - ".github/**"
+      - "!.github/workflows/main.yml"
+      - "docs/**"
+      - "*.md"
+      - ".git*"
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    container:
+      image: condaforge/mambaforge
+      volumes:
+        - ${{ github.workspace }}:/github/workspace
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Install dependencies
+        run: mamba install -c fastai -c conda-forge nbdev nbstripout
+      - name: Clean notebooks
+        run: nbdev_clean_nbs
+      - name: Strip notebook outputs
+        run: find . -name "*.ipynb" | xargs nbstripout
+      - name: Check if git status is clean
+        run: |
+          if [ ! -z "$(git status --porcelain)" ]; then
+              echo "Notebooks are not cleaned! They still contain outputs and/or metadata."
+              echo "You probably forgot to clear the notebook outputs before pushing."
+              echo "Please make sure all pre-commit hooks are properly installed to prevent this issue."
+              false;
+          fi
+
+  diff:
+    runs-on: ubuntu-latest
+    container:
+      image: condaforge/mambaforge
+      volumes:
+        - ${{ github.workspace }}:/github/workspace
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Install dependencies
+        run: mamba install -c fastai -c conda-forge nbdev
+      - name: Check for no diff between notebooks and library
+        run: |
+          if [ ! -z "$(nbdev_diff_nbs)" ]; then
+              echo "Python library does not match backing notebooks (diff between notebooks and library detected). "
+              echo "You probably forgot to re-generate the library before pushing."
+              echo "Please make sure all pre-commit hooks are properly installed to prevent this issue."
+              false;
+          fi
+
+  test:
+    needs:
+      - clean
+      - diff
+    runs-on: ubuntu-latest
+    container:
+      image: condaforge/mambaforge
+      volumes:
+        - ${{ github.workspace }}:/github/workspace
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Install dependencies
+        run: conda env update -f environment.yml
+      - name: Test notebooks
+        run: nbdev_test_nbs | tee nbdev_test_nbs.log
+      - name: Expose 'nbdev_test_nbs.log' as artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: nbdev_test_nbs.log
+          path: /github/workspace/nbdev_test_nbs.log
+
+  run:
+    needs:
+      - clean
+      - diff
+    runs-on: ubuntu-latest
+    container:
+      image: condaforge/mambaforge
+      volumes:
+        - ${{ github.workspace }}:/github/workspace
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Install dependencies
+        run: conda env update -f environment.yml
+      - name: Run notebooks
+        run: find . -name "*.ipynb" | grep -v ipynb_checkpoints | xargs -I {} papermill -k python3 {} {}
+      - name: Expose 'nbs' as artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: nbs
+          path: /github/workspace/nbs
+
+  docs:
+    needs:
+      - test
+      - run
+    runs-on: ubuntu-latest
+    container:
+      image: condaforge/mambaforge
+      volumes:
+        - ${{ github.workspace }}:/github/workspace
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Install dependencies
+        run: conda env update -f environment.yml
+      - name: Download 'nbs' artifact
+        uses: actions/download-artifact@master
+        with:
+          name: nbs
+          path: ./nbs
+      - name: Build docs
+        run: nbdev_build_docs
+        env:
+          PULUMI_TEST_MODE: true
+      - name: Store artifacts
+        uses: actions/upload-artifact@master
+        with:
+          name: docs
+          path: /github/workspace/docs
+
+  pages:
+    needs:
+      - docs
+    runs-on: ubuntu-latest
+    container:
+      image: condaforge/mambaforge
+      volumes:
+        - ${{ github.workspace }}:/github/workspace
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Install dependencies
+        run: conda env update -f environment.yml
+      - name: Download 'docs' artifact
+        uses: actions/download-artifact@master
+        with:
+          name: docs
+          path: /github/workspace/docs
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.7
+        with:
+          branch: pages
+          folder: docs
