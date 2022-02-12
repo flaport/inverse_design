@@ -3,6 +3,7 @@
     "Overview": "/",
     "Core": "core.html",
     "Utils": "utils.html",
-    "Algorithm": "algorithm.html"
+    "Algorithm": "generator.html",
+    "Optimization": "optimization.html"
   }
 }

@@ -17,7 +17,10 @@ entries:
       url: utils.html
     - output: web,pdf
       title: Algorithm
-      url: algorithm.html
+      url: generator.html
+    - output: web,pdf
+      title: Optimization
+      url: optimization.html
     output: web
     title: inverse_design
   output: web
