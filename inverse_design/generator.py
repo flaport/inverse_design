@@ -3,7 +3,7 @@
 __all__ = ['UNASSIGNED', 'VOID', 'SOLID', 'PIXEL_IMPOSSIBLE', 'PIXEL_EXISTING', 'PIXEL_POSSIBLE', 'PIXEL_REQUIRED',
            'TOUCH_REQUIRED', 'TOUCH_INVALID', 'TOUCH_EXISTING', 'TOUCH_VALID', 'TOUCH_FREE', 'TOUCH_RESOLVING',
            'Design', 'new_design', 'circular_brush', 'notched_square_brush', 'show_mask', 'visualize', 'add_void_touch',
-           'take_free_void_touches', 'add_solid_touch']
+           'take_free_void_touches', 'add_solid_touch', 'take_free_solid_touches']
 
 # Internal Cell
 from typing import NamedTuple
@@ -161,7 +161,8 @@ def take_free_void_touches(design, brush):
     # originally:
     # design = design.copy(void_touches=jnp.where(design.void_touches == TOUCH_FREE, TOUCH_EXISTING, design.void_touches))
     # ⬆ the above solution is not good. It does not resolve required touches if present, we need to actually use the brush:
-    return add_void_touch(design, brush, (design.void_touches == TOUCH_FREE))
+    free_touches_mask = (design.void_touches == TOUCH_FREE)
+    return add_void_touch(design, brush, free_touches_mask)
 
 # Cell
 
@@ -188,3 +189,9 @@ def add_solid_touch(design, brush, pos):
     void_pixels = jnp.where(required_solid_pixel_mask, PIXEL_IMPOSSIBLE, void_pixels)
     void_touches = jnp.where(diluted_mask, TOUCH_INVALID, design.void_touches)
     return Design(design_, void_pixels, solid_pixels, void_touches, solid_touches)
+
+# Cell
+@jax.jit
+def take_free_solid_touches(design, brush):
+    free_touches_mask = (design.solid_touches == TOUCH_FREE)
+    return add_solid_touch(design, brush, free_touches_mask)

@@ -12,6 +12,8 @@ index = {"new_design": "02_generator.ipynb",
          "conv2d": "01_utils.ipynb",
          "batch_conv2d": "01_utils.ipynb",
          "dilute": "01_utils.ipynb",
+         "randn": "01_utils.ipynb",
+         "rand": "01_utils.ipynb",
          "UNASSIGNED": "02_generator.ipynb",
          "VOID": "02_generator.ipynb",
          "SOLID": "02_generator.ipynb",
@@ -32,11 +34,13 @@ index = {"new_design": "02_generator.ipynb",
          "visualize": "02_generator.ipynb",
          "add_void_touch": "02_generator.ipynb",
          "take_free_void_touches": "02_generator.ipynb",
-         "add_solid_touch": "02_generator.ipynb"}
+         "add_solid_touch": "02_generator.ipynb",
+         "take_free_solid_touches": "02_generator.ipynb"}
 
 modules = ["core.py",
            "utils.py",
-           "algorithm.py"]
+           "generator.py",
+           "forward.py"]
 
 doc_url = "https://flaport.github.io/inverse_design/"
 
