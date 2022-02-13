@@ -2,7 +2,8 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"conv2d": "01_utils.ipynb",
+index = {"conv": "01_utils.ipynb",
+         "conv2d": "01_utils.ipynb",
          "batch_conv2d": "01_utils.ipynb",
          "dilute": "01_utils.ipynb",
          "randn": "01_utils.ipynb",
