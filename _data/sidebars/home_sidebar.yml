@@ -19,6 +19,9 @@ entries:
       title: Algorithm
       url: generator.html
     - output: web,pdf
+      title: Forward
+      url: forward.html
+    - output: web,pdf
       title: Optimization
       url: optimization.html
     output: web

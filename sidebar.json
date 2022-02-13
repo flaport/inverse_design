@@ -4,6 +4,7 @@
     "Core": "core.html",
     "Utils": "utils.html",
     "Algorithm": "generator.html",
+    "Forward": "forward.html",
     "Optimization": "optimization.html"
   }
 }
