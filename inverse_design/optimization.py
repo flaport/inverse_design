@@ -11,7 +11,7 @@ from .forward import (
     new_latent_design,
     transform,
 )
-from .generator import SOLID, notched_square_brush
+from .generator import design_mask, notched_square_brush
 from jax.example_libraries.optimizers import adam
 from tqdm.notebook import trange
 

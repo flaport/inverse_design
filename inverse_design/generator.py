@@ -2,8 +2,8 @@
 
 __all__ = ['UNASSIGNED', 'VOID', 'SOLID', 'PIXEL_IMPOSSIBLE', 'PIXEL_EXISTING', 'PIXEL_POSSIBLE', 'PIXEL_REQUIRED',
            'TOUCH_REQUIRED', 'TOUCH_INVALID', 'TOUCH_EXISTING', 'TOUCH_VALID', 'TOUCH_FREE', 'TOUCH_RESOLVING',
-           'Design', 'new_design', 'circular_brush', 'notched_square_brush', 'show_mask', 'visualize', 'add_void_touch',
-           'take_free_void_touches', 'add_solid_touch', 'take_free_solid_touches']
+           'Design', 'new_design', 'design_mask', 'circular_brush', 'notched_square_brush', 'show_mask', 'visualize',
+           'add_void_touch', 'take_free_void_touches', 'add_solid_touch', 'take_free_solid_touches']
 
 # Internal Cell
 from typing import NamedTuple
@@ -55,6 +55,12 @@ def new_design(shape):
         void_touches=jnp.zeros(shape, dtype=jnp.uint8).at[:,:].set(TOUCH_VALID),
         solid_touches=jnp.zeros(shape, dtype=jnp.uint8).at[:,:].set(TOUCH_VALID),
     )
+
+# Cell
+def design_mask(design, dtype=float):
+    one = jnp.ones_like(design.design, dtype=dtype)
+    mask = jnp.where(design.design == VOID, -1, one)
+    return mask
 
 # Cell
 def circular_brush(diameter):
