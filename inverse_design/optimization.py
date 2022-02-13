@@ -5,9 +5,9 @@ __all__ = ['mse', 'huber_loss']
 # Cell
 import jax
 from .conditional_generator import (
-    generate_feasible_design,
     new_latent_design,
     transform,
+    generate_feasible_design_mask,
 )
 from .design import design_mask
 from .brushes import notched_square_brush

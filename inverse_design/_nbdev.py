@@ -38,6 +38,9 @@ index = {"conv2d": "01_utils.ipynb",
          "conditional_algirithm_step": "05_conditional_generator.ipynb",
          "conditional_generator": "05_conditional_generator.ipynb",
          "generate_feasible_design": "05_conditional_generator.ipynb",
+         "generate_feasible_design_mask_": "05_conditional_generator.ipynb",
+         "generate_feasible_design_mask": "05_conditional_generator.ipynb",
+         "generate_feasible_design_mask_jvp": "05_conditional_generator.ipynb",
          "mse": "06_optimization.ipynb",
          "huber_loss": "06_optimization.ipynb"}
 
