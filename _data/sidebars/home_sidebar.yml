@@ -13,11 +13,17 @@ entries:
       title: Utils
       url: utils.html
     - output: web,pdf
-      title: Algorithm
-      url: generator.html
+      title: Design
+      url: design.html
     - output: web,pdf
-      title: Forward
-      url: forward.html
+      title: Brushes
+      url: brushes.html
+    - output: web,pdf
+      title: Touching
+      url: touching.html
+    - output: web,pdf
+      title: Conditional Generator
+      url: conditional_generator.html
     - output: web,pdf
       title: Optimization
       url: optimization.html
