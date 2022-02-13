@@ -10,26 +10,17 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 from .generator import (
-    PIXEL_EXISTING,
-    PIXEL_IMPOSSIBLE,
-    PIXEL_POSSIBLE,
-    PIXEL_REQUIRED,
-    SOLID,
-    TOUCH_EXISTING,
     TOUCH_FREE,
-    TOUCH_INVALID,
-    TOUCH_REQUIRED,
     TOUCH_RESOLVING,
     TOUCH_VALID,
     UNASSIGNED,
-    VOID,
     add_solid_touch,
     add_void_touch,
     new_design,
     take_free_solid_touches,
     take_free_void_touches,
 )
-from .utils import conv2d, randn, argmax2d, argmin2d
+from .utils import argmax2d, argmin2d, conv2d, randn
 
 # Cell
 def new_latent_design(shape, bias=0, r=None):

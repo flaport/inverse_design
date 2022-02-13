@@ -36,11 +36,14 @@ index = {"conv2d": "01_utils.ipynb",
          "transform": "03_forward.ipynb",
          "conditional_algirithm_step": "03_forward.ipynb",
          "conditional_generator": "03_forward.ipynb",
-         "generate_feasible_design": "03_forward.ipynb"}
+         "generate_feasible_design": "03_forward.ipynb",
+         "mse": "04_optimization.ipynb",
+         "huber_loss": "04_optimization.ipynb"}
 
 modules = ["utils.py",
            "generator.py",
-           "forward.py"]
+           "forward.py",
+           "optimization.py"]
 
 doc_url = "https://flaport.github.io/inverse_design/"
 
