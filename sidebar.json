@@ -1,7 +1,6 @@
 {
   "inverse_design": {
     "Overview": "/",
-    "Core": "core.html",
     "Utils": "utils.html",
     "Algorithm": "generator.html",
     "Forward": "forward.html",
