@@ -46,27 +46,8 @@ nb_path: "notebooks/01_utils.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="conv" class="doc_header"><code>conv</code><a href="jax/_src/lax/convolution.py#L164" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>conv</code>(<strong><code>lhs</code></strong>:<code>Any</code>, <strong><code>rhs</code></strong>:<code>Any</code>, <strong><code>window_strides</code></strong>:<code>Sequence</code>[<code>int</code>], <strong><code>padding</code></strong>:<code>str</code>, <strong><code>precision</code></strong>:<code>Union</code>[<code>NoneType</code>, <code>str</code>, <code>Any</code>, <code>Tuple</code>[<code>str</code>, <code>str</code>], <code>Tuple</code>[<code>Any</code>, <code>Any</code>]]=<em><code>None</code></em>, <strong><code>preferred_element_type</code></strong>:<code>Optional</code>[<code>Any</code>]=<em><code>None</code></em>)</p>
+<h4 id="conv" class="doc_header"><code>conv</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/utils.py#L14" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>conv</code>(<strong><code>lhs</code></strong>, <strong><code>rhs</code></strong>, <strong><code>window_strides</code></strong>=<em><code>(1, 1)</code></em>, <strong><code>padding</code></strong>=<em><code>'SAME'</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
-
-<pre><code>Convenience wrapper around `conv_general_dilated`.
-
-Args:
-  lhs: a rank `n+2` dimensional input array.
-  rhs: a rank `n+2` dimensional array of kernel weights.
-  window_strides: a sequence of `n` integers, representing the inter-window
-    strides.
-  padding: either the string `'SAME'`, the string `'VALID'`.
-  precision: Optional. Either ``None``, which means the default precision for
-    the backend, a :class:`~jax.lax.Precision` enum value (``Precision.DEFAULT``,
-    ``Precision.HIGH`` or ``Precision.HIGHEST``) or a tuple of two
-    :class:`~jax.lax.Precision` enums indicating precision of ``lhs``` and ``rhs``.
-  preferred_element_type: Optional. Either ``None``, which means the default
-    accumulation type for the input types, or a datatype, indicating to
-    accumulate results to and return a result with that datatype.
-
-Returns:
-  An array containing the convolution result.</code></pre>
 
 </div>
 
@@ -96,27 +77,8 @@ Returns:
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="conv" class="doc_header"><code>conv</code><a href="jax/_src/lax/convolution.py#L164" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>conv</code>(<strong><code>lhs</code></strong>:<code>Any</code>, <strong><code>rhs</code></strong>:<code>Any</code>, <strong><code>window_strides</code></strong>:<code>Sequence</code>[<code>int</code>], <strong><code>padding</code></strong>:<code>str</code>, <strong><code>precision</code></strong>:<code>Union</code>[<code>NoneType</code>, <code>str</code>, <code>Any</code>, <code>Tuple</code>[<code>str</code>, <code>str</code>], <code>Tuple</code>[<code>Any</code>, <code>Any</code>]]=<em><code>None</code></em>, <strong><code>preferred_element_type</code></strong>:<code>Optional</code>[<code>Any</code>]=<em><code>None</code></em>)</p>
+<h4 id="conv" class="doc_header"><code>conv</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/utils.py#L14" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>conv</code>(<strong><code>lhs</code></strong>, <strong><code>rhs</code></strong>, <strong><code>window_strides</code></strong>=<em><code>(1, 1)</code></em>, <strong><code>padding</code></strong>=<em><code>'SAME'</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
-
-<pre><code>Convenience wrapper around `conv_general_dilated`.
-
-Args:
-  lhs: a rank `n+2` dimensional input array.
-  rhs: a rank `n+2` dimensional array of kernel weights.
-  window_strides: a sequence of `n` integers, representing the inter-window
-    strides.
-  padding: either the string `'SAME'`, the string `'VALID'`.
-  precision: Optional. Either ``None``, which means the default precision for
-    the backend, a :class:`~jax.lax.Precision` enum value (``Precision.DEFAULT``,
-    ``Precision.HIGH`` or ``Precision.HIGHEST``) or a tuple of two
-    :class:`~jax.lax.Precision` enums indicating precision of ``lhs``` and ``rhs``.
-  preferred_element_type: Optional. Either ``None``, which means the default
-    accumulation type for the input types, or a datatype, indicating to
-    accumulate results to and return a result with that datatype.
-
-Returns:
-  An array containing the convolution result.</code></pre>
 
 </div>
 
@@ -146,7 +108,38 @@ Returns:
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="dilute" class="doc_header"><code>dilute</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/utils.py#L24" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dilute</code>(<strong><code>touches</code></strong>, <strong><code>brush</code></strong>)</p>
+<h4 id="conv" class="doc_header"><code>conv</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/utils.py#L14" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>conv</code>(<strong><code>lhs</code></strong>, <strong><code>rhs</code></strong>, <strong><code>window_strides</code></strong>=<em><code>(1, 1)</code></em>, <strong><code>padding</code></strong>=<em><code>'SAME'</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="dilute" class="doc_header"><code>dilute</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/utils.py#L44" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dilute</code>(<strong><code>touches</code></strong>, <strong><code>brush</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -190,7 +183,7 @@ Returns:
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="randn" class="doc_header"><code>randn</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/utils.py#L34" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>randn</code>(<strong><code>shape</code></strong>, <strong><code>r</code></strong>=<em><code>None</code></em>, <strong><code>dtype</code></strong>=<em><code>float</code></em>)</p>
+<h4 id="randn" class="doc_header"><code>randn</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/utils.py#L54" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>randn</code>(<strong><code>shape</code></strong>, <strong><code>r</code></strong>=<em><code>None</code></em>, <strong><code>dtype</code></strong>=<em><code>float</code></em>)</p>
 </blockquote>
 
 </div>
@@ -221,7 +214,7 @@ Returns:
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="rand" class="doc_header"><code>rand</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/utils.py#L43" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>rand</code>(<strong><code>shape</code></strong>, <strong><code>r</code></strong>=<em><code>None</code></em>, <strong><code>dtype</code></strong>=<em><code>float</code></em>)</p>
+<h4 id="rand" class="doc_header"><code>rand</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/utils.py#L63" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>rand</code>(<strong><code>shape</code></strong>, <strong><code>r</code></strong>=<em><code>None</code></em>, <strong><code>dtype</code></strong>=<em><code>float</code></em>)</p>
 </blockquote>
 
 </div>
@@ -258,7 +251,7 @@ Returns:
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="argmax2d" class="doc_header"><code>argmax2d</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/utils.py#L52" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>argmax2d</code>(<strong><code>arr2d</code></strong>)</p>
+<h4 id="argmax2d" class="doc_header"><code>argmax2d</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/utils.py#L72" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>argmax2d</code>(<strong><code>arr2d</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -289,7 +282,7 @@ Returns:
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="argmin2d" class="doc_header"><code>argmin2d</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/utils.py#L60" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>argmin2d</code>(<strong><code>arr2d</code></strong>)</p>
+<h4 id="argmin2d" class="doc_header"><code>argmin2d</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/utils.py#L80" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>argmin2d</code>(<strong><code>arr2d</code></strong>)</p>
 </blockquote>
 
 </div>
