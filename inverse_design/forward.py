@@ -14,6 +14,7 @@ from .generator import (
     add_solid_touch,
     take_free_solid_touches,
 )
+from itertools import count
 from .generator import (
     UNASSIGNED,
     VOID,
