@@ -23,91 +23,97 @@ from .design import (
     Design,
     new_design,
 )
-from .utils import batch_conv2d, dilute
+from .utils import batch_conv2d, dilute, or_, and_, not_, float_mask, where_
 
 # Cell
 
 @jax.jit
 def _find_free_touches(touches_mask, pixels_mask, brush):
-    r = jnp.zeros_like(touches_mask, dtype=bool)
+    r = jnp.zeros_like(touches_mask, dtype=float)
     m, n = r.shape
     i, j = jnp.arange(m), jnp.arange(n)
     I, J = [idxs.ravel() for idxs in jnp.meshgrid(i, j)]
     K = jnp.arange(m * n)
-    R = jnp.broadcast_to(r[None, :, :], (m * n, m, n)).at[K, I, J].set(True)
-    Rb = batch_conv2d(R, brush[None]) | pixels_mask
-    free_idxs = (Rb == pixels_mask).all((1, 2))
-    free_touches_mask = jnp.where(free_idxs[:, None, None], R, 0).sum(0, dtype=bool)
-    return free_touches_mask ^ touches_mask
+    R = jnp.broadcast_to(r[None, :, :], (m * n, m, n)).at[K, I, J].set(1.0)
+    Rb = or_(batch_conv2d(R, brush[None]), pixels_mask)
+    free_idxs = (Rb - pixels_mask < 1e-10).all((1, 2))
+    free_touches_mask = where_(free_idxs[:, None, None], R, 0.0).sum(0)
+    return and_(free_touches_mask, not_(touches_mask))
 
-
+# Cell
 @jax.jit
 def _find_required_pixels(pixel_map, brush):
-    mask = (~pixel_map) & (~dilute(pixel_map, brush))
-    return ~(dilute(mask, brush) | pixel_map)
+    mask = and_(not_(pixel_map), not_(dilute(pixel_map, brush)))
+    return not_(or_(dilute(mask, brush), pixel_map))
 
-
+# Cell
 @jax.jit
 def add_void_touch(design, brush, pos):
     if isinstance(pos, tuple):
-        void_touches_mask = design.void_touches.at[pos[0], pos[1]].set(TOUCH_EXISTING) == TOUCH_EXISTING
+        void_touch_existing = design.void_touch_existing.at[pos[0], pos[1]].set(1.0)
     else:
-        assert pos.dtype == bool
-        void_touches_mask = pos | (design.void_touches == TOUCH_EXISTING)
-    void_pixel_mask = dilute(void_touches_mask, brush) | (design.design == VOID)
-    required_void_pixel_mask = _find_required_pixels(void_pixel_mask, brush)
-    diluted_mask = dilute(void_pixel_mask, brush)
-    design_ = jnp.where(void_pixel_mask, VOID, design.design)
-    free_void_touches_mask = _find_free_touches(void_touches_mask, void_pixel_mask | required_void_pixel_mask, brush)
-    void_touches = jnp.where(design.void_touches == TOUCH_RESOLVING, TOUCH_VALID, design.void_touches)
-    void_touches = jnp.where(void_touches_mask, TOUCH_EXISTING, void_touches)
-    void_touches = jnp.where(free_void_touches_mask, TOUCH_FREE, void_touches)
-    resolving_pixels = jnp.where(void_touches == TOUCH_VALID, dilute(required_void_pixel_mask, brush), False)
-    void_touches = jnp.where(resolving_pixels, TOUCH_RESOLVING, void_touches)
-    void_pixels = jnp.where(void_pixel_mask, PIXEL_EXISTING, design.void_pixels)
-    void_pixels = jnp.where(required_void_pixel_mask, PIXEL_REQUIRED, void_pixels)
-    solid_pixels =  jnp.where(void_pixel_mask, PIXEL_IMPOSSIBLE, design.solid_pixels)
-    solid_pixels = jnp.where(required_void_pixel_mask, PIXEL_IMPOSSIBLE, solid_pixels)
-    solid_touches = jnp.where(diluted_mask, TOUCH_INVALID, design.solid_touches)
-    return Design(design_, void_pixels, solid_pixels, void_touches, solid_touches)
+        void_touch_existing = or_(pos,  design.void_touch_existing)
+    void = or_(dilute(void_touch_existing, brush),  design.void)
+    solid_touch_invalid = dilute(void, brush)
+    void_pixel_required = _find_required_pixels(void, brush)
+    void_touch_free = _find_free_touches(void_touch_existing, or_(void, void_pixel_required), brush)
+    void_touch_valid = and_(design.void_touch_valid, not_(design.void_touch_invalid))
+    void_touch_valid = or_(void_touch_valid, design.void_touch_resolving)
+    void_touch_resolving = and_(dilute(void_pixel_required, brush), void_touch_valid)
+    void_touch_resolving = and_(void_touch_resolving, not_(void_touch_free))
+    void_pixel_existing = or_(void, design.void_pixel_existing)
+    solid_pixel_impossible = or_(or_(design.solid_pixel_impossible, void), void_pixel_required)
+    void_pixel_possible = and_(design.void_pixel_possible, not_(or_(void_pixel_existing, design.void_pixel_impossible)))
+    return design.copy(
+        void=void,
+        solid_pixel_impossible=solid_pixel_impossible,
+        void_pixel_existing=void_pixel_existing,
+        void_pixel_possible=void_pixel_possible,
+        void_pixel_required=void_pixel_required,
+        solid_touch_invalid=solid_touch_invalid,
+        void_touch_existing=void_touch_existing,
+        void_touch_valid=void_touch_valid,
+        void_touch_free=void_touch_free,
+        void_touch_resolving=void_touch_resolving,
+    )
 
 # Cell
 @jax.jit
 def take_free_void_touches(design, brush):
-    # originally:
-    # design = design.copy(void_touches=jnp.where(design.void_touches == TOUCH_FREE, TOUCH_EXISTING, design.void_touches))
-    # ⬆ the above solution is not good. It does not resolve required touches if present, we need to actually use the brush:
-    free_touches_mask = (design.void_touches == TOUCH_FREE)
-    return add_void_touch(design, brush, free_touches_mask)
+    return add_void_touch(design, brush, design.void_touch_free)
 
 # Cell
-
 @jax.jit
 def add_solid_touch(design, brush, pos):
     if isinstance(pos, tuple):
-        solid_touches_mask = design.solid_touches.at[pos[0], pos[1]].set(TOUCH_EXISTING) == TOUCH_EXISTING
+        solid_touch_existing = design.solid_touch_existing.at[pos[0], pos[1]].set(1.0)
     else:
-        assert pos.dtype == bool
-        solid_touches_mask = pos | (design.solid_touches == TOUCH_EXISTING)
-    solid_pixel_mask = dilute(solid_touches_mask, brush) | (design.design == SOLID)
-    required_solid_pixel_mask = _find_required_pixels(solid_pixel_mask, brush)
-    diluted_mask = dilute(solid_pixel_mask, brush)
-    design_ = jnp.where(solid_pixel_mask, SOLID, design.design)
-    free_solid_touches_mask = _find_free_touches(solid_touches_mask, solid_pixel_mask | required_solid_pixel_mask, brush)
-    solid_touches = jnp.where(design.solid_touches == TOUCH_RESOLVING, TOUCH_VALID, design.solid_touches)
-    solid_touches = jnp.where(solid_touches_mask, TOUCH_EXISTING, solid_touches)
-    solid_touches = jnp.where(free_solid_touches_mask, TOUCH_FREE, solid_touches)
-    resolving_pixels = jnp.where(solid_touches == TOUCH_VALID, dilute(required_solid_pixel_mask, brush), False)
-    solid_touches = jnp.where(resolving_pixels, TOUCH_RESOLVING, solid_touches)
-    solid_pixels = jnp.where(solid_pixel_mask, PIXEL_EXISTING, design.solid_pixels)
-    solid_pixels = jnp.where(required_solid_pixel_mask, PIXEL_REQUIRED, solid_pixels)
-    void_pixels =  jnp.where(solid_pixel_mask, PIXEL_IMPOSSIBLE, design.void_pixels)
-    void_pixels = jnp.where(required_solid_pixel_mask, PIXEL_IMPOSSIBLE, void_pixels)
-    void_touches = jnp.where(diluted_mask, TOUCH_INVALID, design.void_touches)
-    return Design(design_, void_pixels, solid_pixels, void_touches, solid_touches)
+        solid_touch_existing = or_(pos,  design.solid_touch_existing)
+    solid = or_(dilute(solid_touch_existing, brush),  design.solid)
+    void_touch_invalid = dilute(solid, brush)
+    solid_pixel_required = _find_required_pixels(solid, brush)
+    solid_touch_free = _find_free_touches(solid_touch_existing, or_(solid, solid_pixel_required), brush)
+    solid_touch_valid = and_(design.solid_touch_valid, not_(design.solid_touch_invalid))
+    solid_touch_valid = or_(solid_touch_valid, design.solid_touch_resolving)
+    solid_touch_resolving = and_(dilute(solid_pixel_required, brush), solid_touch_valid)
+    solid_touch_resolving = and_(solid_touch_resolving, not_(solid_touch_free))
+    solid_pixel_existing = or_(solid, design.solid_pixel_existing)
+    void_pixel_impossible = or_(or_(design.void_pixel_impossible, solid), solid_pixel_required)
+    solid_pixel_possible = and_(design.solid_pixel_possible, not_(or_(solid_pixel_existing, design.solid_pixel_impossible)))
+    return design.copy(
+        solid=solid,
+        void_pixel_impossible=void_pixel_impossible,
+        solid_pixel_existing=solid_pixel_existing,
+        solid_pixel_possible=solid_pixel_possible,
+        solid_pixel_required=solid_pixel_required,
+        void_touch_invalid=void_touch_invalid,
+        solid_touch_existing=solid_touch_existing,
+        solid_touch_valid=solid_touch_valid,
+        solid_touch_free=solid_touch_free,
+        solid_touch_resolving=solid_touch_resolving,
+    )
 
 # Cell
 @jax.jit
 def take_free_solid_touches(design, brush):
-    free_touches_mask = (design.solid_touches == TOUCH_FREE)
-    return add_solid_touch(design, brush, free_touches_mask)
+    return add_solid_touch(design, brush, design.solid_touch_free)

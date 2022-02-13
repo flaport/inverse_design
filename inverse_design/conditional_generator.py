@@ -39,21 +39,10 @@ def transform(latent, brush, beta=5.0):
 # Cell
 def conditional_algirithm_step(latent_t, design, brush, verbose=False):
     maybe_print = print if verbose else (lambda *args, **kwargs: None)
-    void_touch_mask = design.void_touches == TOUCH_VALID
-    solid_touch_mask = design.solid_touches == TOUCH_VALID
-    touch_mask = void_touch_mask | solid_touch_mask
 
-    void_free_mask = design.void_touches == TOUCH_FREE
-    solid_free_mask = design.solid_touches == TOUCH_FREE
-    free_mask = void_free_mask | solid_free_mask
-
-    void_resolving_mask = design.void_touches == TOUCH_RESOLVING
-    solid_resolving_mask = design.solid_touches == TOUCH_RESOLVING
-    resolving_mask = void_resolving_mask | solid_resolving_mask
-
-    if free_mask.any():
-        void_selector = jnp.where(void_free_mask, latent_t, 0)
-        solid_selector = jnp.where(solid_free_mask, latent_t, 0)
+    if design.void_touch_free.any() or design.solid_touch_free.any():
+        void_selector = jnp.where(design.void_touch_free, latent_t, 0)
+        solid_selector = jnp.where(design.solid_touch_free, latent_t, 0)
         if abs(void_selector.sum()) > abs(solid_selector.sum()):
             design = take_free_void_touches(design, brush)
             maybe_print(f"take free void.")
@@ -61,11 +50,9 @@ def conditional_algirithm_step(latent_t, design, brush, verbose=False):
             design = take_free_solid_touches(design, brush)
             maybe_print(f"take free solid.")
 
-    elif resolving_mask.any():
-        void_needs_resolving = void_resolving_mask.any()
-        solid_needs_resolving = solid_resolving_mask.any()
-        void_selector = jnp.where(void_resolving_mask, latent_t, np.inf)
-        solid_selector = jnp.where(solid_resolving_mask, latent_t, -np.inf)
+    elif (void_needs_resolving:=design.void_touch_resolving.any()) or (solid_needs_resolving:=design.solid_touch_resolving.any()):
+        void_selector = jnp.where(design.void_touch_resolving, latent_t, np.inf)
+        solid_selector = jnp.where(design.solid_touch_resolving, latent_t, -np.inf)
 
         if void_needs_resolving and (not solid_needs_resolving):
             i_v, j_v = argmin2d(void_selector)
@@ -87,9 +74,9 @@ def conditional_algirithm_step(latent_t, design, brush, verbose=False):
                 design = add_solid_touch(design, brush, (i_s, j_s))
                 maybe_print(f"resolve solid {int(i_s), int(j_s)}.")
 
-    elif touch_mask.any():
-        void_selector = jnp.where(void_touch_mask, latent_t, np.inf)
-        solid_selector = jnp.where(solid_touch_mask, latent_t, -np.inf)
+    elif design.void_touch_valid.any() or design.solid_touch_valid.any():
+        void_selector = jnp.where(design.void_touch_valid, latent_t, np.inf)
+        solid_selector = jnp.where(design.solid_touch_valid, latent_t, -np.inf)
         i_v, j_v = argmin2d(void_selector)
         v = latent_t[i_v, j_v]
         i_s, j_s = argmax2d(solid_selector)
@@ -110,7 +97,7 @@ def conditional_generator(latent_t, brush, verbose=False):
     maybe_print = print if verbose else (lambda *args, **kwargs: None)
     maybe_print(f"{I} create empty design.")
     yield design
-    while (design.design == UNASSIGNED).any():
+    while design.unassigned.any():
         I += 1
         maybe_print(I, end=" ")
         design = conditional_algirithm_step(latent_t, design, brush, verbose=verbose)
