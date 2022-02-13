@@ -85,7 +85,8 @@ def show_mask(brush):
     ax.set_yticks(jnp.arange(nx), [f"{i}" for i in range(nx)], minor=True)
     ax.set_xticks(jnp.arange(ny), [f"{i}" for i in range(ny)], minor=True)
     plt.grid(True, color='k')
-    plt.imshow(brush, cmap=_cmap)
+    plt.imshow(brush, cmap=_cmap, vmin=0, vmax=1)
+    plt.colorbar()
 
 # Cell
 def visualize(design):
