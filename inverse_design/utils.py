@@ -9,26 +9,26 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 from jax import lax
+from jax.lib import xla_bridge
 
 # Cell
 @partial(jax.jit, static_argnames=('window_strides', 'padding'))
 def conv(lhs, rhs, window_strides=(1,1), padding="SAME", **kwargs):
-    if not lhs.dtype == rhs.dtype:
-        raise ValueError(f"Cannot do convolution. Different dtypes for 'lhs' and 'rhs'. Got: {lhs.dtype}, {rhs.dtype}")
-    dtype = lhs.dtype
-
-    if dtype not in  (jnp.float16, jnp.float32, jnp.float64):
-        lhs = jnp.asarray(lhs, dtype=float)
-        rhs = jnp.asarray(rhs, dtype=float)
-
-    result = lax.conv(lhs, rhs, window_strides, padding, **kwargs)
-
-    if dtype == bool:
-        result = result > 1e-5
-    elif dtype not in  (jnp.float16, jnp.float32, jnp.float64):
-        result = jnp.asarray(result, dtype=dtype)
-
-    return result
+    if xla_bridge.get_backend().platform == "cpu":
+        return lax.conv(lhs, rhs, window_strides, padding, **kwargs)
+    else: # gpu can only do float convolutions...
+        if not lhs.dtype == rhs.dtype:
+            raise ValueError(f"Cannot do convolution. Different dtypes for 'lhs' and 'rhs'. Got: {lhs.dtype}, {rhs.dtype}")
+        dtype = lhs.dtype
+        if dtype not in  (jnp.float16, jnp.float32, jnp.float64):
+            lhs = jnp.asarray(lhs, dtype=float)
+            rhs = jnp.asarray(rhs, dtype=float)
+        result = lax.conv(lhs, rhs, window_strides, padding, **kwargs)
+        if dtype == bool:
+            result = result > 1e-5
+        elif dtype not in  (jnp.float16, jnp.float32, jnp.float64):
+            result = jnp.asarray(result, dtype=dtype)
+        return result
 
 # Cell
 @wraps(conv)
