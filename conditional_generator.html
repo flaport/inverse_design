@@ -54,7 +54,7 @@ nb_path: "notebooks/05_conditional_generator.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="new_latent_design" class="doc_header"><code>new_latent_design</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/conditional_generator.py#L26" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>new_latent_design</code>(<strong><code>shape</code></strong>, <strong><code>bias</code></strong>=<em><code>0</code></em>, <strong><code>r</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="new_latent_design" class="doc_header"><code>new_latent_design</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/conditional_generator.py#L28" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>new_latent_design</code>(<strong><code>shape</code></strong>, <strong><code>bias</code></strong>=<em><code>0</code></em>, <strong><code>r</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 
 </div>
@@ -130,7 +130,7 @@ nb_path: "notebooks/05_conditional_generator.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="transform" class="doc_header"><code>transform</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/conditional_generator.py#L33" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>transform</code>(<strong><code>latent</code></strong>, <strong><code>brush</code></strong>, <strong><code>beta</code></strong>=<em><code>5.0</code></em>)</p>
+<h4 id="transform" class="doc_header"><code>transform</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/conditional_generator.py#L35" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>transform</code>(<strong><code>latent</code></strong>, <strong><code>brush</code></strong>, <strong><code>beta</code></strong>=<em><code>5.0</code></em>)</p>
 </blockquote>
 
 </div>
@@ -205,7 +205,7 @@ nb_path: "notebooks/05_conditional_generator.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="conditional_algirithm_step" class="doc_header"><code>conditional_algirithm_step</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/conditional_generator.py#L38" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>conditional_algirithm_step</code>(<strong><code>latent_t</code></strong>, <strong><code>design</code></strong>, <strong><code>brush</code></strong>, <strong><code>verbose</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="conditional_algirithm_step" class="doc_header"><code>conditional_algirithm_step</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/conditional_generator.py#L40" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>conditional_algirithm_step</code>(<strong><code>latent_t</code></strong>, <strong><code>design</code></strong>, <strong><code>brush</code></strong>, <strong><code>verbose</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -236,7 +236,7 @@ nb_path: "notebooks/05_conditional_generator.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="conditional_generator" class="doc_header"><code>conditional_generator</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/conditional_generator.py#L105" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>conditional_generator</code>(<strong><code>latent_t</code></strong>, <strong><code>brush</code></strong>, <strong><code>verbose</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="conditional_generator" class="doc_header"><code>conditional_generator</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/conditional_generator.py#L107" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>conditional_generator</code>(<strong><code>latent_t</code></strong>, <strong><code>brush</code></strong>, <strong><code>verbose</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -267,7 +267,7 @@ nb_path: "notebooks/05_conditional_generator.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="generate_feasible_design" class="doc_header"><code>generate_feasible_design</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/conditional_generator.py#L118" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>generate_feasible_design</code>(<strong><code>latent_t</code></strong>, <strong><code>brush</code></strong>, <strong><code>verbose</code></strong>=<em><code>False</code></em>)</p>
+<h4 id="generate_feasible_design" class="doc_header"><code>generate_feasible_design</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/conditional_generator.py#L120" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>generate_feasible_design</code>(<strong><code>latent_t</code></strong>, <strong><code>brush</code></strong>, <strong><code>verbose</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
 
 </div>
@@ -294,7 +294,8 @@ nb_path: "notebooks/05_conditional_generator.ipynb"
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">generate_feasible_design</span><span class="p">(</span><span class="n">latent_t</span><span class="p">,</span> <span class="n">my_brush</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_design</span> <span class="o">=</span> <span class="n">generate_feasible_design</span><span class="p">(</span><span class="n">latent_t</span><span class="p">,</span> <span class="n">my_brush</span><span class="p">)</span>
+<span class="n">my_design</span>
 </pre></div>
 
     </div>
@@ -363,6 +364,239 @@ nb_path: "notebooks/05_conditional_generator.ipynb"
 
 </div>
 
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In practice however, it's probably more useful to generate a design <em>mask</em> straight away (+1.0 for solid, -1.0 for void):</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="generate_feasible_design_mask_" class="doc_header"><code>generate_feasible_design_mask_</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/conditional_generator.py#L127" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>generate_feasible_design_mask_</code>(<strong><code>latent_t</code></strong>, <strong><code>brush</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">my_design_mask</span> <span class="o">=</span> <span class="n">generate_feasible_design_mask_</span><span class="p">(</span><span class="n">latent_t</span><span class="p">,</span> <span class="n">my_brush</span><span class="p">)</span>
+<span class="n">my_design_mask</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(30, 30)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">my_design_mask</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Straight-Through-Estimator">Straight Through Estimator<a class="anchor-link" href="#Straight-Through-Estimator"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We cannot just call <code>jax.grad</code> on our feasible design mask generator. All gradients will be zero as our mask generator is not differentiable...</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">my_test_loss_function_</span><span class="p">(</span><span class="n">latent_t</span><span class="p">,</span> <span class="n">brush</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">generate_feasible_design_mask_</span><span class="p">(</span><span class="n">latent_t</span><span class="p">,</span> <span class="n">brush</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">my_test_loss_function_</span><span class="p">)</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">latent_t</span><span class="p">,</span> <span class="n">my_brush</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In stead, we use a straight-through estimator (a.k.a. identity function) for our feasible design:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="generate_feasible_design_mask" class="doc_header"><code>generate_feasible_design_mask</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/conditional_generator.py#L132" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>generate_feasible_design_mask</code>(<strong><code>latent_t</code></strong>, <strong><code>brush</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="generate_feasible_design_mask_jvp" class="doc_header"><code>generate_feasible_design_mask_jvp</code><a href="https://github.com/flaport/inverse_design/tree/masterinverse_design/conditional_generator.py#L138" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>generate_feasible_design_mask_jvp</code>(<strong><code>primals</code></strong>, <strong><code>tangents</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">my_test_loss_function</span><span class="p">(</span><span class="n">latent_t</span><span class="p">,</span> <span class="n">brush</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">generate_feasible_design_mask</span><span class="p">(</span><span class="n">latent_t</span><span class="p">,</span> <span class="n">brush</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">my_test_loss_function</span><span class="p">)</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">latent_t</span><span class="p">,</span> <span class="n">my_brush</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
