@@ -39,6 +39,8 @@ def transform(latent, brush, beta=5.0):
 # Cell
 def conditional_algirithm_step(latent_t, design, brush, verbose=False):
     maybe_print = print if verbose else (lambda *args, **kwargs: None)
+    void_needs_resolving=design.void_touch_resolving.any()
+    solid_needs_resolving=design.solid_touch_resolving.any()
 
     if design.void_touch_free.any() or design.solid_touch_free.any():
         void_selector = jnp.where(design.void_touch_free, latent_t, 0)
@@ -50,29 +52,30 @@ def conditional_algirithm_step(latent_t, design, brush, verbose=False):
             design = take_free_solid_touches(design, brush)
             maybe_print(f"take free solid.")
 
-    elif (void_needs_resolving:=design.void_touch_resolving.any()) or (solid_needs_resolving:=design.solid_touch_resolving.any()):
+    elif void_needs_resolving and (not solid_needs_resolving):
+        void_selector = jnp.where(design.void_touch_resolving, latent_t, np.inf)
+        i_v, j_v = argmin2d(void_selector)
+        design = add_void_touch(design, brush, (i_v, j_v))
+        maybe_print(f"resolve void {int(i_v), int(j_v)}.")
+    elif (not void_needs_resolving) and solid_needs_resolving:
+        solid_selector = jnp.where(design.solid_touch_resolving, latent_t, -np.inf)
+        i_s, j_s = argmax2d(solid_selector)
+        design = add_solid_touch(design, brush, (i_s, j_s))
+        maybe_print(f"resolve solid {int(i_s), int(j_s)}.")
+    elif void_needs_resolving and solid_needs_resolving:
+        # both need resolving. TODO: figure out if we actually need this case...
         void_selector = jnp.where(design.void_touch_resolving, latent_t, np.inf)
         solid_selector = jnp.where(design.solid_touch_resolving, latent_t, -np.inf)
-
-        if void_needs_resolving and (not solid_needs_resolving):
-            i_v, j_v = argmin2d(void_selector)
+        i_v, j_v = argmin2d(void_selector)
+        v = latent_t[i_v, j_v]
+        i_s, j_s = argmax2d(solid_selector)
+        s = latent_t[i_s, j_s]
+        if abs(v) > abs(s):
             design = add_void_touch(design, brush, (i_v, j_v))
             maybe_print(f"resolve void {int(i_v), int(j_v)}.")
-        elif (not void_needs_resolving) and solid_needs_resolving:
-            i_s, j_s = argmax2d(solid_selector)
+        else:
             design = add_solid_touch(design, brush, (i_s, j_s))
             maybe_print(f"resolve solid {int(i_s), int(j_s)}.")
-        else:  # both need resolving. TODO: figure out if we actually need this case...
-            i_v, j_v = argmin2d(void_selector)
-            v = latent_t[i_v, j_v]
-            i_s, j_s = argmax2d(solid_selector)
-            s = latent_t[i_s, j_s]
-            if abs(v) > abs(s):
-                design = add_void_touch(design, brush, (i_v, j_v))
-                maybe_print(f"resolve void {int(i_v), int(j_v)}.")
-            else:
-                design = add_solid_touch(design, brush, (i_s, j_s))
-                maybe_print(f"resolve solid {int(i_s), int(j_s)}.")
 
     elif design.void_touch_valid.any() or design.solid_touch_valid.any():
         void_selector = jnp.where(design.void_touch_valid, latent_t, np.inf)
