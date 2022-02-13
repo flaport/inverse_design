@@ -15,6 +15,7 @@ on:
 jobs:
   clean:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     container:
       image: condaforge/mambaforge
       volumes:
@@ -39,6 +40,7 @@ jobs:
 
   diff:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     container:
       image: condaforge/mambaforge
       volumes:
@@ -62,6 +64,7 @@ jobs:
       - clean
       - diff
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     container:
       image: condaforge/mambaforge
       volumes:
@@ -84,6 +87,7 @@ jobs:
       - clean
       - diff
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     container:
       image: condaforge/mambaforge
       volumes:
@@ -106,6 +110,7 @@ jobs:
       - test
       - run
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     container:
       image: condaforge/mambaforge
       volumes:
@@ -132,6 +137,7 @@ jobs:
     needs:
       - docs
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     container:
       image: condaforge/mambaforge
       volumes:
