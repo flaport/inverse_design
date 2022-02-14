@@ -9,7 +9,7 @@ dependencies:
   - ipykernel
   - jax
   - jaxlib
-  - matplotlib
+  - matplotlib=2
   - nbdev
   - nbstripout
   - numpy
@@ -17,4 +17,6 @@ dependencies:
   - papermill
   - pre-commit
   - rsync
-prefix: /home/flaport/.anaconda/envs/x
+  - scikit-image
+  - pip:
+    - ceviche
