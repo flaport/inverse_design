@@ -52,8 +52,8 @@ modules = ["utils.py",
            "conditional_generator.py",
            "direct_optimization.py"]
 
-doc_url = "https://flaport.github.io/inverse_design/"
+doc_url = "https://flaport.github.io//inverse_design/"
 
-git_url = "https://github.com/flaport/inverse_design/tree/master"
+git_url = "https://github.com/flaport/inverse_design/tree/master/"
 
 def custom_doc_links(name): return None
