@@ -44,13 +44,15 @@ index = {"conv": "01_utils.ipynb",
          "generate_feasible_design_mask": "04_conditional_generator.ipynb",
          "generate_feasible_design_mask_jvp": "04_conditional_generator.ipynb",
          "mse": "05_direct_optimization.ipynb",
-         "huber_loss": "05_direct_optimization.ipynb"}
+         "huber_loss": "05_direct_optimization.ipynb",
+         "Slice": "06_naive_inverse_design.ipynb"}
 
 modules = ["utils.py",
            "brushes.py",
            "design.py",
            "conditional_generator.py",
-           "direct_optimization.py"]
+           "direct_optimization.py",
+           "naive_inverse_design.py"]
 
 doc_url = "https://flaport.github.io//inverse_design/"
 
