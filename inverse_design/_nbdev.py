@@ -45,14 +45,37 @@ index = {"conv": "01_utils.ipynb",
          "generate_feasible_design_mask_jvp": "04_conditional_generator.ipynb",
          "mse": "05_direct_optimization.ipynb",
          "huber_loss": "05_direct_optimization.ipynb",
-         "Slice": "06_naive_inverse_design.ipynb"}
+         "Slice": "06_naive_inverse_design.ipynb",
+         "omega": "07_inverse_design.ipynb",
+         "dl": "07_inverse_design.ipynb",
+         "Nx": "07_inverse_design.ipynb",
+         "Ny": "07_inverse_design.ipynb",
+         "Npml": "07_inverse_design.ipynb",
+         "epsr_init": "07_inverse_design.ipynb",
+         "space": "07_inverse_design.ipynb",
+         "wg_width": "07_inverse_design.ipynb",
+         "space_slice": "07_inverse_design.ipynb",
+         "Nsteps": "07_inverse_design.ipynb",
+         "step_size": "07_inverse_design.ipynb",
+         "init_domain": "06_naive_inverse_design.ipynb",
+         "mask_combine_epsr": "06_naive_inverse_design.ipynb",
+         "viz_sim": "06_naive_inverse_design.ipynb",
+         "mode_overlap": "06_naive_inverse_design.ipynb",
+         "epsr_total": "07_inverse_design.ipynb",
+         "source": "07_inverse_design.ipynb",
+         "probe": "07_inverse_design.ipynb",
+         "loss_fn": "07_inverse_design.ipynb",
+         "grad_fn": "07_inverse_design.ipynb",
+         "step_fn": "07_inverse_design.ipynb",
+         "forward": "07_inverse_design.ipynb"}
 
 modules = ["utils.py",
            "brushes.py",
            "design.py",
            "conditional_generator.py",
            "direct_optimization.py",
-           "naive_inverse_design.py"]
+           "naive_inverse_design.py",
+           "inverse_design.py"]
 
 doc_url = "https://flaport.github.io//inverse_design/"
 

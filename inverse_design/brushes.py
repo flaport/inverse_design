@@ -12,10 +12,16 @@ def show_mask(brush):
     nx, ny = brush.shape
     _cmap = ListedColormap(colors={0: "#ffffff", 1: "#929292"}.values())
     ax = plt.gca()
-    ax.set_yticks(jnp.arange(nx) + 0.5, ["" for i in range(nx)])
-    ax.set_xticks(jnp.arange(ny) + 0.5, ["" for i in range(ny)])
-    ax.set_yticks(jnp.arange(nx), [f"{i}" for i in range(nx)], minor=True)
-    ax.set_xticks(jnp.arange(ny), [f"{i}" for i in range(ny)], minor=True)
+
+    ax.set_yticks(jnp.arange(nx)+0.5)
+    ax.set_yticklabels(["" for i in range(nx)])
+    ax.set_xticks(jnp.arange(ny)+0.5)
+    ax.set_xticklabels(["" for i in range(ny)])
+    ax.set_yticks(jnp.arange(nx), minor=True)
+    ax.set_yticklabels([f"{i}" for i in range(nx)], minor=True)
+    ax.set_xticks(jnp.arange(ny), minor=True)
+    ax.set_xticklabels([f"{i}" for i in range(ny)], minor=True)
+
     plt.grid(True, color="k")
     plt.imshow(brush, cmap=_cmap, vmin=0, vmax=1)
     plt.colorbar()

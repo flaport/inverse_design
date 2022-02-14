@@ -98,7 +98,7 @@ jobs:
       - name: Install dependencies
         run: conda env update -n base -f environment.yml
       - name: Run notebooks
-        run: find . -name "*.ipynb" | grep -v 'ipynb_checkpoints\|optimization' | xargs -I {} papermill -k python3 {} {}
+        run: find . -name "*.ipynb" | grep -v 'ipynb_checkpoints\|07_inverse_design' | xargs -I {} papermill -k python3 {} {}
       - name: Expose 'notebooks' as artifact
         uses: actions/upload-artifact@master
         with:
