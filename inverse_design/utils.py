@@ -3,7 +3,7 @@
 __all__ = ['conv', 'conv2d', 'batch_conv2d', 'dilute', 'randn', 'rand', 'argmax2d', 'argmin2d']
 
 # Internal Cell
-from functools import wraps, partial
+from functools import partial, wraps
 
 import jax
 import jax.numpy as jnp
@@ -12,43 +12,45 @@ from jax import lax
 from jax.lib import xla_bridge
 
 # Cell
-@partial(jax.jit, static_argnames=('window_strides', 'padding'))
-def conv(lhs, rhs, window_strides=(1,1), padding="SAME", **kwargs):
+@partial(jax.jit, static_argnames=("window_strides", "padding"))
+def conv(lhs, rhs, window_strides=(1, 1), padding="SAME", **kwargs):
     if xla_bridge.get_backend().platform == "cpu":
         return lax.conv(lhs, rhs, window_strides, padding, **kwargs)
-    else: # gpu can only do float convolutions...
+    else:  # gpu can only do float convolutions...
         if not lhs.dtype == rhs.dtype:
-            raise ValueError(f"Cannot do convolution. Different dtypes for 'lhs' and 'rhs'. Got: {lhs.dtype}, {rhs.dtype}")
+            raise ValueError(
+                f"Cannot do convolution. Different dtypes for "
+                f"'lhs' and 'rhs'. Got: {lhs.dtype}, {rhs.dtype}"
+            )
         dtype = lhs.dtype
-        if dtype not in  (jnp.float16, jnp.float32, jnp.float64):
+        if dtype not in (jnp.float16, jnp.float32, jnp.float64):
             lhs = jnp.asarray(lhs, dtype=float)
             rhs = jnp.asarray(rhs, dtype=float)
         result = lax.conv(lhs, rhs, window_strides, padding, **kwargs)
         if dtype == bool:
             result = result > 1e-5
-        elif dtype not in  (jnp.float16, jnp.float32, jnp.float64):
+        elif dtype not in (jnp.float16, jnp.float32, jnp.float64):
             result = jnp.asarray(result, dtype=dtype)
         return result
 
 # Cell
 @wraps(conv)
-def conv2d(lhs, rhs, window_strides=(1,1), padding="SAME", **kwargs):
-    return conv(lhs[None, None, :, :], rhs[None, None, :, :], window_strides, padding, **kwargs)[0, 0, :, :]
+def conv2d(lhs, rhs, window_strides=(1, 1), padding="SAME", **kwargs):
+    lhs = lhs[None, None, :, :]
+    rhs = rhs[None, None, :, :]
+    result = conv(lhs, rhs, window_strides, padding, **kwargs)[0, 0, :, :]
+    return result
 
 # Cell
 @wraps(conv)
-def batch_conv2d(lhs, rhs, window_strides=(1,1), padding="SAME", **kwargs):
-    return conv(lhs[:, None, :, :], rhs[:, None, :, :], window_strides, padding, **kwargs)[:, 0, :, :]
+def batch_conv2d(lhs, rhs, window_strides=(1, 1), padding="SAME", **kwargs):
+    lhs = lhs[:, None, :, :]
+    rhs = rhs[:, None, :, :]
+    return conv(lhs, rhs, window_strides, padding, **kwargs)[:, 0, :, :]
 
 # Cell
 def dilute(touches, brush):
-    result = conv2d(
-        lhs=touches,
-        rhs=brush,
-        window_strides=(1, 1),
-        padding="SAME",
-    )
-    return result
+    return conv2d(lhs=touches, rhs=brush, window_strides=(1, 1), padding="SAME")
 
 # Cell
 def randn(shape, r=None, dtype=float):
@@ -74,7 +76,7 @@ def argmax2d(arr2d):
     m, n = arr2d.shape
     arr1d = arr2d.ravel()
     k = jnp.argmax(arr1d)
-    return k//m, k%m
+    return k // m, k % m
 
 # Cell
 @jax.jit
@@ -82,4 +84,4 @@ def argmin2d(arr2d):
     m, n = arr2d.shape
     arr1d = arr2d.ravel()
     k = jnp.argmin(arr1d)
-    return k//m, k%m
+    return k // m, k % m
