@@ -2,10 +2,9 @@
   "inverse_design": {
     "Overview": "/",
     "Utils": "utils.html",
-    "Design": "design.html",
     "Brushes": "brushes.html",
-    "Touching": "touching.html",
+    "Design": "design.html",
     "Conditional Generator": "conditional_generator.html",
-    "Optimization": "optimization.html"
+    "Direct Optimization": "direct_optimization.html"
   }
 }
