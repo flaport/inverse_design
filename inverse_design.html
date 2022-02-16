@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A smarter way to do inverse design, using the conditional generator.">
+<meta name="keywords" content=" fastai">
+<title>Inverse Design | Inverse Design</title>
+<link rel="stylesheet" href="/inverse_design/assets/css/syntax.css">
+
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--<link rel="stylesheet" type="text/css" href="assets//css/bootstrap.min.css">-->
+<link rel="stylesheet" href="/inverse_design/assets/css/modern-business.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="/inverse_design/assets/css/customstyles.css">
+<link rel="stylesheet" href="/inverse_design/assets/css/boxshadowproperties.css">
+<!-- most color styles are extracted out to here -->
+<link rel="stylesheet" href="/inverse_design/assets/css/theme-blue.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="/inverse_design/assets/js/jquery.navgoco.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  renderMathInElement( document.body, {
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "[%", right: "%]", display: true},
+      {left: "$", right: "$", display: false}
+    ]}
+  );
+});
+</script>
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!-- Anchor.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/2.0.0/anchor.min.js"></script>
+<script src="/inverse_design/assets/js/toc.js"></script>
+<script src="/inverse_design/assets/js/customscripts.js"></script>
+
+<link rel="shortcut icon" href="/inverse_design/assets/images/favicon.ico">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="inverse_design" href="/inverse_design/feed.xml">
+
+<!-- Twitter cards -->
+
+
+
+<meta name="twitter:description" content="A smarter way to do inverse design, using the conditional generator.">
+
+
+
+<meta name="twitter:card"  content="summary">
+
+
+<!-- end of Twitter cards -->
+
+
+
+
+
+    <script>
+        $(document).ready(function() {
+            // Initialize navgoco with default options
+            $("#mysidebar").navgoco({
+                caretHtml: '',
+                accordion: true,
+                openClass: 'active', // open
+                save: false, // leave false or nav highlighting doesn't work right
+                cookie: {
+                    name: 'navgoco',
+                    expires: false,
+                    path: '/'
+                },
+                slide: {
+                    duration: 400,
+                    easing: 'swing'
+                }
+            });
+
+            $("#collapseAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', false);
+            });
+
+            $("#expandAll").click(function(e) {
+                e.preventDefault();
+                $("#mysidebar").navgoco('toggle', true);
+            });
+
+            // activate menu items where href is matching to current page
+            $("#mysidebar a[href='" + location.pathname.match(/(\/[^\/]*)$/)[1] + "']")
+                .parents('li').addClass('active')
+                .parents('ul').css('display', 'block');
+        });
+
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#tg-sb-link").click(function() {
+                $("#tg-sb-sidebar").toggle();
+                $("#tg-sb-content").toggleClass('col-md-9');
+                $("#tg-sb-content").toggleClass('col-md-12');
+                $("#tg-sb-icon").toggleClass('fa-toggle-on');
+                $("#tg-sb-icon").toggleClass('fa-toggle-off');
+            });
+        });
+    </script>
+    
+
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container topnavlinks">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="fa fa-home fa-lg navbar-brand" href="/inverse_design/">&nbsp;<span class="projectTitle">Inverse Design</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <!-- toggle sidebar button -->
+                <li><a id="tg-sb-link" href="#"><i id="tg-sb-icon" class="fa fa-toggle-on"></i> Nav</a></li>
+                <!-- entries without drop-downs appear here -->
+
+
+
+
+                
+                
+                
+                <li><a href="https://github.com/flaport/inverse_design/" target="_blank">github</a></li>
+                
+                
+                
+                <!-- entries with drop-downs appear here -->
+                <!-- conditional logic to control which topnav appears for the audience defined in the configuration file.-->
+                
+                
+                
+                
+            </ul>
+        </div>
+        </div>
+        <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container">
+  <div id="main">
+    <!-- Content Row -->
+    <div class="row">
+        
+        
+            <!-- Sidebar Column -->
+            <div class="col-md-3" id="tg-sb-sidebar">
+                
+
+
+<ul id="mysidebar" class="nav">
+  <li class="sidebarTitle"> </li>
+  
+  
+  
+  <li>
+      <a href="#">inverse_design</a>
+      <ul>
+          
+          
+          
+          <li><a href="/inverse_design/">Overview</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/inverse_design/utils.html">Utils</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/inverse_design/brushes.html">Brushes</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/inverse_design/design.html">Design</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/inverse_design/conditional_generator.html">Conditional Generator</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/inverse_design/direct_optimization.html">Direct Optimization</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/inverse_design/naive_inverse_design.html">Naive Inverse Design</a></li>
+          
+          
+          
+          
+          
+          
+          <li><a href="/inverse_design/inverse_design.html">Inverse Design</a></li>
+          
+          
+          
+          
+      </ul>
+   </li>
+     
+      
+      
+      <!-- if you aren't using the accordion, uncomment this block:
+         <p class="external">
+             <a href="#" id="collapseAll">Collapse All</a> | <a href="#" id="expandAll">Expand All</a>
+         </p>
+         -->
+</ul>
+
+<!-- this highlights the active parent class in the navgoco sidebar. this is critical so that the parent expands when you're viewing a page. This must appear below the sidebar code above. Otherwise, if placed inside customscripts.js, the script runs before the sidebar code runs and the class never gets inserted.-->
+<script>$("li.active").parents('li').toggleClass("active");</script>
+
+            </div>
+            
+        
+
+        <!-- Content Column -->
+        <div class="col-md-9" id="tg-sb-content">
+            <div class="post-header">
+    <a id="Inverse Design"></a>
+    <h1 class="post-title-main">Inverse Design</h1>
+    
+        
+    </div>
+
+
+
+<div class="post-content">
+
+   
+    <div class="summary">A smarter way to do inverse design, using the conditional generator.</div>
+   
+
+    
+    
+<!-- this handles the automatic toc. use ## for subheads to auto-generate the on-page minitoc. if you use html tags, you must supply an ID for the heading element in order for it to appear in the minitoc. -->
+<script>
+$( document ).ready(function() {
+  // Handler for .ready() called.
+
+$('#toc').toc({ minimumHeaders: 0, listType: 'ul', showSpeed: 0, headers: 'h2,h3,h4' });
+
+/* this offset helps account for the space taken up by the floating toolbar. */
+$('#toc').on('click', 'a', function() {
+  var target = $(this.getAttribute('href'))
+    , scroll_target = target.offset().top
+
+  $(window).scrollTop(scroll_target - 10);
+  return false
+})
+  
+});
+</script>
+
+<div id="toc"></div>
+
+    
+
+
+    
+
+   <!--
+
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: notebooks/07_inverse_design.ipynb
+# command to build the docs after a change: nbdev_build_docs
+
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><span style="color:red; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:2em;">An Exception was encountered at '<a href="#papermill-error-cell">In [6]</a>'.</span></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p>This notebook was adapted from Ceviche's <a href="https://github.com/fancompute/workshop-invdesign/blob/master/02_Invdes_intro.ipynb">inverse design introduction</a> to use a JAX-based optimization loop in stead of the default Ceviche optimization loop.</p>
+</blockquote>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Parameters">Parameters<a class="anchor-link" href="#Parameters"> </a></h2><p>Our toy optimization problem will be to design a device that converts an input in the first-order mode into an output as the second-order mode. First, we define the parameters of our device and optimization:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Angular frequency of the source in Hz</span>
+<span class="n">omega</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mf">200e12</span>
+<span class="c1"># Spatial resolution in meters</span>
+<span class="n">dl</span> <span class="o">=</span> <span class="mf">40e-9</span>
+<span class="c1"># Number of pixels in x-direction</span>
+<span class="n">Nx</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="c1"># Number of pixels in y-direction</span>
+<span class="n">Ny</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="c1"># Number of pixels in the PMLs in each direction</span>
+<span class="n">Npml</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="c1"># Initial value of the structure&#39;s relative permittivity</span>
+<span class="n">epsr_init</span> <span class="o">=</span> <span class="mf">12.0</span>
+<span class="c1"># Space between the PMLs and the design region (in pixels)</span>
+<span class="n">space</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="c1"># Width of the waveguide (in pixels)</span>
+<span class="n">wg_width</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="c1"># Length in pixels of the source/probe slices on each side of the center point</span>
+<span class="n">space_slice</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="c1"># Number of epochs in the optimization</span>
+<span class="n">Nsteps</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="c1"># Step size for the Adam optimizer</span>
+<span class="n">step_size</span> <span class="o">=</span> <span class="mf">1e-2</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Brush">Brush<a class="anchor-link" href="#Brush"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">brush</span> <span class="o">=</span> <span class="n">notched_square_brush</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">show_mask</span><span class="p">(</span><span class="n">brush</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>WARNING:absl:No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Initial-Device">Initial Device<a class="anchor-link" href="#Initial-Device"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Initialize the parametrization rho and the design region</span>
+<span class="n">epsr</span><span class="p">,</span> <span class="n">bg_epsr</span><span class="p">,</span> <span class="n">design_region</span><span class="p">,</span> <span class="n">input_slice</span><span class="p">,</span> <span class="n">output_slice</span> <span class="o">=</span> <span class="n">init_domain</span><span class="p">(</span>
+    <span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span><span class="p">,</span> <span class="n">Npml</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="n">space</span><span class="p">,</span> <span class="n">wg_width</span><span class="o">=</span><span class="n">wg_width</span><span class="p">,</span> <span class="n">space_slice</span><span class="o">=</span><span class="n">space_slice</span>
+<span class="p">)</span>
+
+<span class="n">epsr_total</span> <span class="o">=</span> <span class="n">mask_combine_epsr</span><span class="p">(</span><span class="n">epsr</span><span class="p">,</span> <span class="n">bg_epsr</span><span class="p">,</span> <span class="n">design_region</span><span class="p">)</span>
+
+<span class="c1"># Setup source</span>
+<span class="n">source</span> <span class="o">=</span> <span class="n">insert_mode</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">dl</span><span class="p">,</span> <span class="n">input_slice</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">input_slice</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">epsr_total</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Setup probe</span>
+<span class="n">probe</span> <span class="o">=</span> <span class="n">insert_mode</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">dl</span><span class="p">,</span> <span class="n">output_slice</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">output_slice</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">epsr_total</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><span id="papermill-error-cell" style="color:red; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:2em;">Execution using papermill encountered an exception here and stopped:</span></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">simulation</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">viz_sim</span><span class="p">(</span><span class="n">epsr_total</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">slices</span><span class="o">=</span><span class="p">[</span><span class="n">input_slice</span><span class="p">,</span> <span class="n">output_slice</span><span class="p">])</span>
+
+<span class="c1"># get normalization factor (field overlap before optimizing)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">Ez</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+<span class="n">E0</span> <span class="o">=</span> <span class="n">mode_overlap</span><span class="p">(</span><span class="n">Ez</span><span class="p">,</span> <span class="n">probe</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_design_region</span><span class="p">(</span><span class="n">epsr</span><span class="p">,</span> <span class="n">design_region</span><span class="o">=</span><span class="n">design_region</span><span class="p">):</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">design_region</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-5</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">design_region</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-5</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">epsr</span><span class="p">[</span><span class="n">I</span><span class="p">,:][:,</span><span class="n">J</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">set_design_region</span><span class="p">(</span><span class="n">epsr</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">design_region</span><span class="o">=</span><span class="n">design_region</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">design_region</span> <span class="o">&gt;</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">epsr</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Latent-Weights">Latent Weights<a class="anchor-link" href="#Latent-Weights"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">latent</span> <span class="o">=</span> <span class="n">new_latent_design</span><span class="p">((</span><span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span><span class="p">),</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">latent_t</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">latent</span><span class="p">,</span> <span class="n">brush</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">get_design_region</span><span class="p">(</span><span class="n">latent_t</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Forward-Pass">Forward Pass<a class="anchor-link" href="#Forward-Pass"> </a></h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">time</span> mask = generate_feasible_design_mask(latent_t, brush)
+<span class="n">full_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">epsr</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+<span class="c1">#full_mask = set_design_region(full_mask, mask)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">full_mask</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
+File <span class="ansi-green-fg">&lt;timed exec&gt;:1</span>, in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+
+    <span class="ansi-red-fg">[... skipping hidden 1 frame]</span>
+
+File <span class="ansi-green-fg">~/.anaconda/envs/x/lib/python3.9/site-packages/jax/_src/custom_derivatives.py:225</span>, in <span class="ansi-cyan-fg">custom_jvp.__call__</span><span class="ansi-blue-fg">(self, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    223</span> flat_fun, out_tree1 <span style="color: rgb(98,98,98)">=</span> flatten_fun_nokwargs(f_, in_tree)
+<span class="ansi-green-intense-fg ansi-bold">    224</span> flat_jvp, out_tree2 <span style="color: rgb(98,98,98)">=</span> _flatten_jvp(jvp, in_tree)
+<span class="ansi-green-fg">--&gt; 225</span> out_flat <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">custom_jvp_call_p</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">bind</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">flat_fun</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">flat_jvp</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">args_flat</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    226</span> _, out_tree <span style="color: rgb(98,98,98)">=</span> lu<span style="color: rgb(98,98,98)">.</span>merge_linear_aux(out_tree1, out_tree2)
+<span class="ansi-green-intense-fg ansi-bold">    227</span> <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> tree_unflatten(out_tree, out_flat)
+
+File <span class="ansi-green-fg">~/.anaconda/envs/x/lib/python3.9/site-packages/jax/_src/custom_derivatives.py:288</span>, in <span class="ansi-cyan-fg">CustomJVPCallPrimitive.bind</span><span class="ansi-blue-fg">(self, fun, jvp, *args)</span>
+<span class="ansi-green-intense-fg ansi-bold">    285</span> jvp, env_trace_todo2 <span style="color: rgb(98,98,98)">=</span> process_env_traces(
+<span class="ansi-green-intense-fg ansi-bold">    286</span>     jvp, <span style="color: rgb(0,135,0)">self</span>, top_trace <span class="ansi-bold" style="color: rgb(175,0,255)">and</span> top_trace<span style="color: rgb(98,98,98)">.</span>level, <span class="ansi-bold" style="color: rgb(0,135,0)">True</span>)
+<span class="ansi-green-intense-fg ansi-bold">    287</span> tracers <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">map</span>(top_trace<span style="color: rgb(98,98,98)">.</span>full_raise, args)  <span style="color: rgb(95,135,135)"># type: ignore</span>
+<span class="ansi-green-fg">--&gt; 288</span> outs <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">top_trace</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">process_custom_jvp_call</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">fun</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">jvp</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">tracers</span><span class="ansi-yellow-bg">)</span>  <span style="color: rgb(95,135,135)"># type: ignore</span>
+<span class="ansi-green-intense-fg ansi-bold">    289</span> _, env_trace_todo <span style="color: rgb(98,98,98)">=</span> lu<span style="color: rgb(98,98,98)">.</span>merge_linear_aux(env_trace_todo1, env_trace_todo2)
+<span class="ansi-green-intense-fg ansi-bold">    290</span> <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> _apply_todos(env_trace_todo, <span style="color: rgb(0,135,0)">map</span>(core<span style="color: rgb(98,98,98)">.</span>full_lower, outs))
+
+File <span class="ansi-green-fg">~/.anaconda/envs/x/lib/python3.9/site-packages/jax/core.py:600</span>, in <span class="ansi-cyan-fg">EvalTrace.process_custom_jvp_call</span><span class="ansi-blue-fg">(***failed resolving arguments***)</span>
+<span class="ansi-green-intense-fg ansi-bold">    598</span> <span class="ansi-bold" style="color: rgb(0,135,0)">del</span> primitive, jvp  <span style="color: rgb(95,135,135)"># Unused.</span>
+<span class="ansi-green-intense-fg ansi-bold">    599</span> <span class="ansi-bold" style="color: rgb(0,135,0)">with</span> new_sublevel():
+<span class="ansi-green-fg">--&gt; 600</span>   <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">fun</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">call_wrapped</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">tracers</span><span class="ansi-yellow-bg">)</span>
+
+File <span class="ansi-green-fg">~/.anaconda/envs/x/lib/python3.9/site-packages/jax/linear_util.py:166</span>, in <span class="ansi-cyan-fg">WrappedFun.call_wrapped</span><span class="ansi-blue-fg">(self, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    163</span> gen <span style="color: rgb(98,98,98)">=</span> gen_static_args <span style="color: rgb(98,98,98)">=</span> out_store <span style="color: rgb(98,98,98)">=</span> <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    165</span> <span class="ansi-bold" style="color: rgb(0,135,0)">try</span>:
+<span class="ansi-green-fg">--&gt; 166</span>   ans <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">f</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">dict</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">params</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    167</span> <span class="ansi-bold" style="color: rgb(0,135,0)">except</span>:
+<span class="ansi-green-intense-fg ansi-bold">    168</span>   <span style="color: rgb(95,135,135)"># Some transformations yield from inside context managers, so we have to</span>
+<span class="ansi-green-intense-fg ansi-bold">    169</span>   <span style="color: rgb(95,135,135)"># interrupt them before reraising the exception. Otherwise they will only</span>
+<span class="ansi-green-intense-fg ansi-bold">    170</span>   <span style="color: rgb(95,135,135)"># get garbage-collected at some later time, running their cleanup tasks</span>
+<span class="ansi-green-intense-fg ansi-bold">    171</span>   <span style="color: rgb(95,135,135)"># only after this exception is handled, which can corrupt the global</span>
+<span class="ansi-green-intense-fg ansi-bold">    172</span>   <span style="color: rgb(95,135,135)"># state.</span>
+<span class="ansi-green-intense-fg ansi-bold">    173</span>   <span class="ansi-bold" style="color: rgb(0,135,0)">while</span> stack:
+
+File <span class="ansi-green-fg">~/Programming/inverse_design/inverse_design/conditional_generator.py:132</span>, in <span class="ansi-cyan-fg">generate_feasible_design_mask</span><span class="ansi-blue-fg">(latent_t, brush)</span>
+<span class="ansi-green-intense-fg ansi-bold">    130</span> <span style="color: rgb(175,0,255)">@jax</span><span style="color: rgb(98,98,98)">.</span>custom_jvp
+<span class="ansi-green-intense-fg ansi-bold">    131</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">generate_feasible_design_mask</span>(latent_t, brush):
+<span class="ansi-green-fg">--&gt; 132</span>     design <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">generate_feasible_design</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">latent_t</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">brush</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">verbose</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg ansi-bold" style="color: rgb(0,135,0)">False</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    133</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> design_mask(design)
+
+File <span class="ansi-green-fg">~/Programming/inverse_design/inverse_design/conditional_generator.py:120</span>, in <span class="ansi-cyan-fg">generate_feasible_design</span><span class="ansi-blue-fg">(latent_t, brush, verbose)</span>
+<span class="ansi-green-intense-fg ansi-bold">    118</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">generate_feasible_design</span>(latent_t, brush, verbose<span style="color: rgb(98,98,98)">=</span><span class="ansi-bold" style="color: rgb(0,135,0)">False</span>):
+<span class="ansi-green-intense-fg ansi-bold">    119</span>     design <span style="color: rgb(98,98,98)">=</span> <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>
+<span class="ansi-green-fg">--&gt; 120</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">for</span> design <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> conditional_generator(latent_t, brush, verbose<span style="color: rgb(98,98,98)">=</span>verbose):
+<span class="ansi-green-intense-fg ansi-bold">    121</span>         <span class="ansi-bold" style="color: rgb(0,135,0)">continue</span>
+<span class="ansi-green-intense-fg ansi-bold">    122</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> design
+
+File <span class="ansi-green-fg">~/Programming/inverse_design/inverse_design/conditional_generator.py:114</span>, in <span class="ansi-cyan-fg">conditional_generator</span><span class="ansi-blue-fg">(latent_t, brush, verbose)</span>
+<span class="ansi-green-intense-fg ansi-bold">    112</span> I <span style="color: rgb(98,98,98)">+</span><span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(98,98,98)">1</span>
+<span class="ansi-green-intense-fg ansi-bold">    113</span> maybe_print(I, end<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)"> </span><span style="color: rgb(175,0,0)">&#34;</span>)
+<span class="ansi-green-fg">--&gt; 114</span> design <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">conditional_algirithm_step</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">latent_t</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">design</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">brush</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">verbose</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">verbose</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    115</span> <span class="ansi-bold" style="color: rgb(0,135,0)">yield</span> design
+
+File <span class="ansi-green-fg">~/Programming/inverse_design/inverse_design/conditional_generator.py:56</span>, in <span class="ansi-cyan-fg">conditional_algirithm_step</span><span class="ansi-blue-fg">(latent_t, design, brush, verbose)</span>
+<span class="ansi-green-intense-fg ansi-bold">     54</span> solid_selector <span style="color: rgb(98,98,98)">=</span> jnp<span style="color: rgb(98,98,98)">.</span>where(solid_free_mask, latent_t, <span style="color: rgb(98,98,98)">0</span>)
+<span class="ansi-green-intense-fg ansi-bold">     55</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">abs</span>(void_selector<span style="color: rgb(98,98,98)">.</span>sum()) <span style="color: rgb(98,98,98)">&gt;</span> <span style="color: rgb(0,135,0)">abs</span>(solid_selector<span style="color: rgb(98,98,98)">.</span>sum()):
+<span class="ansi-green-fg">---&gt; 56</span>     design <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">take_free_void_touches</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">design</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">brush</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     57</span>     maybe_print(<span style="color: rgb(175,0,0)">f</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">take free void.</span><span style="color: rgb(175,0,0)">&#34;</span>)
+<span class="ansi-green-intense-fg ansi-bold">     58</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
+
+File <span class="ansi-green-fg">&lt;string&gt;:1</span>, in <span class="ansi-cyan-fg">&lt;lambda&gt;</span><span class="ansi-blue-fg">(_cls, void_pixels, solid_pixels, void_touches, solid_touches)</span>
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>: </pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+Input <span class="ansi-green-fg">In [10]</span>, in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span> full_mask <span style="color: rgb(98,98,98)">=</span> np<span style="color: rgb(98,98,98)">.</span>zeros_like(epsr, dtype<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(0,135,0)">bool</span>)
+<span class="ansi-green-intense-fg ansi-bold">      3</span> <span style="color: rgb(95,135,135)">#full_mask = set_design_region(full_mask, mask)</span>
+<span class="ansi-green-fg">----&gt; 5</span> plt<span style="color: rgb(98,98,98)">.</span>imshow(<span class="ansi-yellow-bg">mask</span>, cmap<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">Greys</span><span style="color: rgb(175,0,0)">&#34;</span>)
+<span class="ansi-green-intense-fg ansi-bold">      6</span> plt<span style="color: rgb(98,98,98)">.</span>colorbar()
+<span class="ansi-green-intense-fg ansi-bold">      7</span> plt<span style="color: rgb(98,98,98)">.</span>show()
+
+<span class="ansi-red-fg">NameError</span>: name &#39;mask&#39; is not defined</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sadfasdfasdf</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="forward" class="doc_header"><code>forward</code><a href="https://github.com/flaport/inverse_design/tree/master/inverse_design/inverse_design.py#L69" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>forward</code>(<strong><code>latent_weights</code></strong>, <strong><code>brush</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">latent_weights</span><span class="p">,</span> <span class="n">brush</span><span class="p">):</span>
+    <span class="n">latent_t</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">latent_weights</span><span class="p">,</span> <span class="n">brush</span><span class="p">)</span>
+    <span class="n">design_mask</span> <span class="o">=</span> <span class="n">generate_feasible_design_mask</span><span class="p">(</span><span class="n">latent_t</span><span class="p">,</span> <span class="n">brush</span><span class="p">)</span>
+    <span class="n">epsr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">design_mask</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="loss_fn" class="doc_header"><code>loss_fn</code><a href="https://github.com/flaport/inverse_design/tree/master/inverse_design/inverse_design.py#L75" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>loss_fn</code>(<strong><code>epsr</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">loss_fn</span><span class="p">(</span><span class="n">epsr</span><span class="p">):</span>
+    <span class="n">epsr</span> <span class="o">=</span> <span class="n">epsr</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span><span class="p">))</span>
+    <span class="n">simulation</span><span class="o">.</span><span class="n">eps_r</span> <span class="o">=</span> <span class="n">mask_combine_epsr</span><span class="p">(</span><span class="n">epsr</span><span class="p">,</span> <span class="n">bg_epsr</span><span class="p">,</span> <span class="n">design_region</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">Ez</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">mode_overlap</span><span class="p">(</span><span class="n">Ez</span><span class="p">,</span> <span class="n">probe</span><span class="p">)</span> <span class="o">/</span> <span class="n">E0</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">grad_fn</span> <span class="o">=</span> <span class="n">jacobian</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;reverse&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Optimization">Optimization<a class="anchor-link" href="#Optimization"> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">simulation</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">viz_sim</span><span class="p">(</span><span class="n">epsr_total</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">slices</span><span class="o">=</span><span class="p">[</span><span class="n">input_slice</span><span class="p">,</span> <span class="n">output_slice</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">init_fn</span><span class="p">,</span> <span class="n">update_fn</span><span class="p">,</span> <span class="n">params_fn</span> <span class="o">=</span> <span class="n">adam</span><span class="p">(</span><span class="n">step_size</span><span class="p">)</span>
+<span class="n">state</span> <span class="o">=</span> <span class="n">init_fn</span><span class="p">(</span><span class="n">epsr</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>this is the optimization step:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="step_fn" class="doc_header"><code>step_fn</code><a href="https://github.com/flaport/inverse_design/tree/master/inverse_design/inverse_design.py#L85" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>step_fn</code>(<strong><code>step</code></strong>, <strong><code>state</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>we can now loop over the optimization:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">range_</span> <span class="o">=</span> <span class="n">trange</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">range_</span><span class="p">:</span>
+    <span class="n">loss</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="n">step_fn</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+    <span class="n">range_</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">loss</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">epsr_optimum</span> <span class="o">=</span> <span class="n">params_fn</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="n">epsr_optimum</span> <span class="o">=</span> <span class="n">epsr_optimum</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">epsr_optimum_total</span> <span class="o">=</span> <span class="n">mask_combine_epsr</span><span class="p">(</span><span class="n">epsr_optimum</span><span class="p">,</span> <span class="n">bg_epsr</span><span class="p">,</span> <span class="n">design_region</span><span class="p">)</span>
+<span class="n">simulation</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">viz_sim</span><span class="p">(</span><span class="n">epsr_optimum_total</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">slices</span><span class="o">=</span><span class="p">[</span><span class="n">input_slice</span><span class="p">,</span> <span class="n">output_slice</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>At the end of the optimization we can see our final device. From the field pattern, we can easily observe that the device is doing what we intend: the <em>even</em> mode enters from the left and exits as the <em>odd</em> mode on the right.</p>
+<p>However, an additional observation is that our device's permittivity changes continuously. This is not ideal if we wanted to fabricated our device. We're also not constraining the minimum and maximum values of $\epsilon_r$. Thus, we need to consider alternative ways of parameterizing our device.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">epsr_optimum_total</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;plasma&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">*</span><span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">ticks</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+</div>
+ 
+
+
+
+    <div class="tags">
+        
+    </div>
+
+</div>
+
+
+
+<footer>
+            <div class="row">
+                <div class="col-lg-12 footer">
+                  <p><img src="/inverse_design/assets/images/company_logo.png" alt="Company logo"/></p>
+               &copy;2022 Inverse Design. All rights reserved. <br />
+ Site last generated: Feb 16, 2022 <br />
+                </div>
+            </div>
+</footer>
+
+
+        </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
+</div>
+<!-- /#main -->
+    </div>
+
+</body>
+
+</html>
