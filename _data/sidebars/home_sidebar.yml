@@ -24,6 +24,12 @@ entries:
     - output: web,pdf
       title: Direct Optimization
       url: direct_optimization.html
+    - output: web,pdf
+      title: Naive Inverse Design
+      url: naive_inverse_design.html
+    - output: web,pdf
+      title: Inverse Design
+      url: inverse_design.html
     output: web
     title: inverse_design
   output: web
