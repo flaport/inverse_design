@@ -11,6 +11,7 @@ from ceviche import jacobian
 from ceviche.modes import insert_mode
 from .brushes import notched_square_brush, show_mask
 from .conditional_generator import (
+    generate_feasible_design,
     generate_feasible_design_mask,
     new_latent_design,
     transform,
