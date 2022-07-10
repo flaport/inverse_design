@@ -2,4 +2,5 @@
 > Inverse Design Tools
 
 
-some inverse design tools...
+Trying to replicate the results of the following paper:
+- "Inverse design of photonic devices with strict foundry fabrication constraints"
