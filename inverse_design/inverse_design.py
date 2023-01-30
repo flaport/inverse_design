@@ -3,10 +3,12 @@
 # %% auto 0
 __all__ = ['omega', 'dl', 'Nx', 'Ny', 'Npml', 'epsr_init', 'space', 'wg_width', 'space_slice', 'Nsteps', 'step_size', 'epsr',
            'bg_epsr', 'design_region', 'input_slice', 'output_slice', 'epsr_total', 'source', 'probe', 'grad_fn',
-           'forward', 'loss_fn', 'step_fn']
+           'jax_grad', 'forward', 'loss_fn', 'loss_jax', 'loss_jax_jvp', 'step_fn']
 
 # %% ../notebooks/10_inverse_design_local.ipynb 2
 import autograd.numpy as npa
+import jax
+import jax.numpy as jnp
 import matplotlib.pylab as plt
 import numpy as np
 from ceviche import jacobian
@@ -72,22 +74,40 @@ probe = insert_mode(omega, dl, output_slice.x, output_slice.y, epsr_total, m=2)
 def forward(latent_weights, brush):
     latent_t = transform(latent_weights, brush)
     design_mask = generate_feasible_design_mask(latent_t, brush)
-    epsr = np.where(design_mask, 12.0, 1.0)
+    epsr = jnp.where(design_mask, 12.0, 1.0)
+    return epsr
 
-# %% ../notebooks/10_inverse_design_local.ipynb 21
+# %% ../notebooks/10_inverse_design_local.ipynb 22
 def loss_fn(epsr):
-    epsr = epsr.reshape((Nx, Ny))
     simulation.eps_r = mask_combine_epsr(epsr, bg_epsr, design_region)
     _, _, Ez = simulation.solve(source)
     return -mode_overlap(Ez, probe) / E0
 
-# %% ../notebooks/10_inverse_design_local.ipynb 22
+# %% ../notebooks/10_inverse_design_local.ipynb 23
+@jax.custom_jvp
+def loss_jax(eps):
+  eps = forward(eps.reshape((Nx, Ny)), brush)
+  #eps = np.asarray(eps, dtype=float)
+  return loss_fn(eps)
+
 grad_fn = jacobian(loss_fn, mode='reverse')
 
-# %% ../notebooks/10_inverse_design_local.ipynb 27
+@loss_jax.defjvp
+def loss_jax_jvp(primals, tangents):
+  eps = primals[0].reshape((Nx, Ny))
+  primals_out = loss_jax(eps)
+  eps = np.asarray(eps, dtype=float)
+  g = jnp.array(grad_fn(eps))
+  print(type(g))
+  
+  return primals_out, jnp.dot(g[0],tangents[0][0])  # why does this work?!
+
+jax_grad = jax.grad(loss_jax)
+
+# %% ../notebooks/10_inverse_design_local.ipynb 28
 def step_fn(step, state):
-    latent = np.asarray(params_fn(state), dtype=float) # we need autograd arrays here...
-    loss = loss_fn(latent)
-    grads = grad_fn(latent)
+    latent = params_fn(state) # we need autograd arrays here...
+    loss = loss_jax(latent)
+    grads = jax_grad(latent)
     optim_state = update_fn(step, grads, state)
     return loss, optim_state

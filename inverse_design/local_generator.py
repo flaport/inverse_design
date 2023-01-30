@@ -368,7 +368,7 @@ def generate(heatmap, brush):
   
 
 # %% ../notebooks/09_local_generator.ipynb 17
-from inverse_design.design import design_mask, Design
+from inverse_design.design import design_mask, Design, PIXEL_EXISTING, TOUCH_EXISTING
 import jax
 import jax.numpy as jnp
 
@@ -382,10 +382,10 @@ def generate_feasible_design(latent_t, brush, verbose=False):
     times = Times()
     state = generate(np.array(latent_t), np.array(brush))
     return Design(
-      void_pixels=state.p_v_existing, 
-      solid_pixels=state.p_s_existing,
-      void_touches=state.t_v,
-      solid_touches=state.t_s
+      void_pixels=state.p_v_existing*PIXEL_EXISTING, 
+      solid_pixels=state.p_s_existing*PIXEL_EXISTING,
+      void_touches=state.t_v*TOUCH_EXISTING,
+      solid_touches=state.t_s*TOUCH_EXISTING
     )
 
 
