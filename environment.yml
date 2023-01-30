@@ -21,5 +21,6 @@ dependencies:
   - rsync
   - scikit-image
   - scipy
+  - tqdm
   - pip:
     - git+https://github.com/fancompute/ceviche
