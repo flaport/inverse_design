@@ -1,0 +1,9 @@
+project:
+  output-dir: docs
+
+website:
+  title: "Inverse Design"
+  site-url: "https://flaport.github.io//inverse_design/"
+  description: "Inverse Design"
+  repo-branch: master
+  repo-url: "https://github.com/flaport/inverse_design/tree/master/"
