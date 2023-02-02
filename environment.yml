@@ -11,7 +11,7 @@ dependencies:
   - jax
   - jaxlib
   - matplotlib>=3.0.3
-  - nbdev
+  - nbdev<2
   - nbstripout
   - numpy>=1.16.2
   - openssl
