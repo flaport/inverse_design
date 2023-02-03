@@ -10,6 +10,7 @@ import collections
 
 import autograd.numpy as npa
 import ceviche
+import javiche #to patch ceviche
 import numpy as np
 import matplotlib.pylab as plt
 from ceviche import fdfd_ez, jacobian
