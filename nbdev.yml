@@ -1,9 +1,9 @@
 project:
-  output-dir: docs
+  output-dir: _docs
 
 website:
   title: "Inverse Design"
-  site-url: "https://jan-david-black.github.io/inverse_design_strict_fabrication/"
+  site-url: "https://jan-david-black.github.io//inverse_design_strict_fabrication/"
   description: "Inverse Design"
   repo-branch: master
   repo-url: "https://github.com/flaport/inverse_design/tree/master/"
