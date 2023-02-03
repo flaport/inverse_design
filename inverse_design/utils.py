@@ -73,15 +73,15 @@ def rand(shape, r=None, dtype=float):
 # Cell
 @jax.jit
 def argmax2d(arr2d):
-    m, n = arr2d.shape
+    _, n = arr2d.shape
     arr1d = arr2d.ravel()
     k = jnp.argmax(arr1d)
-    return k // m, k % m
+    return k // n, k % n
 
 # Cell
 @jax.jit
 def argmin2d(arr2d):
-    m, n = arr2d.shape
+    _, n = arr2d.shape
     arr1d = arr2d.ravel()
     k = jnp.argmin(arr1d)
-    return k // m, k % m
+    return k // n, k % n
