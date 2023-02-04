@@ -1,5 +1,5 @@
-use arrayfire::{af_print, add, lt, pow, range, select, sub, Array, Dim4};
 use super::visualization::visualize_array;
+use arrayfire::{add, assign_seq, constant, lt, pow, range, select, sub, Array, Dim4, Seq};
 
 pub fn circular_brush(diameter: u64) -> Array<f32> {
     let radius = (diameter as f32) / 2.0;
@@ -12,15 +12,35 @@ pub fn circular_brush(diameter: u64) -> Array<f32> {
     let r2 = add(&rx2, &ry2, false);
 
     let mask = lt(&r2, &(&radius * &radius), false);
-    let zeros: Array<f32> = Array::new_empty(Dim4::new(&[diameter, diameter, 1, 1]));
-    let ones = add(&zeros, &1, false);
+    let dim4 = Dim4::new(&[diameter, diameter, 1, 1]);
+    let ones = constant(1.0 as f32, dim4);
+    let zeros = constant(0.0 as f32, dim4);
     let brush = select(&ones, &mask, &zeros);
 
     return brush;
 }
 
+pub fn notched_square_brush(width: u64, notch: u64) -> Array<f32> {
+    let dim4 = Dim4::new(&[width, width, 1, 1]);
+    let mut brush = constant(1.0 as f32, dim4);
+
+    let seqs = [
+        Seq::new(0.0, notch as f32 - 1.0, 1.0),
+        Seq::new((width-notch) as f32, width as f32 - 1.0, 1.0),
+    ];
+
+    let cutout = constant(0.0 as f32, Dim4::new(&[notch, notch, 1, 1]));
+    for seq1 in seqs{
+        for seq2 in seqs{
+            assign_seq(&mut brush, &[seq1, seq2], &cutout);
+        }
+    }
+
+    return brush;
+}
 
 pub fn test_brushes() {
-    let brush = circular_brush(10);
+    //let brush = circular_brush(10);
+    let brush = notched_square_brush(10, 2);
     visualize_array(brush);
 }
