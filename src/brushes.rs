@@ -1,4 +1,4 @@
-use arrayfire::{add, lt, pow, range, select, sub, Array, Dim4};
+use arrayfire::{af_print, add, lt, pow, range, select, sub, Array, Dim4};
 
 pub fn circular_brush(diameter: u64) -> Array<f32> {
     let radius = (diameter as f32) / 2.0;
@@ -18,6 +18,8 @@ pub fn circular_brush(diameter: u64) -> Array<f32> {
     return brush;
 }
 
+
 pub fn test_brushes() {
-    circular_brush(10);
+    let brush = circular_brush(10);
+    af_print!("", brush);
 }
