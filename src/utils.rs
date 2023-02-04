@@ -59,7 +59,7 @@ fn _size2d<T: HasAfEnum>(arr: &Array<T>) -> (u64, u64) {
 
 pub fn test_utils() {
     set_seed(420);
-    let data = randn::<f64>((2, 3));
+    let data = randn::<f32>((2, 3));
     let idx_max = argmax2d(&data);
     let idx_min = argmin2d(&data);
     af_print!("Create a 5-by-3 matrix of random floats on the GPU", data);

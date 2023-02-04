@@ -1,5 +1,5 @@
-use inverse_design::utils::test_utils;
+use inverse_design::brushes::test_brushes;
 
 fn main() {
-    test_utils();
+    test_brushes();
 }
