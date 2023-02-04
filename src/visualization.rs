@@ -1,6 +1,7 @@
-use arrayfire::{transpose, Array, HasAfEnum};
+use super::design::{Design, Status};
+use arrayfire::{assign_seq, constant, transpose, Array, Dim4, HasAfEnum, Seq};
 
-pub fn visualize_array<T: HasAfEnum + Copy>(arr: Array<T>) {
+pub fn visualize_array<T: HasAfEnum + Copy>(arr: &Array<T>) {
     let dims = *arr.dims().get();
     // let m = dims[0];
     let n = dims[1];
@@ -28,6 +29,32 @@ pub fn visualize_array<T: HasAfEnum + Copy>(arr: Array<T>) {
     println!("{s}");
 }
 
+pub fn visualize_design(design: &Design) {
+    let (m, n) = design.shape();
+    let dim4 = Dim4::new(&[m, (n + 1) * 5, 1, 1]);
+    println!("{m} {n} {dim4}");
+    let mut vis = constant(Status::Unknown as u8, dim4);
+    let refs = [
+        &design.design(),
+        &design.void_pixels,
+        &design.solid_pixels,
+        &design.void_touches,
+        &design.solid_touches,
+    ];
+
+    let n = n as f32;
+    for (i, r) in refs.into_iter().enumerate() {
+        let i = i as f32;
+        assign_seq(
+            &mut vis,
+            &[Seq::default(), Seq::new(i * (n+1.0), i * (n+1.0) + n - 1.0, 1.0)],
+            r,
+        );
+    }
+
+    visualize_array(&vis);
+}
+
 enum Block {
     Black,
     DarkRed,
@@ -42,54 +69,54 @@ enum Block {
     BrightGreen,
     BrightYellow,
     BrightBlue,
-    BrightMagenta,
-    BrightCyan,
-    White,
+    // BrightMagenta,
+    // BrightCyan,
+    // White,
     Unknown,
 }
 
 impl Block {
     pub fn to_string(&self) -> String {
         let s = match self {
-            Block::Black => "\x1b[0;40m█\x1b[0m\x1b[0;40m█\x1b[0m",
-            Block::DarkRed => "\x1b[0;31m█\x1b[0m\x1b[0;31m█\x1b[0m",
-            Block::DarkGreen => "\x1b[0;32m█\x1b[0m\x1b[0;32m█\x1b[0m",
-            Block::DarkYellow => "\x1b[0;33m█\x1b[0m\x1b[0;33m█\x1b[0m",
-            Block::DarkBlue => "\x1b[0;34m█\x1b[0m\x1b[0;34m█\x1b[0m",
-            Block::DarkMagenta => "\x1b[0;35m█\x1b[0m\x1b[0;35m█\x1b[0m",
-            Block::DarkCyan => "\x1b[0;36m█\x1b[0m\x1b[0;36m█\x1b[0m",
-            Block::DarkWhite => "\x1b[0;37m█\x1b[0m\x1b[0;37m█\x1b[0m",
-            Block::BrightBlack => "\x1b[0;90m█\x1b[0m\x1b[0;90m█\x1b[0m",
-            Block::BrightRed => "\x1b[0;91m█\x1b[0m\x1b[0;91m█\x1b[0m",
-            Block::BrightGreen => "\x1b[0;92m█\x1b[0m\x1b[0;92m█\x1b[0m",
-            Block::BrightYellow => "\x1b[0;93m█\x1b[0m\x1b[0;93m█\x1b[0m",
-            Block::BrightBlue => "\x1b[0;94m█\x1b[0m\x1b[0;94m█\x1b[0m",
-            Block::BrightMagenta => "\x1b[0;95m█\x1b[0m\x1b[0;95m█\x1b[0m",
-            Block::BrightCyan => "\x1b[0;96m█\x1b[0m\x1b[0;96m█\x1b[0m",
-            Block::White => "\x1b[0;97m█\x1b[0m\x1b[0;97m█\x1b[0m",
-            Block::Unknown => "  ",
+            Self::Black => "\x1b[0;40m█\x1b[0m\x1b[0;40m█\x1b[0m",
+            Self::DarkRed => "\x1b[0;31m█\x1b[0m\x1b[0;31m█\x1b[0m",
+            Self::DarkGreen => "\x1b[0;32m█\x1b[0m\x1b[0;32m█\x1b[0m",
+            Self::DarkYellow => "\x1b[0;33m█\x1b[0m\x1b[0;33m█\x1b[0m",
+            Self::DarkBlue => "\x1b[0;34m█\x1b[0m\x1b[0;34m█\x1b[0m",
+            Self::DarkMagenta => "\x1b[0;35m█\x1b[0m\x1b[0;35m█\x1b[0m",
+            Self::DarkCyan => "\x1b[0;36m█\x1b[0m\x1b[0;36m█\x1b[0m",
+            Self::DarkWhite => "\x1b[0;37m█\x1b[0m\x1b[0;37m█\x1b[0m",
+            Self::BrightBlack => "\x1b[0;90m█\x1b[0m\x1b[0;90m█\x1b[0m",
+            Self::BrightRed => "\x1b[0;91m█\x1b[0m\x1b[0;91m█\x1b[0m",
+            Self::BrightGreen => "\x1b[0;92m█\x1b[0m\x1b[0;92m█\x1b[0m",
+            Self::BrightYellow => "\x1b[0;93m█\x1b[0m\x1b[0;93m█\x1b[0m",
+            Self::BrightBlue => "\x1b[0;94m█\x1b[0m\x1b[0;94m█\x1b[0m",
+            // Self::BrightMagenta => "\x1b[0;95m█\x1b[0m\x1b[0;95m█\x1b[0m",
+            // Self::BrightCyan => "\x1b[0;96m█\x1b[0m\x1b[0;96m█\x1b[0m",
+            // Self::White => "\x1b[0;97m█\x1b[0m\x1b[0;97m█\x1b[0m",
+            Self::Unknown => "  ",
         };
         return s.to_string();
     }
     pub fn from_u8(u: u8) -> Self {
         let block = match u {
-            0 => Block::Black,
-            1 => Block::DarkRed,
-            2 => Block::DarkGreen,
-            3 => Block::DarkYellow,
-            4 => Block::DarkBlue,
-            5 => Block::DarkMagenta,
-            6 => Block::DarkCyan,
-            7 => Block::DarkWhite,
-            8 => Block::BrightBlack,
-            9 => Block::BrightRed,
-            10 => Block::BrightGreen,
-            11 => Block::BrightYellow,
-            12 => Block::BrightBlue,
-            13 => Block::BrightMagenta,
-            14 => Block::BrightCyan,
-            15 => Block::White,
-            _ => Block::Unknown, // this should never happen
+            0 => Self::Black,
+            1 => Self::DarkRed,
+            2 => Self::DarkGreen,
+            3 => Self::DarkYellow,
+            4 => Self::DarkBlue,
+            5 => Self::DarkMagenta,
+            6 => Self::DarkCyan,
+            7 => Self::DarkWhite,
+            8 => Self::BrightBlack,
+            9 => Self::BrightRed,
+            10 => Self::BrightGreen,
+            11 => Self::BrightYellow,
+            12 => Self::BrightBlue,
+            // 13 => Self::BrightMagenta,
+            // 14 => Self::BrightCyan,
+            // 15 => Self::White,
+            _ => Self::Unknown,
         };
         return block;
     }
@@ -97,10 +124,17 @@ impl Block {
 
 pub fn test_visualization() {
     let mut s = "".to_string();
-    for i in 0..16 {
+    for i in 0..14 {
+        let space = if i < 10 { "  " } else { " " };
+        s = format!("{s}{space}{i}");
+    }
+    println!("{s}");
+
+    let mut s = "".to_string();
+    for i in 0..14 {
         let block = Block::from_u8(i as u8);
         let block_str = block.to_string();
-        s = format!("{s}{block_str}");
+        s = format!("{s} {block_str}");
     }
     println!("{s}\n");
 }

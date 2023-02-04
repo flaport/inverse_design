@@ -42,5 +42,5 @@ pub fn notched_square_brush(width: u64, notch: u64) -> Array<f32> {
 pub fn test_brushes() {
     //let brush = circular_brush(10);
     let brush = notched_square_brush(10, 2);
-    visualize_array(brush);
+    visualize_array(&brush);
 }
