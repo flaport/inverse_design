@@ -1,8 +1,8 @@
-target
-debug
-Cargo.lock
+*.profraw
 .ipynb_checkpoints
 .tags
-biased.gds
-*.profraw
 .vscode/
+Cargo.lock
+biased.gds
+debug
+target
