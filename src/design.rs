@@ -1,14 +1,22 @@
 use super::brushes::notched_square_brush;
-use super::visualization::{visualize_design,visualize_array};
-use arrayfire::{af_print, assign_seq, constant, eq, select, Array, Dim4, Seq, or, and, sum, flat};
 use super::utils::dilute;
+use super::visualization::visualize_design;
+use arrayfire::{and, assign_seq, constant, eq, or, select, Array, Dim4, Seq};
 use std::convert::From;
 
 pub fn test_design() {
     let brush = notched_square_brush(5, 1);
+
+    println!("step 1");
     let mut design = Design::new((6, 8));
     visualize_design(&design);
-    design.add_void_touch(brush, (0, 6));
+
+    println!("step 2");
+    design.add_void_touch(&brush, XYOrMask::XY((0, 6))); // todo: make more efficient?
+    visualize_design(&design);
+
+    println!("step 3");
+    design.take_free_void_touches(&brush);
     visualize_design(&design);
 }
 
@@ -70,8 +78,7 @@ impl Design {
         return select(&minus_one, &mask, &one);
     }
 
-    pub fn add_void_touch(&mut self, brush: Array<bool>, pos: (u64, u64)) {
-        let (m, n) = pos;
+    pub fn add_void_touch(&mut self, brush: &Array<bool>, xy_or_mask: XYOrMask) {
         let dim4 = self.void_touches.dims();
 
         let mut void_touch_existing = eq(
@@ -79,15 +86,30 @@ impl Design {
             &constant(Status::TouchExisting as u8, dim4),
             false,
         );
-        assign_seq(
-            &mut void_touch_existing,
-            &[Seq::new(m as f32, m as f32, 1.0), Seq::new(n as f32, n as f32, 1.0)],
-            &constant(true, Dim4::new(&[1, 1, 1, 1])),
-        );
+
+        match xy_or_mask {
+            XYOrMask::XY((m, n)) => {
+                assign_seq(
+                    &mut void_touch_existing,
+                    &[
+                        Seq::new(m as f32, m as f32, 1.0),
+                        Seq::new(n as f32, n as f32, 1.0),
+                    ],
+                    &constant(true, Dim4::new(&[1, 1, 1, 1])),
+                );
+            },
+            XYOrMask::Mask(mask) => {
+                void_touch_existing = or(&mask, &void_touch_existing, false);
+            },
+        }
 
         let void_pixel_existing = or(
             &dilute(&void_touch_existing, &brush),
-            &eq(&self.void_pixels, &constant(Status::PixelExisting as u8, dim4), false),
+            &eq(
+                &self.void_pixels,
+                &constant(Status::PixelExisting as u8, dim4),
+                false,
+            ),
             false,
         );
 
@@ -96,7 +118,11 @@ impl Design {
         let void_touch_free = find_free_touches(&void_touch_existing, &void_pixel_existing, &brush);
         let mut void_touches = select(
             &constant(Status::TouchValid as u8, dim4),
-            &eq(&self.void_touches, &constant(Status::TouchResolving as u8, dim4), false),
+            &eq(
+                &self.void_touches,
+                &constant(Status::TouchResolving as u8, dim4),
+                false,
+            ),
             &self.void_touches,
         );
         void_touches = select(
@@ -112,7 +138,11 @@ impl Design {
 
         let void_touch_resolving = select(
             &dilute(&void_pixel_required, &brush),
-            &eq(&void_touches, &constant(Status::TouchValid as u8, dim4), false),
+            &eq(
+                &void_touches,
+                &constant(Status::TouchValid as u8, dim4),
+                false,
+            ),
             &constant(false, dim4),
         );
 
@@ -155,14 +185,32 @@ impl Design {
         self.void_touches = void_touches;
         self.solid_touches = solid_touches;
     }
+
+    pub fn take_free_void_touches(&mut self, brush: &Array<bool>) {
+        let dim4 = self.void_touches.dims();
+        let free_touches_mask = eq(
+            &self.void_touches,
+            &constant(Status::TouchFree as u8, dim4),
+            false,
+        );
+        self.add_void_touch(&brush, XYOrMask::Mask(&free_touches_mask));
+    }
 }
 
-fn find_required_pixels(pixel_map: &Array<bool>, brush: &Array<bool>) -> Array<bool>{
-    let mask = and(&not(pixel_map, false), &not(&dilute(pixel_map, brush), false), false);
+fn find_required_pixels(pixel_map: &Array<bool>, brush: &Array<bool>) -> Array<bool> {
+    let mask = and(
+        &not(pixel_map, false),
+        &not(&dilute(pixel_map, brush), false),
+        false,
+    );
     return not(&or(&dilute(&mask, brush), pixel_map, false), false);
 }
 
-fn find_free_touches(touches_mask: &Array<bool>, pixels_mask: &Array<bool>, brush: &Array<bool>) -> Array<bool> {
+fn find_free_touches(
+    touches_mask: &Array<bool>,
+    pixels_mask: &Array<bool>,
+    brush: &Array<bool>,
+) -> Array<bool> {
     let brush_u64 = brush.cast::<u64>();
     let sum_mask = dilute(&pixels_mask.cast::<u64>(), &brush_u64);
     let ref_mask = dilute(&constant(1 as u64, sum_mask.dims()), &brush_u64);
@@ -178,20 +226,20 @@ fn not(arr: &Array<bool>, batch: bool) -> Array<bool> {
 }
 
 pub enum Status {
-    Unassigned,
-    Void,
-    Solid,
-    PixelImpossible,
-    PixelExisting,
-    PixelPossible,
-    PixelRequired,
-    TouchRequired,
-    TouchInvalid,
-    TouchExisting,
-    TouchValid,
-    TouchFree,
-    TouchResolving,
-    Unknown,
+    /*  0 */ Unassigned,
+    /*  1 */ Void,
+    /*  2 */ Solid,
+    /*  3 */ PixelImpossible,
+    /*  4 */ PixelExisting,
+    /*  5 */ PixelPossible,
+    /*  6 */ PixelRequired,
+    /*  7 */ TouchRequired,
+    /*  8 */ TouchInvalid,
+    /*  9 */ TouchExisting,
+    /* 10 */ TouchValid,
+    /* 11 */ TouchFree,
+    /* 12 */ TouchResolving,
+    /* 13 */ Unknown,
 }
 
 impl From<u8> for Status {
@@ -213,4 +261,9 @@ impl From<u8> for Status {
             _ => Self::Unknown,
         }
     }
+}
+
+pub enum XYOrMask<'a>{
+    XY((u64, u64)),
+    Mask(&'a Array<bool>),
 }

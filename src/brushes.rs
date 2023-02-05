@@ -26,12 +26,12 @@ pub fn notched_square_brush(width: u64, notch: u64) -> Array<bool> {
 
     let seqs = [
         Seq::new(0.0, notch as f32 - 1.0, 1.0),
-        Seq::new((width-notch) as f32, width as f32 - 1.0, 1.0),
+        Seq::new((width - notch) as f32, width as f32 - 1.0, 1.0),
     ];
 
     let cutout = constant(0.0 as f32, Dim4::new(&[notch, notch, 1, 1]));
-    for seq1 in seqs{
-        for seq2 in seqs{
+    for seq1 in seqs {
+        for seq2 in seqs {
             assign_seq(&mut brush, &[seq1, seq2], &cutout);
         }
     }

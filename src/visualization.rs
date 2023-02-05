@@ -32,7 +32,7 @@ pub fn visualize_array<T: HasAfEnum + Copy>(arr: &Array<T>) {
 pub fn visualize_design(design: &Design) {
     let (m, n) = design.shape();
     let dim4 = Dim4::new(&[m, (n + 1) * 5, 1, 1]);
-    println!("{m} {n} {dim4}");
+    // println!("{m} {n} {dim4}");
     let mut vis = constant(Status::Unknown as u8, dim4);
     let refs = [
         &design.design(),
@@ -58,6 +58,7 @@ pub fn visualize_design(design: &Design) {
     visualize_array(&vis);
 }
 
+#[allow(dead_code)]
 enum Block {
     Black,
     DarkRed,
@@ -72,9 +73,9 @@ enum Block {
     BrightGreen,
     BrightYellow,
     BrightBlue,
-    // BrightMagenta,
-    // BrightCyan,
-    // White,
+    BrightMagenta,
+    BrightCyan,
+    White,
     Unknown,
 }
 
@@ -94,22 +95,22 @@ impl Block {
             Self::BrightGreen => "\x1b[0;92m█\x1b[0m\x1b[0;92m█\x1b[0m",
             Self::BrightYellow => "\x1b[0;93m█\x1b[0m\x1b[0;93m█\x1b[0m",
             Self::BrightBlue => "\x1b[0;94m█\x1b[0m\x1b[0;94m█\x1b[0m",
-            // Self::BrightMagenta => "\x1b[0;95m█\x1b[0m\x1b[0;95m█\x1b[0m",
-            // Self::BrightCyan => "\x1b[0;96m█\x1b[0m\x1b[0;96m█\x1b[0m",
-            // Self::White => "\x1b[0;97m█\x1b[0m\x1b[0;97m█\x1b[0m",
+            Self::BrightMagenta => "\x1b[0;95m█\x1b[0m\x1b[0;95m█\x1b[0m",
+            Self::BrightCyan => "\x1b[0;96m█\x1b[0m\x1b[0;96m█\x1b[0m",
+            Self::White => "\x1b[0;97m█\x1b[0m\x1b[0;97m█\x1b[0m",
             Self::Unknown => "  ",
         };
         return s.to_string();
     }
     pub fn from_u8(u: u8) -> Self {
         let block = match u {
-            0 => Self::Black,
-            1 => Self::DarkRed,
-            2 => Self::DarkGreen,
-            3 => Self::DarkYellow,
-            4 => Self::DarkBlue,
+            0 => Self::DarkWhite,
+            1 => Self::White,
+            2 => Self::DarkBlue,
+            3 => Self::DarkCyan,
+            4 => Self::DarkYellow,
             5 => Self::DarkMagenta,
-            6 => Self::DarkCyan,
+            6 => Self::DarkGreen,
             7 => Self::DarkWhite,
             8 => Self::BrightBlack,
             9 => Self::BrightRed,
