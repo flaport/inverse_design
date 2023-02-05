@@ -104,22 +104,22 @@ impl Block {
     }
     pub fn from_u8(u: u8) -> Self {
         let block = match u {
-            0 => Self::DarkWhite,
-            1 => Self::White,
-            2 => Self::DarkBlue,
-            3 => Self::DarkCyan,
-            4 => Self::DarkYellow,
+            0 => Self::DarkWhite, //
+            1 => Self::White, //
+            2 => Self::BrightBlack, //
+            3 => Self::BrightCyan,
+            4 => Self::BrightYellow,
             5 => Self::DarkMagenta,
             6 => Self::DarkGreen,
-            7 => Self::DarkWhite,
-            8 => Self::BrightBlack,
+            7 => Self::Black,
+            8 => Self::DarkBlue,
             9 => Self::BrightRed,
             10 => Self::BrightGreen,
-            11 => Self::BrightYellow,
+            11 => Self::BrightMagenta,
             12 => Self::BrightBlue,
-            // 13 => Self::BrightMagenta,
-            // 14 => Self::BrightCyan,
-            // 15 => Self::White,
+            // 13 => Self::DarkRed,
+            // 14 => Self::DarkYellow,
+            // 15 => Self::DarkCyan,
             _ => Self::Unknown,
         };
         return block;

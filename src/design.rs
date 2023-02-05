@@ -1,3 +1,4 @@
+use std::mem::swap;
 use super::brushes::notched_square_brush;
 use super::utils::dilute;
 use super::visualization::visualize_design;
@@ -17,6 +18,10 @@ pub fn test_design() {
 
     println!("step 3");
     design.take_free_void_touches(&brush);
+    visualize_design(&design);
+
+    println!("step 4");
+    design.add_solid_touch(&brush, XYOrMask::XY((0, 0)));
     visualize_design(&design);
 }
 
@@ -38,6 +43,12 @@ impl Design {
             solid_touches: constant(Status::TouchValid as u8, dim4),
         }
     }
+
+    pub fn invert(&mut self) {
+        swap(&mut self.solid_pixels, &mut self.void_pixels);
+        swap(&mut self.solid_touches, &mut self.void_touches);
+    }
+
     pub fn shape(&self) -> (u64, u64) {
         let dim4 = self.void_pixels.dims();
         let shape4 = dim4.get();
@@ -78,6 +89,12 @@ impl Design {
         return select(&minus_one, &mask, &one);
     }
 
+    pub fn add_solid_touch(&mut self, brush: &Array<bool>, xy_or_mask: XYOrMask) {
+        self.invert();
+        self.add_void_touch(brush, xy_or_mask);
+        self.invert();
+    }
+
     pub fn add_void_touch(&mut self, brush: &Array<bool>, xy_or_mask: XYOrMask) {
         let dim4 = self.void_touches.dims();
 
@@ -97,10 +114,10 @@ impl Design {
                     ],
                     &constant(true, Dim4::new(&[1, 1, 1, 1])),
                 );
-            },
+            }
             XYOrMask::Mask(mask) => {
                 void_touch_existing = or(&mask, &void_touch_existing, false);
-            },
+            }
         }
 
         let void_pixel_existing = or(
@@ -193,7 +210,17 @@ impl Design {
             &constant(Status::TouchFree as u8, dim4),
             false,
         );
-        self.add_void_touch(&brush, XYOrMask::Mask(&free_touches_mask));
+        self.add_void_touch(brush, XYOrMask::Mask(&free_touches_mask));
+    }
+
+    pub fn take_free_solid_touches(&mut self, brush: &Array<bool>) {
+        let dim4 = self.void_touches.dims();
+        let free_touches_mask = eq(
+            &self.solid_touches,
+            &constant(Status::TouchFree as u8, dim4),
+            false,
+        );
+        self.add_solid_touch(brush, XYOrMask::Mask(&free_touches_mask));
     }
 }
 
@@ -263,7 +290,7 @@ impl From<u8> for Status {
     }
 }
 
-pub enum XYOrMask<'a>{
+pub enum XYOrMask<'a> {
     XY((u64, u64)),
     Mask(&'a Array<bool>),
 }
