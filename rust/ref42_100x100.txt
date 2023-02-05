@@ -1,0 +1,3660 @@
+create empty design.
+iteration 0
+touch solid (82, 96).
+iteration 1
+resolve solid (80, 97).
+iteration 2
+take free solid.
+iteration 3
+touch solid (81, 96).
+iteration 4
+touch solid (80, 96).
+iteration 5
+touch solid (81, 95).
+iteration 6
+touch solid (82, 97).
+iteration 7
+take free solid.
+iteration 8
+touch solid (68, 59).
+iteration 9
+touch void (27, 46).
+iteration 10
+touch solid (82, 95).
+iteration 11
+touch solid (23, 6).
+iteration 12
+touch void (66, 41).
+iteration 13
+touch void (93, 74).
+iteration 14
+touch void (96, 71).
+iteration 15
+take free void.
+iteration 16
+resolve void (97, 70).
+iteration 17
+take free void.
+iteration 18
+touch solid (17, 58).
+iteration 19
+touch solid (18, 59).
+iteration 20
+touch void (94, 74).
+iteration 21
+touch solid (70, 60).
+iteration 22
+touch void (19, 18).
+iteration 23
+touch solid (68, 60).
+iteration 24
+take free solid.
+iteration 25
+touch void (80, 1).
+iteration 26
+take free void.
+iteration 27
+touch void (41, 96).
+iteration 28
+resolve void (42, 97).
+iteration 29
+take free void.
+iteration 30
+touch void (95, 71).
+iteration 31
+touch solid (81, 94).
+iteration 32
+touch void (28, 46).
+iteration 33
+touch void (70, 38).
+iteration 34
+resolve void (69, 39).
+iteration 35
+touch solid (69, 59).
+iteration 36
+touch void (29, 83).
+iteration 37
+touch void (65, 54).
+iteration 38
+touch solid (26, 25).
+iteration 39
+touch solid (27, 36).
+iteration 40
+touch solid (68, 58).
+iteration 41
+touch solid (79, 97).
+iteration 42
+take free solid.
+iteration 43
+touch void (76, 77).
+iteration 44
+touch solid (26, 26).
+iteration 45
+touch void (19, 17).
+iteration 46
+touch solid (83, 97).
+iteration 47
+take free solid.
+iteration 48
+touch solid (80, 95).
+iteration 49
+touch void (65, 41).
+iteration 50
+touch solid (81, 93).
+iteration 51
+touch void (28, 45).
+iteration 52
+touch solid (19, 59).
+iteration 53
+touch void (41, 72).
+iteration 54
+touch void (65, 40).
+iteration 55
+take free void.
+iteration 56
+touch solid (71, 58).
+iteration 57
+take free solid.
+iteration 58
+touch solid (18, 60).
+iteration 59
+touch void (56, 89).
+iteration 60
+touch void (81, 2).
+iteration 61
+take free void.
+iteration 62
+touch solid (10, 22).
+iteration 63
+touch solid (71, 75).
+iteration 64
+touch void (4, 46).
+iteration 65
+resolve void (2, 45).
+iteration 66
+take free void.
+iteration 67
+touch void (20, 16).
+iteration 68
+touch void (6, 31).
+iteration 69
+touch void (71, 47).
+iteration 70
+take free void.
+iteration 71
+resolve void (66, 53).
+iteration 72
+resolve void (71, 45).
+iteration 73
+take free void.
+iteration 74
+resolve void (67, 53).
+iteration 75
+resolve void (68, 53).
+iteration 76
+resolve void (72, 48).
+iteration 77
+take free void.
+iteration 78
+resolve void (68, 52).
+iteration 79
+resolve void (71, 49).
+iteration 80
+take free void.
+iteration 81
+touch solid (12, 11).
+iteration 82
+touch void (71, 38).
+iteration 83
+take free void.
+iteration 84
+touch void (66, 42).
+iteration 85
+take free void.
+iteration 86
+touch solid (27, 25).
+iteration 87
+touch void (56, 17).
+iteration 88
+touch solid (16, 47).
+iteration 89
+touch void (41, 95).
+iteration 90
+touch solid (17, 59).
+iteration 91
+touch void (9, 75).
+iteration 92
+touch solid (16, 58).
+iteration 93
+touch solid (82, 94).
+iteration 94
+touch void (45, 37).
+iteration 95
+touch solid (35, 33).
+iteration 96
+resolve solid (28, 36).
+iteration 97
+resolve solid (34, 33).
+iteration 98
+resolve solid (34, 34).
+iteration 99
+take free solid.
+iteration 100
+resolve solid (28, 35).
+iteration 101
+take free solid.
+iteration 102
+touch void (28, 83).
+iteration 103
+touch void (29, 82).
+iteration 104
+touch void (2, 38).
+iteration 105
+take free void.
+iteration 106
+resolve void (7, 33).
+iteration 107
+take free void.
+iteration 108
+resolve void (2, 37).
+iteration 109
+take free void.
+iteration 110
+resolve void (4, 37).
+iteration 111
+take free void.
+iteration 112
+touch solid (77, 83).
+iteration 113
+touch solid (9, 10).
+iteration 114
+touch solid (16, 57).
+iteration 115
+touch void (55, 89).
+iteration 116
+touch solid (18, 58).
+iteration 117
+touch solid (67, 59).
+iteration 118
+touch void (40, 73).
+iteration 119
+touch void (57, 43).
+iteration 120
+resolve void (64, 40).
+iteration 121
+resolve void (64, 41).
+iteration 122
+take free void.
+iteration 123
+resolve void (58, 42).
+iteration 124
+resolve void (63, 42).
+iteration 125
+take free void.
+iteration 126
+touch void (48, 74).
+iteration 127
+resolve void (47, 74).
+iteration 128
+resolve void (47, 73).
+iteration 129
+take free void.
+iteration 130
+resolve void (42, 72).
+iteration 131
+touch void (35, 75).
+iteration 132
+resolve void (39, 72).
+iteration 133
+take free void.
+iteration 134
+resolve void (35, 76).
+iteration 135
+take free void.
+iteration 136
+resolve void (35, 77).
+iteration 137
+resolve void (30, 81).
+iteration 138
+resolve void (33, 76).
+iteration 139
+take free void.
+iteration 140
+resolve void (32, 82).
+iteration 141
+take free void.
+iteration 142
+touch void (55, 19).
+iteration 143
+touch void (53, 19).
+iteration 144
+take free void.
+iteration 145
+touch void (81, 51).
+iteration 146
+touch void (20, 15).
+iteration 147
+touch void (96, 72).
+iteration 148
+take free void.
+iteration 149
+touch void (28, 82).
+iteration 150
+touch solid (47, 53).
+iteration 151
+touch void (63, 56).
+iteration 152
+take free void.
+iteration 153
+touch void (5, 46).
+iteration 154
+take free void.
+iteration 155
+touch solid (26, 22).
+iteration 156
+take free solid.
+iteration 157
+touch void (20, 17).
+iteration 158
+touch void (7, 32).
+iteration 159
+touch solid (35, 93).
+iteration 160
+touch solid (67, 60).
+iteration 161
+touch void (95, 74).
+iteration 162
+take free void.
+iteration 163
+touch void (8, 31).
+iteration 164
+take free void.
+iteration 165
+touch solid (5, 78).
+iteration 166
+touch void (42, 18).
+iteration 167
+touch void (43, 94).
+iteration 168
+take free void.
+iteration 169
+touch solid (61, 81).
+iteration 170
+touch void (41, 71).
+iteration 171
+touch solid (79, 70).
+iteration 172
+touch solid (71, 59).
+iteration 173
+touch solid (26, 21).
+iteration 174
+touch solid (77, 84).
+iteration 175
+touch void (39, 12).
+iteration 176
+resolve void (39, 14).
+iteration 177
+take free void.
+iteration 178
+resolve void (44, 14).
+iteration 179
+take free void.
+iteration 180
+touch solid (65, 15).
+iteration 181
+touch solid (92, 8).
+iteration 182
+touch solid (60, 82).
+iteration 183
+touch void (29, 47).
+iteration 184
+touch solid (10, 14).
+iteration 185
+take free solid.
+iteration 186
+resolve solid (10, 18).
+iteration 187
+take free solid.
+iteration 188
+touch void (95, 83).
+iteration 189
+resolve void (94, 75).
+iteration 190
+resolve void (93, 82).
+iteration 191
+take free void.
+iteration 192
+resolve void (96, 83).
+iteration 193
+take free void.
+iteration 194
+resolve void (98, 86).
+iteration 195
+take free void.
+iteration 196
+resolve void (93, 76).
+iteration 197
+take free void.
+iteration 198
+resolve void (91, 77).
+iteration 199
+take free void.
+iteration 200
+touch solid (17, 57).
+iteration 201
+touch solid (71, 60).
+iteration 202
+touch void (57, 86).
+iteration 203
+take free void.
+iteration 204
+touch void (69, 84).
+iteration 205
+touch void (77, 78).
+iteration 206
+touch void (61, 32).
+iteration 207
+resolve void (62, 33).
+iteration 208
+take free void.
+iteration 209
+resolve void (64, 33).
+iteration 210
+take free void.
+iteration 211
+touch void (28, 47).
+iteration 212
+touch solid (13, 20).
+iteration 213
+take free solid.
+iteration 214
+touch void (72, 38).
+iteration 215
+take free void.
+iteration 216
+touch solid (68, 61).
+iteration 217
+touch solid (18, 57).
+iteration 218
+touch solid (57, 10).
+iteration 219
+touch void (40, 92).
+iteration 220
+take free void.
+iteration 221
+touch void (31, 62).
+iteration 222
+touch solid (19, 58).
+iteration 223
+touch solid (71, 33).
+iteration 224
+touch solid (28, 26).
+iteration 225
+take free solid.
+iteration 226
+resolve solid (27, 28).
+iteration 227
+take free solid.
+iteration 228
+touch solid (71, 76).
+iteration 229
+resolve solid (76, 83).
+iteration 230
+resolve solid (71, 77).
+iteration 231
+resolve solid (74, 82).
+iteration 232
+resolve solid (72, 80).
+iteration 233
+take free solid.
+iteration 234
+touch void (61, 98).
+iteration 235
+take free void.
+iteration 236
+touch solid (6, 79).
+iteration 237
+touch void (82, 51).
+iteration 238
+touch solid (16, 59).
+iteration 239
+touch solid (25, 22).
+iteration 240
+touch void (96, 26).
+iteration 241
+resolve void (97, 26).
+iteration 242
+take free void.
+iteration 243
+touch void (26, 73).
+iteration 244
+take free void.
+iteration 245
+resolve void (27, 72).
+iteration 246
+take free void.
+iteration 247
+touch solid (58, 10).
+iteration 248
+resolve solid (58, 11).
+iteration 249
+resolve solid (65, 12).
+iteration 250
+take free solid.
+iteration 251
+touch solid (12, 34).
+iteration 252
+touch void (47, 48).
+iteration 253
+touch void (76, 76).
+iteration 254
+touch solid (60, 81).
+iteration 255
+touch solid (48, 18).
+iteration 256
+touch void (49, 73).
+iteration 257
+take free void.
+iteration 258
+touch void (57, 24).
+iteration 259
+take free void.
+iteration 260
+touch solid (57, 11).
+iteration 261
+touch solid (25, 23).
+iteration 262
+touch void (57, 91).
+iteration 263
+take free void.
+iteration 264
+resolve void (61, 96).
+iteration 265
+take free void.
+iteration 266
+resolve void (58, 92).
+iteration 267
+resolve void (62, 95).
+iteration 268
+take free void.
+iteration 269
+touch solid (4, 78).
+iteration 270
+resolve solid (3, 78).
+iteration 271
+resolve solid (2, 77).
+iteration 272
+take free solid.
+iteration 273
+touch void (55, 17).
+iteration 274
+take free void.
+iteration 275
+touch void (38, 12).
+iteration 276
+touch solid (9, 85).
+iteration 277
+resolve solid (8, 85).
+iteration 278
+take free solid.
+iteration 279
+resolve solid (9, 81).
+iteration 280
+take free solid.
+iteration 281
+touch solid (1, 7).
+iteration 282
+take free solid.
+iteration 283
+resolve solid (2, 7).
+iteration 284
+resolve solid (8, 11).
+iteration 285
+take free solid.
+iteration 286
+resolve solid (2, 8).
+iteration 287
+take free solid.
+iteration 288
+touch solid (69, 75).
+iteration 289
+take free solid.
+iteration 290
+touch solid (78, 84).
+iteration 291
+touch solid (20, 90).
+iteration 292
+touch void (19, 16).
+iteration 293
+touch solid (78, 71).
+iteration 294
+resolve solid (71, 74).
+iteration 295
+resolve solid (77, 70).
+iteration 296
+take free solid.
+iteration 297
+resolve solid (71, 73).
+iteration 298
+take free solid.
+iteration 299
+touch void (77, 77).
+iteration 300
+touch void (50, 92).
+iteration 301
+take free void.
+iteration 302
+resolve void (49, 92).
+iteration 303
+resolve void (46, 90).
+iteration 304
+take free void.
+iteration 305
+touch void (67, 4).
+iteration 306
+resolve void (66, 1).
+iteration 307
+take free void.
+iteration 308
+touch void (27, 47).
+iteration 309
+touch void (29, 84).
+iteration 310
+take free void.
+iteration 311
+touch void (36, 74).
+iteration 312
+touch solid (82, 67).
+iteration 313
+take free solid.
+iteration 314
+touch void (11, 45).
+iteration 315
+resolve void (5, 45).
+iteration 316
+take free void.
+iteration 317
+resolve void (6, 43).
+iteration 318
+take free void.
+iteration 319
+touch void (89, 53).
+iteration 320
+resolve void (83, 52).
+iteration 321
+resolve void (88, 54).
+iteration 322
+take free void.
+iteration 323
+touch void (86, 80).
+iteration 324
+take free void.
+iteration 325
+touch solid (16, 27).
+iteration 326
+take free solid.
+iteration 327
+resolve solid (13, 31).
+iteration 328
+take free solid.
+iteration 329
+touch void (41, 97).
+iteration 330
+take free void.
+iteration 331
+touch solid (71, 61).
+iteration 332
+take free solid.
+iteration 333
+touch void (98, 87).
+iteration 334
+take free void.
+iteration 335
+touch solid (34, 32).
+iteration 336
+take free solid.
+iteration 337
+touch solid (51, 33).
+iteration 338
+touch solid (3, 76).
+iteration 339
+take free solid.
+iteration 340
+touch solid (17, 47).
+iteration 341
+touch void (27, 45).
+iteration 342
+touch void (90, 53).
+iteration 343
+touch solid (61, 21).
+iteration 344
+resolve solid (62, 21).
+iteration 345
+resolve solid (62, 18).
+iteration 346
+take free solid.
+iteration 347
+touch solid (15, 58).
+iteration 348
+touch void (58, 90).
+iteration 349
+take free void.
+iteration 350
+touch void (6, 30).
+iteration 351
+touch void (62, 31).
+iteration 352
+take free void.
+iteration 353
+resolve void (61, 31).
+iteration 354
+resolve void (60, 31).
+iteration 355
+resolve void (59, 26).
+iteration 356
+take free void.
+iteration 357
+touch solid (78, 32).
+iteration 358
+resolve solid (74, 32).
+iteration 359
+take free solid.
+iteration 360
+touch solid (24, 22).
+iteration 361
+touch void (29, 45).
+iteration 362
+take free void.
+iteration 363
+touch solid (44, 61).
+iteration 364
+resolve solid (48, 55).
+iteration 365
+resolve solid (45, 61).
+iteration 366
+resolve solid (49, 56).
+iteration 367
+take free solid.
+iteration 368
+resolve solid (49, 58).
+iteration 369
+take free solid.
+iteration 370
+touch void (43, 19).
+iteration 371
+take free void.
+iteration 372
+touch solid (13, 96).
+iteration 373
+resolve solid (13, 97).
+iteration 374
+take free solid.
+iteration 375
+resolve solid (20, 91).
+iteration 376
+resolve solid (13, 93).
+iteration 377
+take free solid.
+iteration 378
+resolve solid (19, 92).
+iteration 379
+take free solid.
+iteration 380
+touch solid (88, 69).
+iteration 381
+resolve solid (83, 66).
+iteration 382
+take free solid.
+iteration 383
+touch solid (50, 34).
+iteration 384
+touch solid (80, 94).
+iteration 385
+touch solid (79, 69).
+iteration 386
+touch void (79, 1).
+iteration 387
+take free void.
+iteration 388
+touch void (38, 72).
+iteration 389
+take free void.
+iteration 390
+touch void (56, 63).
+iteration 391
+touch solid (26, 37).
+iteration 392
+touch void (44, 12).
+iteration 393
+take free void.
+iteration 394
+touch void (94, 72).
+iteration 395
+touch solid (27, 22).
+iteration 396
+take free solid.
+iteration 397
+touch void (56, 5).
+iteration 398
+touch solid (8, 55).
+iteration 399
+resolve solid (9, 55).
+iteration 400
+take free solid.
+iteration 401
+resolve solid (9, 56).
+iteration 402
+take free solid.
+iteration 403
+touch solid (34, 96).
+iteration 404
+resolve solid (35, 97).
+iteration 405
+take free solid.
+iteration 406
+touch void (5, 32).
+iteration 407
+take free void.
+iteration 408
+touch solid (83, 96).
+iteration 409
+touch solid (83, 94).
+iteration 410
+take free solid.
+iteration 411
+touch void (50, 73).
+iteration 412
+touch solid (11, 13).
+iteration 413
+take free solid.
+iteration 414
+touch solid (23, 7).
+iteration 415
+touch void (56, 43).
+iteration 416
+touch void (21, 82).
+iteration 417
+resolve void (26, 85).
+iteration 418
+take free void.
+iteration 419
+touch solid (24, 23).
+iteration 420
+take free solid.
+iteration 421
+touch solid (87, 72).
+iteration 422
+take free solid.
+iteration 423
+touch solid (18, 56).
+iteration 424
+resolve solid (16, 49).
+iteration 425
+take free solid.
+iteration 426
+touch solid (24, 6).
+iteration 427
+touch void (55, 43).
+iteration 428
+touch solid (17, 48).
+iteration 429
+touch void (56, 18).
+iteration 430
+take free void.
+iteration 431
+touch solid (79, 32).
+iteration 432
+touch void (42, 7).
+iteration 433
+take free void.
+iteration 434
+touch void (91, 45).
+iteration 435
+resolve void (90, 52).
+iteration 436
+resolve void (90, 46).
+iteration 437
+take free void.
+iteration 438
+touch void (18, 18).
+iteration 439
+touch solid (79, 71).
+iteration 440
+take free solid.
+iteration 441
+touch solid (90, 39).
+iteration 442
+touch solid (69, 76).
+iteration 443
+take free solid.
+iteration 444
+touch void (30, 47).
+iteration 445
+touch void (97, 25).
+iteration 446
+take free void.
+iteration 447
+touch solid (27, 35).
+iteration 448
+take free solid.
+iteration 449
+touch solid (88, 39).
+iteration 450
+take free solid.
+iteration 451
+touch solid (35, 34).
+iteration 452
+touch solid (25, 21).
+iteration 453
+touch void (3, 31).
+iteration 454
+take free void.
+iteration 455
+touch void (50, 75).
+iteration 456
+take free void.
+iteration 457
+touch void (5, 47).
+iteration 458
+take free void.
+iteration 459
+touch solid (95, 91).
+iteration 460
+resolve solid (96, 92).
+iteration 461
+resolve solid (98, 92).
+iteration 462
+take free solid.
+iteration 463
+touch solid (78, 68).
+iteration 464
+take free solid.
+iteration 465
+touch solid (2, 74).
+iteration 466
+take free solid.
+iteration 467
+touch solid (82, 77).
+iteration 468
+take free solid.
+iteration 469
+resolve solid (79, 83).
+iteration 470
+resolve solid (81, 83).
+iteration 471
+take free solid.
+iteration 472
+touch solid (69, 91).
+iteration 473
+touch void (68, 4).
+iteration 474
+take free void.
+iteration 475
+touch solid (62, 22).
+iteration 476
+touch solid (26, 36).
+iteration 477
+touch void (18, 17).
+iteration 478
+touch solid (79, 33).
+iteration 479
+touch void (40, 93).
+iteration 480
+touch void (27, 71).
+iteration 481
+touch void (65, 32).
+iteration 482
+take free void.
+iteration 483
+touch solid (24, 5).
+iteration 484
+touch solid (84, 95).
+iteration 485
+touch void (58, 88).
+iteration 486
+take free void.
+iteration 487
+touch void (68, 25).
+iteration 488
+take free void.
+iteration 489
+touch solid (92, 10).
+iteration 490
+take free solid.
+iteration 491
+touch void (48, 47).
+iteration 492
+resolve void (51, 47).
+iteration 493
+take free void.
+iteration 494
+resolve void (55, 44).
+iteration 495
+resolve void (52, 42).
+iteration 496
+take free void.
+iteration 497
+resolve void (46, 37).
+iteration 498
+resolve void (46, 38).
+iteration 499
+take free void.
+iteration 500
+resolve void (46, 40).
+iteration 501
+take free void.
+iteration 502
+touch void (57, 44).
+iteration 503
+take free void.
+iteration 504
+touch solid (92, 60).
+iteration 505
+touch void (38, 11).
+iteration 506
+take free void.
+iteration 507
+touch void (19, 15).
+iteration 508
+touch solid (51, 37).
+iteration 509
+take free solid.
+iteration 510
+touch solid (68, 19).
+iteration 511
+take free solid.
+iteration 512
+touch solid (9, 14).
+iteration 513
+take free solid.
+iteration 514
+touch void (21, 81).
+iteration 515
+take free void.
+iteration 516
+touch solid (79, 65).
+iteration 517
+take free solid.
+iteration 518
+touch solid (34, 93).
+iteration 519
+take free solid.
+iteration 520
+touch void (93, 26).
+iteration 521
+take free void.
+iteration 522
+touch solid (69, 19).
+iteration 523
+touch solid (8, 24).
+iteration 524
+take free solid.
+iteration 525
+touch solid (81, 92).
+iteration 526
+take free solid.
+iteration 527
+resolve solid (81, 91).
+iteration 528
+take free solid.
+iteration 529
+resolve solid (80, 91).
+iteration 530
+take free solid.
+iteration 531
+touch solid (72, 33).
+iteration 532
+touch void (40, 94).
+iteration 533
+touch void (41, 6).
+iteration 534
+take free void.
+iteration 535
+touch void (74, 20).
+iteration 536
+resolve void (68, 24).
+iteration 537
+resolve void (70, 25).
+iteration 538
+take free void.
+iteration 539
+resolve void (74, 21).
+iteration 540
+resolve void (73, 26).
+iteration 541
+take free void.
+iteration 542
+touch void (28, 86).
+iteration 543
+take free void.
+iteration 544
+touch void (81, 52).
+iteration 545
+take free void.
+iteration 546
+touch solid (8, 15).
+iteration 547
+take free solid.
+iteration 548
+touch solid (61, 65).
+iteration 549
+take free solid.
+iteration 550
+resolve solid (62, 62).
+iteration 551
+take free solid.
+iteration 552
+touch void (51, 78).
+iteration 553
+take free void.
+iteration 554
+touch void (80, 51).
+iteration 555
+resolve void (73, 48).
+iteration 556
+take free void.
+iteration 557
+resolve void (79, 52).
+iteration 558
+take free void.
+iteration 559
+resolve void (74, 48).
+iteration 560
+take free void.
+iteration 561
+resolve void (77, 53).
+iteration 562
+take free void.
+iteration 563
+touch void (89, 54).
+iteration 564
+touch void (68, 84).
+iteration 565
+touch solid (12, 13).
+iteration 566
+take free solid.
+iteration 567
+touch solid (19, 28).
+iteration 568
+take free solid.
+iteration 569
+touch void (54, 17).
+iteration 570
+touch void (19, 81).
+iteration 571
+take free void.
+iteration 572
+touch void (94, 83).
+iteration 573
+touch void (54, 16).
+iteration 574
+touch void (64, 54).
+iteration 575
+touch void (57, 55).
+iteration 576
+take free void.
+iteration 577
+resolve void (62, 53).
+iteration 578
+take free void.
+iteration 579
+resolve void (55, 62).
+iteration 580
+take free void.
+iteration 581
+resolve void (54, 56).
+iteration 582
+take free void.
+iteration 583
+touch solid (15, 48).
+iteration 584
+take free solid.
+iteration 585
+touch solid (8, 86).
+iteration 586
+resolve solid (9, 86).
+iteration 587
+resolve solid (9, 87).
+iteration 588
+resolve solid (14, 91).
+iteration 589
+take free solid.
+iteration 590
+resolve solid (9, 88).
+iteration 591
+resolve solid (12, 92).
+iteration 592
+take free solid.
+iteration 593
+touch solid (19, 60).
+iteration 594
+touch void (80, 2).
+iteration 595
+touch solid (51, 85).
+iteration 596
+touch solid (13, 81).
+iteration 597
+take free solid.
+iteration 598
+touch solid (19, 29).
+iteration 599
+take free solid.
+iteration 600
+touch solid (56, 10).
+iteration 601
+touch solid (7, 61).
+iteration 602
+take free solid.
+iteration 603
+touch void (27, 86).
+iteration 604
+touch void (33, 75).
+iteration 605
+take free void.
+iteration 606
+touch void (3, 69).
+iteration 607
+resolve void (8, 74).
+iteration 608
+resolve void (5, 70).
+iteration 609
+resolve void (8, 73).
+iteration 610
+take free void.
+iteration 611
+resolve void (2, 69).
+iteration 612
+take free void.
+iteration 613
+touch void (43, 97).
+iteration 614
+take free void.
+iteration 615
+touch solid (23, 21).
+iteration 616
+take free solid.
+iteration 617
+touch void (65, 43).
+iteration 618
+take free void.
+iteration 619
+touch void (53, 18).
+iteration 620
+touch solid (48, 68).
+iteration 621
+resolve solid (45, 62).
+iteration 622
+resolve solid (47, 68).
+iteration 623
+take free solid.
+iteration 624
+resolve solid (44, 63).
+iteration 625
+take free solid.
+iteration 626
+touch solid (76, 85).
+iteration 627
+take free solid.
+iteration 628
+resolve solid (69, 89).
+iteration 629
+take free solid.
+iteration 630
+resolve solid (74, 88).
+iteration 631
+take free solid.
+iteration 632
+touch void (55, 16).
+iteration 633
+touch solid (22, 7).
+iteration 634
+touch void (30, 84).
+iteration 635
+take free void.
+iteration 636
+touch void (48, 48).
+iteration 637
+touch void (65, 44).
+iteration 638
+take free void.
+iteration 639
+touch void (69, 27).
+iteration 640
+take free void.
+iteration 641
+touch solid (8, 23).
+iteration 642
+take free solid.
+iteration 643
+touch void (60, 32).
+iteration 644
+touch void (40, 71).
+iteration 645
+touch void (57, 18).
+iteration 646
+touch solid (79, 96).
+iteration 647
+touch solid (23, 5).
+iteration 648
+touch solid (53, 83).
+iteration 649
+take free solid.
+iteration 650
+resolve solid (54, 82).
+iteration 651
+resolve solid (59, 80).
+iteration 652
+take free solid.
+iteration 653
+touch solid (25, 20).
+iteration 654
+touch solid (4, 21).
+iteration 655
+take free solid.
+iteration 656
+resolve solid (2, 20).
+iteration 657
+take free solid.
+iteration 658
+touch solid (72, 31).
+iteration 659
+take free solid.
+iteration 660
+touch void (93, 25).
+iteration 661
+take free void.
+iteration 662
+touch void (43, 1).
+iteration 663
+take free void.
+iteration 664
+touch solid (62, 4).
+iteration 665
+take free solid.
+iteration 666
+resolve solid (61, 3).
+iteration 667
+take free solid.
+iteration 668
+resolve solid (60, 2).
+iteration 669
+take free solid.
+iteration 670
+touch void (19, 80).
+iteration 671
+touch void (3, 46).
+iteration 672
+touch void (49, 48).
+iteration 673
+take free void.
+iteration 674
+touch solid (80, 33).
+iteration 675
+touch void (33, 55).
+iteration 676
+resolve void (30, 61).
+iteration 677
+take free void.
+iteration 678
+resolve void (30, 48).
+iteration 679
+resolve void (32, 51).
+iteration 680
+resolve void (34, 56).
+iteration 681
+take free void.
+iteration 682
+touch void (36, 76).
+iteration 683
+take free void.
+iteration 684
+touch solid (5, 79).
+iteration 685
+take free solid.
+iteration 686
+touch void (29, 86).
+iteration 687
+touch solid (27, 34).
+iteration 688
+take free solid.
+iteration 689
+touch void (98, 24).
+iteration 690
+take free void.
+iteration 691
+touch solid (60, 60).
+iteration 692
+take free solid.
+iteration 693
+touch solid (87, 20).
+iteration 694
+touch solid (13, 19).
+iteration 695
+take free solid.
+iteration 696
+touch void (44, 38).
+iteration 697
+take free void.
+iteration 698
+touch solid (33, 41).
+iteration 699
+take free solid.
+iteration 700
+touch void (18, 80).
+iteration 701
+touch solid (83, 93).
+iteration 702
+take free solid.
+iteration 703
+touch void (35, 22).
+iteration 704
+take free void.
+iteration 705
+resolve void (39, 23).
+iteration 706
+take free void.
+iteration 707
+touch solid (96, 3).
+iteration 708
+take free solid.
+iteration 709
+resolve solid (95, 3).
+iteration 710
+take free solid.
+iteration 711
+resolve solid (95, 5).
+iteration 712
+take free solid.
+iteration 713
+touch solid (27, 38).
+iteration 714
+take free solid.
+iteration 715
+touch solid (91, 60).
+iteration 716
+touch solid (12, 40).
+iteration 717
+resolve solid (15, 42).
+iteration 718
+take free solid.
+iteration 719
+resolve solid (12, 39).
+iteration 720
+take free solid.
+iteration 721
+touch void (93, 73).
+iteration 722
+touch void (9, 50).
+iteration 723
+take free void.
+iteration 724
+touch solid (88, 87).
+iteration 725
+take free solid.
+iteration 726
+resolve solid (91, 88).
+iteration 727
+resolve solid (93, 89).
+iteration 728
+take free solid.
+iteration 729
+touch void (57, 16).
+iteration 730
+take free void.
+iteration 731
+touch void (56, 64).
+iteration 732
+touch void (40, 96).
+iteration 733
+take free void.
+iteration 734
+touch void (21, 67).
+iteration 735
+take free void.
+iteration 736
+resolve void (22, 67).
+iteration 737
+resolve void (24, 66).
+iteration 738
+take free void.
+iteration 739
+resolve void (30, 63).
+iteration 740
+take free void.
+iteration 741
+resolve void (25, 62).
+iteration 742
+take free void.
+iteration 743
+touch void (35, 23).
+iteration 744
+take free void.
+iteration 745
+touch solid (65, 11).
+iteration 746
+take free solid.
+iteration 747
+touch void (94, 84).
+iteration 748
+take free void.
+iteration 749
+touch solid (56, 11).
+iteration 750
+touch solid (21, 35).
+iteration 751
+take free solid.
+iteration 752
+touch solid (69, 92).
+iteration 753
+touch void (90, 44).
+iteration 754
+take free void.
+iteration 755
+touch solid (86, 2).
+iteration 756
+take free solid.
+iteration 757
+resolve solid (86, 3).
+iteration 758
+take free solid.
+iteration 759
+touch void (67, 2).
+iteration 760
+take free void.
+iteration 761
+touch void (37, 55).
+iteration 762
+take free void.
+iteration 763
+touch void (26, 45).
+iteration 764
+touch void (41, 73).
+iteration 765
+take free void.
+iteration 766
+touch void (75, 20).
+iteration 767
+touch void (29, 48).
+iteration 768
+take free void.
+iteration 769
+touch void (87, 47).
+iteration 770
+take free void.
+iteration 771
+touch solid (88, 86).
+iteration 772
+take free solid.
+iteration 773
+touch solid (84, 35).
+iteration 774
+resolve solid (89, 37).
+iteration 775
+take free solid.
+iteration 776
+touch solid (40, 80).
+iteration 777
+touch solid (51, 84).
+iteration 778
+touch void (73, 6).
+iteration 779
+take free void.
+iteration 780
+resolve void (74, 4).
+iteration 781
+take free void.
+iteration 782
+touch void (37, 84).
+iteration 783
+take free void.
+iteration 784
+resolve void (40, 91).
+iteration 785
+take free void.
+iteration 786
+resolve void (40, 85).
+iteration 787
+take free void.
+iteration 788
+touch solid (79, 72).
+iteration 789
+take free solid.
+iteration 790
+touch void (41, 70).
+iteration 791
+take free void.
+iteration 792
+touch void (3, 30).
+iteration 793
+take free void.
+iteration 794
+touch solid (17, 49).
+iteration 795
+touch void (96, 40).
+iteration 796
+take free void.
+iteration 797
+resolve void (97, 40).
+iteration 798
+take free void.
+iteration 799
+resolve void (96, 41).
+iteration 800
+resolve void (95, 40).
+iteration 801
+take free void.
+iteration 802
+resolve void (92, 45).
+iteration 803
+take free void.
+iteration 804
+touch solid (79, 7).
+iteration 805
+resolve solid (80, 7).
+iteration 806
+resolve solid (86, 4).
+iteration 807
+take free solid.
+iteration 808
+resolve solid (81, 8).
+iteration 809
+take free solid.
+iteration 810
+resolve solid (86, 5).
+iteration 811
+take free solid.
+iteration 812
+touch void (90, 54).
+iteration 813
+touch void (73, 96).
+iteration 814
+resolve void (74, 97).
+iteration 815
+take free void.
+iteration 816
+touch solid (73, 31).
+iteration 817
+touch void (47, 47).
+iteration 818
+touch void (4, 67).
+iteration 819
+take free void.
+iteration 820
+touch solid (49, 83).
+iteration 821
+take free solid.
+iteration 822
+touch void (82, 19).
+iteration 823
+resolve void (81, 19).
+iteration 824
+resolve void (75, 19).
+iteration 825
+resolve void (81, 21).
+iteration 826
+take free void.
+iteration 827
+touch void (2, 48).
+iteration 828
+take free void.
+iteration 829
+touch solid (16, 26).
+iteration 830
+take free solid.
+iteration 831
+touch solid (30, 13).
+iteration 832
+take free solid.
+iteration 833
+resolve solid (28, 19).
+iteration 834
+take free solid.
+iteration 835
+resolve solid (24, 9).
+iteration 836
+take free solid.
+iteration 837
+resolve solid (27, 14).
+iteration 838
+take free solid.
+iteration 839
+resolve solid (27, 10).
+iteration 840
+take free solid.
+iteration 841
+touch solid (84, 94).
+iteration 842
+take free solid.
+iteration 843
+touch solid (89, 86).
+iteration 844
+take free solid.
+iteration 845
+touch void (91, 53).
+iteration 846
+touch void (95, 70).
+iteration 847
+take free void.
+iteration 848
+touch void (34, 61).
+iteration 849
+take free void.
+iteration 850
+touch void (42, 3).
+iteration 851
+take free void.
+iteration 852
+touch void (93, 83).
+iteration 853
+take free void.
+iteration 854
+touch solid (49, 85).
+iteration 855
+take free solid.
+iteration 856
+touch solid (46, 53).
+iteration 857
+take free solid.
+iteration 858
+touch solid (70, 62).
+iteration 859
+touch void (78, 27).
+iteration 860
+take free void.
+iteration 861
+touch void (40, 8).
+iteration 862
+touch solid (94, 62).
+iteration 863
+take free solid.
+iteration 864
+resolve solid (90, 69).
+iteration 865
+take free solid.
+iteration 866
+resolve solid (93, 63).
+iteration 867
+resolve solid (92, 63).
+iteration 868
+take free solid.
+iteration 869
+touch void (18, 83).
+iteration 870
+take free void.
+iteration 871
+touch solid (5, 16).
+iteration 872
+take free solid.
+iteration 873
+touch void (97, 10).
+iteration 874
+take free void.
+iteration 875
+touch solid (2, 78).
+iteration 876
+take free solid.
+iteration 877
+touch void (22, 48).
+iteration 878
+take free void.
+iteration 879
+touch solid (7, 84).
+iteration 880
+take free solid.
+iteration 881
+touch void (55, 63).
+iteration 882
+touch void (63, 47).
+iteration 883
+take free void.
+iteration 884
+touch solid (91, 8).
+iteration 885
+take free solid.
+iteration 886
+touch void (45, 11).
+iteration 887
+take free void.
+iteration 888
+touch solid (92, 59).
+iteration 889
+touch solid (48, 53).
+iteration 890
+take free solid.
+iteration 891
+touch void (67, 24).
+iteration 892
+take free void.
+iteration 893
+touch solid (3, 12).
+iteration 894
+take free solid.
+iteration 895
+touch solid (40, 28).
+iteration 896
+take free solid.
+iteration 897
+resolve solid (40, 29).
+iteration 898
+resolve solid (36, 32).
+iteration 899
+resolve solid (39, 28).
+iteration 900
+take free solid.
+iteration 901
+touch solid (19, 57).
+iteration 902
+touch solid (79, 45).
+iteration 903
+touch solid (93, 31).
+iteration 904
+resolve solid (92, 31).
+iteration 905
+take free solid.
+iteration 906
+resolve solid (93, 32).
+iteration 907
+take free solid.
+iteration 908
+touch void (96, 74).
+iteration 909
+take free void.
+iteration 910
+touch solid (20, 61).
+iteration 911
+touch void (76, 27).
+iteration 912
+take free void.
+iteration 913
+touch solid (90, 8).
+iteration 914
+take free solid.
+iteration 915
+touch void (97, 39).
+iteration 916
+take free void.
+iteration 917
+touch solid (15, 97).
+iteration 918
+take free solid.
+iteration 919
+touch void (41, 75).
+iteration 920
+take free void.
+iteration 921
+touch void (46, 12).
+iteration 922
+take free void.
+iteration 923
+resolve void (46, 13).
+iteration 924
+take free void.
+iteration 925
+resolve void (53, 16).
+iteration 926
+resolve void (52, 15).
+iteration 927
+take free void.
+iteration 928
+resolve void (51, 14).
+iteration 929
+touch void (79, 26).
+iteration 930
+take free void.
+iteration 931
+touch void (89, 78).
+iteration 932
+take free void.
+iteration 933
+touch solid (43, 61).
+iteration 934
+touch solid (26, 38).
+iteration 935
+take free solid.
+iteration 936
+touch solid (69, 62).
+iteration 937
+touch solid (36, 35).
+iteration 938
+take free solid.
+iteration 939
+touch void (5, 40).
+iteration 940
+take free void.
+iteration 941
+touch solid (10, 10).
+iteration 942
+touch void (59, 91).
+iteration 943
+take free void.
+iteration 944
+touch void (38, 41).
+iteration 945
+take free void.
+iteration 946
+resolve void (39, 39).
+iteration 947
+take free void.
+iteration 948
+touch solid (61, 82).
+iteration 949
+touch solid (48, 20).
+iteration 950
+take free solid.
+iteration 951
+touch solid (5, 62).
+iteration 952
+take free solid.
+iteration 953
+touch void (55, 88).
+iteration 954
+take free void.
+iteration 955
+touch solid (60, 80).
+iteration 956
+touch void (76, 57).
+iteration 957
+take free void.
+iteration 958
+touch void (84, 30).
+iteration 959
+take free void.
+iteration 960
+resolve void (84, 29).
+iteration 961
+take free void.
+iteration 962
+touch void (30, 6).
+iteration 963
+touch solid (77, 62).
+iteration 964
+take free solid.
+iteration 965
+touch void (49, 1).
+iteration 966
+take free void.
+iteration 967
+resolve void (55, 5).
+iteration 968
+resolve void (49, 2).
+iteration 969
+take free void.
+iteration 970
+resolve void (50, 1).
+iteration 971
+take free void.
+iteration 972
+resolve void (55, 4).
+iteration 973
+take free void.
+iteration 974
+touch void (57, 92).
+iteration 975
+take free void.
+iteration 976
+touch solid (7, 55).
+iteration 977
+take free solid.
+iteration 978
+touch void (45, 36).
+iteration 979
+take free void.
+iteration 980
+touch solid (78, 33).
+iteration 981
+touch void (32, 54).
+iteration 982
+take free void.
+iteration 983
+touch void (72, 45).
+iteration 984
+take free void.
+iteration 985
+touch solid (47, 22).
+iteration 986
+resolve solid (42, 27).
+iteration 987
+take free solid.
+iteration 988
+resolve solid (46, 23).
+iteration 989
+resolve solid (44, 24).
+iteration 990
+touch solid (7, 87).
+iteration 991
+take free solid.
+iteration 992
+touch solid (16, 97).
+iteration 993
+take free solid.
+iteration 994
+touch void (74, 19).
+iteration 995
+touch solid (28, 40).
+iteration 996
+take free solid.
+iteration 997
+touch solid (11, 10).
+iteration 998
+touch void (25, 45).
+iteration 999
+take free void.
+iteration 1000
+touch solid (68, 76).
+iteration 1001
+resolve solid (61, 80).
+iteration 1002
+resolve solid (62, 79).
+iteration 1003
+resolve solid (64, 74).
+iteration 1004
+take free solid.
+iteration 1005
+touch void (48, 90).
+iteration 1006
+take free void.
+iteration 1007
+touch void (80, 40).
+iteration 1008
+take free void.
+iteration 1009
+resolve void (75, 38).
+iteration 1010
+take free void.
+iteration 1011
+touch void (18, 16).
+iteration 1012
+touch void (22, 66).
+iteration 1013
+take free void.
+iteration 1014
+touch void (73, 46).
+iteration 1015
+take free void.
+iteration 1016
+touch solid (5, 22).
+iteration 1017
+touch solid (29, 27).
+iteration 1018
+take free solid.
+iteration 1019
+touch solid (22, 6).
+iteration 1020
+touch void (63, 35).
+iteration 1021
+take free void.
+iteration 1022
+touch solid (95, 56).
+iteration 1023
+take free solid.
+iteration 1024
+resolve solid (97, 54).
+iteration 1025
+take free solid.
+iteration 1026
+touch solid (22, 5).
+iteration 1027
+touch void (25, 44).
+iteration 1028
+touch solid (10, 40).
+iteration 1029
+take free solid.
+iteration 1030
+touch void (63, 95).
+iteration 1031
+take free void.
+iteration 1032
+touch void (56, 42).
+iteration 1033
+take free void.
+iteration 1034
+touch void (89, 55).
+iteration 1035
+touch void (35, 21).
+iteration 1036
+take free void.
+iteration 1037
+touch solid (21, 90).
+iteration 1038
+touch solid (6, 84).
+iteration 1039
+take free solid.
+iteration 1040
+touch void (57, 74).
+iteration 1041
+take free void.
+iteration 1042
+touch void (84, 50).
+iteration 1043
+take free void.
+iteration 1044
+touch solid (85, 58).
+iteration 1045
+take free solid.
+iteration 1046
+resolve solid (85, 59).
+iteration 1047
+take free solid.
+iteration 1048
+touch void (87, 81).
+iteration 1049
+take free void.
+iteration 1050
+touch solid (84, 97).
+iteration 1051
+take free solid.
+iteration 1052
+touch void (45, 31).
+iteration 1053
+take free void.
+iteration 1054
+touch void (2, 30).
+iteration 1055
+take free void.
+iteration 1056
+touch void (60, 35).
+iteration 1057
+take free void.
+iteration 1058
+touch void (31, 63).
+iteration 1059
+take free void.
+iteration 1060
+touch solid (20, 60).
+iteration 1061
+touch solid (66, 9).
+iteration 1062
+take free solid.
+iteration 1063
+touch solid (7, 62).
+iteration 1064
+take free solid.
+iteration 1065
+touch solid (48, 85).
+iteration 1066
+take free solid.
+iteration 1067
+touch void (96, 39).
+iteration 1068
+touch solid (5, 23).
+iteration 1069
+take free solid.
+iteration 1070
+touch void (98, 69).
+iteration 1071
+take free void.
+iteration 1072
+touch void (88, 78).
+iteration 1073
+take free void.
+iteration 1074
+touch void (36, 73).
+iteration 1075
+take free void.
+iteration 1076
+touch void (60, 97).
+iteration 1077
+take free void.
+iteration 1078
+touch void (59, 29).
+iteration 1079
+take free void.
+iteration 1080
+touch solid (2, 21).
+iteration 1081
+take free solid.
+iteration 1082
+touch void (21, 15).
+iteration 1083
+touch solid (16, 8).
+iteration 1084
+take free solid.
+iteration 1085
+touch void (62, 98).
+iteration 1086
+take free void.
+iteration 1087
+touch solid (94, 91).
+iteration 1088
+take free solid.
+iteration 1089
+touch void (76, 3).
+iteration 1090
+take free void.
+iteration 1091
+touch void (0, 28).
+iteration 1092
+take free void.
+iteration 1093
+touch solid (70, 92).
+iteration 1094
+take free solid.
+iteration 1095
+touch void (97, 82).
+iteration 1096
+take free void.
+iteration 1097
+touch void (38, 13).
+iteration 1098
+touch solid (11, 8).
+iteration 1099
+take free solid.
+iteration 1100
+touch solid (79, 8).
+iteration 1101
+take free solid.
+iteration 1102
+touch solid (68, 91).
+iteration 1103
+touch solid (35, 92).
+iteration 1104
+touch void (85, 29).
+iteration 1105
+resolve void (86, 29).
+iteration 1106
+resolve void (92, 25).
+iteration 1107
+take free void.
+iteration 1108
+resolve void (87, 30).
+iteration 1109
+take free void.
+iteration 1110
+resolve void (91, 25).
+iteration 1111
+take free void.
+iteration 1112
+resolve void (90, 26).
+iteration 1113
+take free void.
+iteration 1114
+touch void (74, 7).
+iteration 1115
+take free void.
+iteration 1116
+touch void (87, 78).
+iteration 1117
+touch solid (87, 40).
+iteration 1118
+take free solid.
+iteration 1119
+touch void (9, 74).
+iteration 1120
+touch solid (68, 18).
+iteration 1121
+take free solid.
+iteration 1122
+touch void (62, 94).
+iteration 1123
+take free void.
+iteration 1124
+touch void (62, 92).
+iteration 1125
+take free void.
+iteration 1126
+touch solid (84, 57).
+iteration 1127
+take free solid.
+iteration 1128
+touch solid (9, 8).
+iteration 1129
+take free solid.
+iteration 1130
+touch void (33, 51).
+iteration 1131
+take free void.
+iteration 1132
+touch solid (27, 53).
+iteration 1133
+touch void (43, 46).
+iteration 1134
+take free void.
+iteration 1135
+touch void (32, 64).
+iteration 1136
+take free void.
+iteration 1137
+touch void (94, 24).
+iteration 1138
+take free void.
+iteration 1139
+touch void (99, 46).
+iteration 1140
+take free void.
+iteration 1141
+touch solid (13, 58).
+iteration 1142
+take free solid.
+iteration 1143
+touch void (69, 53).
+iteration 1144
+take free void.
+iteration 1145
+touch void (75, 37).
+iteration 1146
+take free void.
+iteration 1147
+touch void (80, 14).
+iteration 1148
+take free void.
+iteration 1149
+resolve void (80, 13).
+iteration 1150
+resolve void (77, 13).
+iteration 1151
+take free void.
+iteration 1152
+resolve void (74, 12).
+iteration 1153
+take free void.
+iteration 1154
+touch void (30, 46).
+iteration 1155
+touch solid (88, 72).
+iteration 1156
+touch solid (88, 20).
+iteration 1157
+touch void (98, 46).
+iteration 1158
+take free void.
+iteration 1159
+touch void (25, 87).
+iteration 1160
+take free void.
+iteration 1161
+touch solid (8, 61).
+iteration 1162
+take free solid.
+iteration 1163
+touch void (10, 75).
+iteration 1164
+touch void (44, 36).
+iteration 1165
+take free void.
+iteration 1166
+touch solid (30, 91).
+iteration 1167
+take free solid.
+iteration 1168
+resolve solid (29, 91).
+iteration 1169
+resolve solid (27, 93).
+iteration 1170
+take free solid.
+iteration 1171
+touch void (54, 20).
+iteration 1172
+take free void.
+iteration 1173
+touch solid (22, 4).
+iteration 1174
+resolve solid (20, 1).
+iteration 1175
+take free solid.
+iteration 1176
+touch solid (3, 7).
+iteration 1177
+take free solid.
+iteration 1178
+touch void (36, 20).
+iteration 1179
+take free void.
+iteration 1180
+touch void (98, 68).
+iteration 1181
+take free void.
+iteration 1182
+touch solid (15, 59).
+iteration 1183
+take free solid.
+iteration 1184
+touch void (35, 50).
+iteration 1185
+take free void.
+iteration 1186
+touch solid (9, 65).
+iteration 1187
+take free solid.
+iteration 1188
+touch solid (3, 79).
+iteration 1189
+take free solid.
+iteration 1190
+touch solid (28, 25).
+iteration 1191
+touch void (96, 68).
+iteration 1192
+take free void.
+iteration 1193
+touch void (89, 94).
+iteration 1194
+touch solid (50, 31).
+iteration 1195
+take free solid.
+iteration 1196
+resolve solid (50, 30).
+iteration 1197
+take free solid.
+iteration 1198
+resolve solid (50, 29).
+iteration 1199
+take free solid.
+iteration 1200
+touch void (51, 72).
+iteration 1201
+take free void.
+iteration 1202
+touch solid (68, 92).
+iteration 1203
+touch void (40, 1).
+iteration 1204
+take free void.
+iteration 1205
+touch void (6, 29).
+iteration 1206
+take free void.
+iteration 1207
+touch solid (33, 11).
+iteration 1208
+take free solid.
+iteration 1209
+touch solid (22, 22).
+iteration 1210
+take free solid.
+iteration 1211
+touch solid (43, 60).
+iteration 1212
+take free solid.
+iteration 1213
+touch void (55, 64).
+iteration 1214
+touch void (45, 48).
+iteration 1215
+take free void.
+iteration 1216
+touch solid (13, 15).
+iteration 1217
+take free solid.
+iteration 1218
+touch void (38, 9).
+iteration 1219
+take free void.
+iteration 1220
+resolve void (37, 8).
+iteration 1221
+take free void.
+iteration 1222
+resolve void (36, 4).
+iteration 1223
+take free void.
+iteration 1224
+touch solid (25, 6).
+iteration 1225
+take free solid.
+iteration 1226
+touch void (30, 5).
+iteration 1227
+take free void.
+iteration 1228
+touch void (8, 30).
+iteration 1229
+touch solid (11, 80).
+iteration 1230
+take free solid.
+iteration 1231
+touch solid (25, 5).
+iteration 1232
+touch void (49, 94).
+iteration 1233
+take free void.
+iteration 1234
+touch solid (9, 67).
+iteration 1235
+take free solid.
+iteration 1236
+touch solid (87, 19).
+iteration 1237
+touch solid (79, 94).
+iteration 1238
+take free solid.
+iteration 1239
+touch solid (66, 11).
+iteration 1240
+take free solid.
+iteration 1241
+touch solid (79, 46).
+iteration 1242
+touch solid (10, 68).
+iteration 1243
+touch void (66, 32).
+iteration 1244
+take free void.
+iteration 1245
+touch void (23, 85).
+iteration 1246
+take free void.
+iteration 1247
+touch solid (80, 45).
+iteration 1248
+resolve solid (85, 42).
+iteration 1249
+take free solid.
+iteration 1250
+resolve solid (81, 46).
+iteration 1251
+take free solid.
+iteration 1252
+resolve solid (84, 43).
+iteration 1253
+take free solid.
+iteration 1254
+touch solid (34, 97).
+iteration 1255
+take free solid.
+iteration 1256
+touch solid (29, 26).
+iteration 1257
+touch solid (13, 82).
+iteration 1258
+take free solid.
+iteration 1259
+touch void (63, 97).
+iteration 1260
+take free void.
+iteration 1261
+touch solid (91, 89).
+iteration 1262
+take free solid.
+iteration 1263
+touch void (99, 27).
+iteration 1264
+touch solid (81, 34).
+iteration 1265
+touch solid (70, 73).
+iteration 1266
+take free solid.
+iteration 1267
+touch void (27, 48).
+iteration 1268
+take free void.
+iteration 1269
+touch void (18, 84).
+iteration 1270
+take free void.
+iteration 1271
+touch solid (9, 96).
+iteration 1272
+take free solid.
+iteration 1273
+touch solid (3, 75).
+iteration 1274
+touch void (10, 73).
+iteration 1275
+take free void.
+iteration 1276
+touch void (97, 11).
+iteration 1277
+take free void.
+iteration 1278
+touch solid (4, 93).
+iteration 1279
+take free solid.
+iteration 1280
+resolve solid (3, 93).
+iteration 1281
+resolve solid (2, 95).
+iteration 1282
+take free solid.
+iteration 1283
+touch solid (92, 0).
+iteration 1284
+take free solid.
+iteration 1285
+touch void (7, 34).
+iteration 1286
+take free void.
+iteration 1287
+touch solid (68, 90).
+iteration 1288
+touch solid (1, 5).
+iteration 1289
+take free solid.
+iteration 1290
+touch solid (63, 87).
+iteration 1291
+take free solid.
+iteration 1292
+touch solid (17, 60).
+iteration 1293
+touch void (57, 53).
+iteration 1294
+take free void.
+iteration 1295
+touch void (11, 74).
+iteration 1296
+resolve void (16, 77).
+iteration 1297
+take free void.
+iteration 1298
+touch solid (52, 37).
+iteration 1299
+touch void (22, 79).
+iteration 1300
+take free void.
+iteration 1301
+touch solid (89, 8).
+iteration 1302
+take free solid.
+iteration 1303
+touch solid (44, 79).
+iteration 1304
+take free solid.
+iteration 1305
+resolve solid (47, 82).
+iteration 1306
+take free solid.
+iteration 1307
+touch solid (52, 35).
+iteration 1308
+take free solid.
+iteration 1309
+touch void (59, 30).
+iteration 1310
+touch void (42, 69).
+iteration 1311
+take free void.
+iteration 1312
+touch solid (11, 37).
+iteration 1313
+take free solid.
+iteration 1314
+touch solid (69, 18).
+iteration 1315
+take free solid.
+iteration 1316
+touch solid (23, 4).
+iteration 1317
+take free solid.
+iteration 1318
+touch void (10, 49).
+iteration 1319
+take free void.
+iteration 1320
+touch solid (67, 91).
+iteration 1321
+take free solid.
+iteration 1322
+touch void (91, 97).
+iteration 1323
+take free void.
+iteration 1324
+touch solid (96, 53).
+iteration 1325
+take free solid.
+iteration 1326
+touch solid (88, 18).
+iteration 1327
+take free solid.
+iteration 1328
+touch solid (15, 7).
+iteration 1329
+take free solid.
+iteration 1330
+touch void (81, 13).
+iteration 1331
+take free void.
+iteration 1332
+touch void (41, 44).
+iteration 1333
+take free void.
+iteration 1334
+resolve void (36, 48).
+iteration 1335
+take free void.
+iteration 1336
+touch solid (27, 0).
+iteration 1337
+take free solid.
+iteration 1338
+touch void (44, 35).
+iteration 1339
+touch void (58, 26).
+iteration 1340
+touch solid (87, 73).
+iteration 1341
+take free solid.
+iteration 1342
+touch solid (71, 32).
+iteration 1343
+touch void (87, 31).
+iteration 1344
+touch void (56, 76).
+iteration 1345
+take free void.
+iteration 1346
+touch void (15, 73).
+iteration 1347
+take free void.
+iteration 1348
+resolve void (20, 67).
+iteration 1349
+resolve void (17, 72).
+iteration 1350
+take free void.
+iteration 1351
+touch solid (30, 27).
+iteration 1352
+take free solid.
+iteration 1353
+touch void (23, 46).
+iteration 1354
+take free void.
+iteration 1355
+touch solid (61, 66).
+iteration 1356
+resolve solid (60, 68).
+iteration 1357
+resolve solid (64, 70).
+iteration 1358
+take free solid.
+iteration 1359
+touch void (39, 71).
+iteration 1360
+touch solid (20, 59).
+iteration 1361
+take free solid.
+iteration 1362
+resolve solid (26, 53).
+iteration 1363
+take free solid.
+iteration 1364
+resolve solid (25, 53).
+iteration 1365
+take free solid.
+iteration 1366
+touch solid (35, 68).
+iteration 1367
+touch void (30, 45).
+iteration 1368
+take free void.
+iteration 1369
+touch solid (9, 25).
+iteration 1370
+take free solid.
+iteration 1371
+touch void (29, 70).
+iteration 1372
+take free void.
+iteration 1373
+touch solid (67, 92).
+iteration 1374
+touch void (22, 85).
+iteration 1375
+touch solid (68, 93).
+iteration 1376
+touch solid (56, 81).
+iteration 1377
+take free solid.
+iteration 1378
+touch void (54, 58).
+iteration 1379
+take free void.
+iteration 1380
+touch void (36, 24).
+iteration 1381
+touch solid (42, 60).
+iteration 1382
+touch void (54, 96).
+iteration 1383
+take free void.
+iteration 1384
+touch void (19, 85).
+iteration 1385
+take free void.
+iteration 1386
+touch void (47, 75).
+iteration 1387
+take free void.
+iteration 1388
+touch solid (69, 93).
+iteration 1389
+touch void (82, 20).
+iteration 1390
+touch solid (2, 79).
+iteration 1391
+take free solid.
+iteration 1392
+touch solid (72, 64).
+iteration 1393
+take free solid.
+iteration 1394
+touch solid (69, 66).
+iteration 1395
+take free solid.
+iteration 1396
+touch solid (6, 54).
+iteration 1397
+touch void (82, 13).
+iteration 1398
+touch void (6, 49).
+iteration 1399
+take free void.
+iteration 1400
+touch solid (25, 12).
+iteration 1401
+take free solid.
+iteration 1402
+touch void (53, 20).
+iteration 1403
+touch solid (55, 10).
+iteration 1404
+touch void (22, 45).
+iteration 1405
+take free void.
+iteration 1406
+touch void (96, 27).
+iteration 1407
+take free void.
+iteration 1408
+touch void (34, 21).
+iteration 1409
+touch void (1, 28).
+iteration 1410
+touch solid (51, 32).
+iteration 1411
+touch void (90, 77).
+iteration 1412
+take free void.
+iteration 1413
+touch solid (41, 58).
+iteration 1414
+take free solid.
+iteration 1415
+touch void (54, 22).
+iteration 1416
+take free void.
+iteration 1417
+touch solid (55, 11).
+iteration 1418
+touch void (99, 47).
+iteration 1419
+touch void (42, 68).
+iteration 1420
+take free void.
+iteration 1421
+touch solid (4, 23).
+iteration 1422
+take free solid.
+iteration 1423
+touch solid (33, 13).
+iteration 1424
+take free solid.
+iteration 1425
+touch solid (83, 36).
+iteration 1426
+take free solid.
+iteration 1427
+touch solid (85, 97).
+iteration 1428
+take free solid.
+iteration 1429
+touch void (49, 3).
+iteration 1430
+take free void.
+iteration 1431
+touch void (99, 28).
+iteration 1432
+touch solid (89, 9).
+iteration 1433
+take free solid.
+iteration 1434
+resolve solid (87, 16).
+iteration 1435
+take free solid.
+iteration 1436
+resolve solid (89, 15).
+iteration 1437
+take free solid.
+iteration 1438
+touch void (0, 61).
+iteration 1439
+take free void.
+iteration 1440
+touch solid (4, 92).
+iteration 1441
+take free solid.
+iteration 1442
+touch solid (19, 93).
+iteration 1443
+take free solid.
+iteration 1444
+touch void (54, 62).
+iteration 1445
+take free void.
+iteration 1446
+touch solid (51, 31).
+iteration 1447
+touch void (32, 84).
+iteration 1448
+take free void.
+iteration 1449
+touch solid (43, 62).
+iteration 1450
+touch solid (26, 39).
+iteration 1451
+touch solid (83, 57).
+iteration 1452
+take free solid.
+iteration 1453
+touch solid (19, 62).
+iteration 1454
+take free solid.
+iteration 1455
+touch solid (95, 92).
+iteration 1456
+touch solid (2, 4).
+iteration 1457
+take free solid.
+iteration 1458
+touch void (73, 7).
+iteration 1459
+take free void.
+iteration 1460
+touch void (29, 61).
+iteration 1461
+take free void.
+iteration 1462
+touch solid (28, 22).
+iteration 1463
+take free solid.
+iteration 1464
+touch void (45, 89).
+iteration 1465
+take free void.
+iteration 1466
+touch void (28, 61).
+iteration 1467
+touch void (27, 61).
+iteration 1468
+touch solid (96, 5).
+iteration 1469
+take free solid.
+iteration 1470
+touch solid (25, 19).
+iteration 1471
+take free solid.
+iteration 1472
+touch solid (20, 36).
+iteration 1473
+take free solid.
+iteration 1474
+touch void (36, 53).
+iteration 1475
+take free void.
+iteration 1476
+touch void (20, 14).
+iteration 1477
+touch solid (35, 90).
+iteration 1478
+take free solid.
+iteration 1479
+touch solid (78, 45).
+iteration 1480
+touch void (25, 61).
+iteration 1481
+take free void.
+iteration 1482
+touch void (46, 11).
+iteration 1483
+take free void.
+iteration 1484
+touch void (82, 21).
+iteration 1485
+take free void.
+iteration 1486
+touch void (59, 34).
+iteration 1487
+take free void.
+iteration 1488
+touch void (58, 87).
+iteration 1489
+touch void (58, 75).
+iteration 1490
+take free void.
+iteration 1491
+touch void (52, 63).
+iteration 1492
+take free void.
+iteration 1493
+resolve void (53, 70).
+iteration 1494
+take free void.
+iteration 1495
+touch solid (10, 67).
+iteration 1496
+touch solid (63, 86).
+iteration 1497
+take free solid.
+iteration 1498
+touch solid (9, 98).
+iteration 1499
+take free solid.
+iteration 1500
+touch solid (33, 14).
+iteration 1501
+take free solid.
+iteration 1502
+touch void (26, 87).
+iteration 1503
+touch solid (5, 61).
+iteration 1504
+take free solid.
+iteration 1505
+touch void (51, 7).
+iteration 1506
+take free void.
+iteration 1507
+touch solid (11, 2).
+iteration 1508
+take free solid.
+iteration 1509
+touch solid (62, 81).
+iteration 1510
+take free solid.
+iteration 1511
+touch solid (41, 59).
+iteration 1512
+touch void (44, 34).
+iteration 1513
+touch solid (3, 80).
+iteration 1514
+take free solid.
+iteration 1515
+touch solid (37, 65).
+iteration 1516
+take free solid.
+iteration 1517
+touch void (95, 69).
+iteration 1518
+touch void (97, 46).
+iteration 1519
+take free void.
+iteration 1520
+touch void (56, 73).
+iteration 1521
+take free void.
+iteration 1522
+touch void (77, 57).
+iteration 1523
+take free void.
+iteration 1524
+touch solid (97, 63).
+iteration 1525
+take free solid.
+iteration 1526
+touch void (25, 58).
+iteration 1527
+take free void.
+iteration 1528
+touch solid (2, 54).
+iteration 1529
+take free solid.
+iteration 1530
+touch void (47, 95).
+iteration 1531
+take free void.
+iteration 1532
+touch void (82, 18).
+iteration 1533
+take free void.
+iteration 1534
+touch void (57, 25).
+iteration 1535
+take free void.
+iteration 1536
+touch solid (27, 97).
+iteration 1537
+take free solid.
+iteration 1538
+touch solid (94, 92).
+iteration 1539
+take free solid.
+iteration 1540
+touch solid (6, 89).
+iteration 1541
+take free solid.
+iteration 1542
+touch solid (49, 53).
+iteration 1543
+take free solid.
+iteration 1544
+touch void (97, 38).
+iteration 1545
+take free void.
+iteration 1546
+touch solid (10, 39).
+iteration 1547
+touch void (19, 14).
+iteration 1548
+touch void (74, 96).
+iteration 1549
+touch void (59, 74).
+iteration 1550
+take free void.
+iteration 1551
+touch solid (68, 97).
+iteration 1552
+take free solid.
+iteration 1553
+touch void (59, 35).
+iteration 1554
+take free void.
+iteration 1555
+touch solid (97, 5).
+iteration 1556
+take free solid.
+iteration 1557
+touch solid (61, 79).
+iteration 1558
+take free solid.
+iteration 1559
+touch solid (33, 28).
+iteration 1560
+take free solid.
+iteration 1561
+touch solid (12, 80).
+iteration 1562
+touch solid (54, 34).
+iteration 1563
+take free solid.
+iteration 1564
+touch void (53, 77).
+iteration 1565
+touch solid (36, 67).
+iteration 1566
+touch solid (48, 21).
+iteration 1567
+touch solid (51, 29).
+iteration 1568
+take free solid.
+iteration 1569
+touch solid (16, 40).
+iteration 1570
+take free solid.
+iteration 1571
+touch solid (94, 93).
+iteration 1572
+touch void (34, 20).
+iteration 1573
+take free void.
+iteration 1574
+touch void (21, 16).
+iteration 1575
+touch void (99, 29).
+iteration 1576
+take free void.
+iteration 1577
+resolve void (99, 31).
+iteration 1578
+take free void.
+iteration 1579
+touch solid (25, 39).
+iteration 1580
+take free solid.
+iteration 1581
+touch solid (80, 35).
+iteration 1582
+take free solid.
+iteration 1583
+touch void (58, 29).
+iteration 1584
+take free void.
+iteration 1585
+touch solid (10, 2).
+iteration 1586
+take free solid.
+iteration 1587
+touch void (86, 81).
+iteration 1588
+touch solid (15, 65).
+iteration 1589
+take free solid.
+iteration 1590
+touch void (93, 24).
+iteration 1591
+touch void (98, 23).
+iteration 1592
+take free void.
+iteration 1593
+touch void (16, 86).
+iteration 1594
+take free void.
+iteration 1595
+touch void (5, 28).
+iteration 1596
+take free void.
+iteration 1597
+touch solid (45, 53).
+iteration 1598
+take free solid.
+iteration 1599
+touch solid (17, 41).
+iteration 1600
+take free solid.
+iteration 1601
+touch void (80, 53).
+iteration 1602
+take free void.
+iteration 1603
+touch solid (69, 77).
+iteration 1604
+take free solid.
+iteration 1605
+touch solid (96, 16).
+iteration 1606
+take free solid.
+iteration 1607
+resolve solid (97, 17).
+iteration 1608
+take free solid.
+iteration 1609
+touch void (40, 97).
+iteration 1610
+take free void.
+iteration 1611
+touch solid (87, 21).
+iteration 1612
+touch void (35, 3).
+iteration 1613
+take free void.
+iteration 1614
+touch void (37, 85).
+iteration 1615
+take free void.
+iteration 1616
+touch solid (40, 30).
+iteration 1617
+take free solid.
+iteration 1618
+touch solid (17, 8).
+iteration 1619
+touch void (68, 83).
+iteration 1620
+touch void (53, 96).
+iteration 1621
+take free void.
+iteration 1622
+touch void (92, 23).
+iteration 1623
+take free void.
+iteration 1624
+touch solid (5, 87).
+iteration 1625
+take free solid.
+iteration 1626
+touch solid (3, 53).
+iteration 1627
+touch void (73, 14).
+iteration 1628
+take free void.
+iteration 1629
+touch void (53, 21).
+iteration 1630
+touch void (50, 78).
+iteration 1631
+take free void.
+iteration 1632
+touch solid (96, 99).
+iteration 1633
+take free solid.
+iteration 1634
+touch void (36, 85).
+iteration 1635
+touch void (14, 71).
+iteration 1636
+take free void.
+iteration 1637
+touch solid (7, 0).
+iteration 1638
+take free solid.
+iteration 1639
+touch solid (27, 1).
+iteration 1640
+take free solid.
+iteration 1641
+touch solid (63, 84).
+iteration 1642
+take free solid.
+iteration 1643
+touch solid (29, 24).
+iteration 1644
+take free solid.
+iteration 1645
+touch solid (4, 89).
+iteration 1646
+take free solid.
+iteration 1647
+touch void (93, 48).
+iteration 1648
+take free void.
+iteration 1649
+touch solid (1, 53).
+iteration 1650
+take free solid.
+iteration 1651
+touch void (43, 36).
+iteration 1652
+take free void.
+iteration 1653
+touch solid (18, 95).
+iteration 1654
+take free solid.
+iteration 1655
+touch solid (67, 10).
+iteration 1656
+touch void (91, 24).
+iteration 1657
+take free void.
+iteration 1658
+touch solid (54, 35).
+iteration 1659
+take free solid.
+iteration 1660
+touch void (57, 26).
+iteration 1661
+touch solid (14, 21).
+iteration 1662
+take free solid.
+iteration 1663
+touch solid (23, 10).
+iteration 1664
+take free solid.
+iteration 1665
+touch void (24, 44).
+iteration 1666
+touch solid (93, 64).
+iteration 1667
+take free solid.
+iteration 1668
+touch solid (40, 31).
+iteration 1669
+take free solid.
+iteration 1670
+touch solid (37, 66).
+iteration 1671
+take free solid.
+iteration 1672
+touch void (33, 20).
+iteration 1673
+touch solid (42, 56).
+iteration 1674
+take free solid.
+iteration 1675
+touch void (58, 31).
+iteration 1676
+take free void.
+iteration 1677
+touch void (54, 55).
+iteration 1678
+take free void.
+iteration 1679
+touch solid (19, 90).
+iteration 1680
+touch solid (42, 53).
+iteration 1681
+take free solid.
+iteration 1682
+touch solid (48, 22).
+iteration 1683
+take free solid.
+iteration 1684
+touch void (35, 60).
+iteration 1685
+take free void.
+iteration 1686
+touch void (34, 19).
+iteration 1687
+take free void.
+iteration 1688
+touch void (37, 49).
+iteration 1689
+take free void.
+iteration 1690
+touch solid (0, 81).
+iteration 1691
+take free solid.
+iteration 1692
+touch solid (20, 94).
+iteration 1693
+take free solid.
+iteration 1694
+touch void (38, 49).
+iteration 1695
+take free void.
+iteration 1696
+touch solid (26, 98).
+iteration 1697
+take free solid.
+iteration 1698
+touch void (56, 65).
+iteration 1699
+take free void.
+iteration 1700
+touch solid (89, 19).
+iteration 1701
+take free solid.
+iteration 1702
+touch void (38, 40).
+iteration 1703
+touch void (95, 39).
+iteration 1704
+touch void (56, 25).
+iteration 1705
+touch void (70, 5).
+iteration 1706
+touch void (34, 22).
+iteration 1707
+touch solid (93, 17).
+iteration 1708
+take free solid.
+iteration 1709
+touch solid (96, 18).
+iteration 1710
+touch void (17, 70).
+iteration 1711
+take free void.
+iteration 1712
+touch void (57, 73).
+iteration 1713
+take free void.
+iteration 1714
+touch solid (46, 61).
+iteration 1715
+take free solid.
+iteration 1716
+touch void (0, 27).
+iteration 1717
+touch solid (17, 97).
+iteration 1718
+take free solid.
+iteration 1719
+touch void (31, 86).
+iteration 1720
+take free void.
+iteration 1721
+touch void (97, 23).
+iteration 1722
+take free void.
+iteration 1723
+touch solid (47, 84).
+iteration 1724
+take free solid.
+iteration 1725
+touch void (10, 50).
+iteration 1726
+touch solid (97, 16).
+iteration 1727
+take free solid.
+iteration 1728
+touch void (90, 97).
+iteration 1729
+take free void.
+iteration 1730
+touch solid (0, 55).
+iteration 1731
+take free solid.
+iteration 1732
+touch void (59, 73).
+iteration 1733
+take free void.
+iteration 1734
+touch solid (18, 9).
+iteration 1735
+take free solid.
+iteration 1736
+touch solid (53, 32).
+iteration 1737
+take free solid.
+iteration 1738
+touch solid (94, 32).
+iteration 1739
+touch void (73, 13).
+iteration 1740
+touch solid (1, 86).
+iteration 1741
+take free solid.
+iteration 1742
+touch solid (95, 18).
+iteration 1743
+take free solid.
+iteration 1744
+touch solid (96, 52).
+iteration 1745
+take free solid.
+iteration 1746
+touch solid (17, 46).
+iteration 1747
+take free solid.
+iteration 1748
+touch void (56, 26).
+iteration 1749
+take free void.
+iteration 1750
+touch void (95, 38).
+iteration 1751
+take free void.
+iteration 1752
+touch void (72, 7).
+iteration 1753
+take free void.
+iteration 1754
+touch solid (40, 59).
+iteration 1755
+take free solid.
+iteration 1756
+touch solid (68, 16).
+iteration 1757
+take free solid.
+iteration 1758
+touch solid (46, 84).
+iteration 1759
+take free solid.
+iteration 1760
+touch solid (14, 13).
+iteration 1761
+take free solid.
+iteration 1762
+touch void (78, 57).
+iteration 1763
+take free void.
+iteration 1764
+touch void (56, 27).
+iteration 1765
+take free void.
+iteration 1766
+touch solid (37, 34).
+iteration 1767
+take free solid.
+iteration 1768
+touch void (56, 40).
+iteration 1769
+take free void.
+iteration 1770
+touch void (44, 48).
+iteration 1771
+take free void.
+iteration 1772
+touch solid (29, 23).
+iteration 1773
+touch solid (69, 17).
+iteration 1774
+touch solid (13, 66).
+iteration 1775
+touch solid (51, 26).
+iteration 1776
+take free solid.
+iteration 1777
+touch void (43, 35).
+iteration 1778
+touch solid (68, 10).
+iteration 1779
+touch solid (87, 15).
+iteration 1780
+take free solid.
+iteration 1781
+touch solid (0, 56).
+iteration 1782
+take free solid.
+iteration 1783
+touch void (99, 48).
+iteration 1784
+touch void (34, 23).
+iteration 1785
+touch void (41, 85).
+iteration 1786
+take free void.
+iteration 1787
+touch void (99, 22).
+iteration 1788
+touch void (73, 97).
+iteration 1789
+take free void.
+iteration 1790
+touch solid (24, 39).
+iteration 1791
+take free solid.
+iteration 1792
+touch void (51, 63).
+iteration 1793
+take free void.
+iteration 1794
+touch solid (3, 23).
+iteration 1795
+take free solid.
+iteration 1796
+touch solid (29, 17).
+iteration 1797
+take free solid.
+iteration 1798
+touch solid (28, 0).
+iteration 1799
+touch solid (48, 67).
+iteration 1800
+take free solid.
+iteration 1801
+touch solid (23, 53).
+iteration 1802
+take free solid.
+iteration 1803
+touch void (33, 4).
+iteration 1804
+take free void.
+iteration 1805
+touch void (65, 0).
+iteration 1806
+touch void (95, 37).
+iteration 1807
+take free void.
+iteration 1808
+touch void (56, 28).
+iteration 1809
+take free void.
+iteration 1810
+touch void (54, 1).
+iteration 1811
+take free void.
+iteration 1812
+touch solid (68, 12).
+iteration 1813
+take free solid.
+iteration 1814
+touch solid (30, 0).
+iteration 1815
+take free solid.
+iteration 1816
+touch void (55, 2).
+iteration 1817
+take free void.
+iteration 1818
+touch void (41, 37).
+iteration 1819
+take free void.
+iteration 1820
+touch void (69, 5).
+iteration 1821
+touch solid (78, 93).
+iteration 1822
+take free solid.
+iteration 1823
+touch void (16, 70).
+iteration 1824
+touch solid (10, 38).
+iteration 1825
+touch solid (34, 90).
+iteration 1826
+touch solid (18, 42).
+iteration 1827
+take free solid.
+iteration 1828
+touch void (23, 44).
+iteration 1829
