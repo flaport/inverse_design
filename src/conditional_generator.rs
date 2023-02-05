@@ -13,11 +13,11 @@ pub fn test_conditional_generator() {
 
     let brush = notched_square_brush(5, 1);
     // let latent = new_latent_design(shape, 0.0);
-    let (m, n) = (100, 100);
+    let (m, n) = (30, 30);
     let latent = read_latent_design(&format!("latent42_{m}x{n}.bin"));
     let latent_t = transform(&latent, &brush, 0.5);
     // visualize_array(&(6.0 * (&latent_t + 1.0)));
-    let design = generate_feasible_design(&latent_t, &brush, true);
+    let _design = generate_feasible_design(&latent_t, &brush, true);
 }
 
 pub fn generate_feasible_design(
