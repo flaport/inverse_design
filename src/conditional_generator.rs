@@ -1,0 +1,166 @@
+use super::brushes::notched_square_brush;
+use super::design::{Design, Status, XYOrMask};
+use super::utils::{any, argmax2d, argmin2d, dilute, item, randn, sum};
+use super::visualization::visualize_array;
+use arrayfire::{constant, div, eq, index, or, select, set_seed, tanh, Array, Seq};
+
+pub fn test_conditional_generator() {
+    set_seed(42);
+
+    let shape = (30, 30);
+    let brush = notched_square_brush(5, 1);
+    let latent = new_latent_design(shape, 0.0);
+    let latent_t = transform(&latent, &brush, 0.5);
+    visualize_array(&(6.0 * (&latent_t + 1.0)));
+
+    let mut design = Design::new(shape);
+    design.step(&latent_t, &brush);
+}
+
+pub fn transform(latent: &Array<f32>, brush: &Array<bool>, beta: f32) -> Array<f32> {
+    let mut float_brush = brush.cast::<f32>();
+    let brush_total = sum(&float_brush);
+    float_brush = div(
+        &float_brush,
+        &constant(brush_total, float_brush.dims()),
+        false,
+    );
+    let convolved = dilute(&latent, &float_brush);
+    return tanh(&(beta * convolved));
+}
+
+impl Design {
+    pub fn step(&mut self, latent_t: &Array<f32>, brush: &Array<bool>) {
+        let dim4 = self.void_touches.dims();
+        let void_touch_mask = eq(
+            &self.void_touches,
+            &constant(Status::TouchValid as u8, dim4),
+            false,
+        );
+        let solid_touch_mask = eq(
+            &self.solid_touches,
+            &constant(Status::TouchValid as u8, dim4),
+            false,
+        );
+        let touch_mask = or(&solid_touch_mask, &void_touch_mask, false);
+
+        let void_free_mask = eq(
+            &self.void_touches,
+            &constant(Status::TouchFree as u8, dim4),
+            false,
+        );
+        let solid_free_mask = eq(
+            &self.solid_touches,
+            &constant(Status::TouchFree as u8, dim4),
+            false,
+        );
+        let free_mask = or(&solid_free_mask, &void_free_mask, false);
+
+        let void_resolving_mask = eq(
+            &self.void_touches,
+            &constant(Status::TouchResolving as u8, dim4),
+            false,
+        );
+        let solid_resolving_mask = eq(
+            &self.solid_touches,
+            &constant(Status::TouchResolving as u8, dim4),
+            false,
+        );
+        let resolving_mask = or(&solid_resolving_mask, &void_resolving_mask, false);
+
+        if any(&free_mask) {
+            let void_selector = select(&latent_t, &void_free_mask, &constant(0.0, dim4));
+            let solid_selector = select(&latent_t, &solid_free_mask, &constant(0.0, dim4));
+            if sum(&void_selector) > sum(&solid_selector) {
+                self.take_free_void_touches(&brush);
+                println!("take free void.")
+            } else {
+                self.take_free_solid_touches(&brush);
+                println!("take free solid.")
+            }
+        } else if any(&resolving_mask) {
+            let void_needs_resolving = any(&void_resolving_mask);
+            let solid_needs_resolving = any(&solid_resolving_mask);
+            let void_selector = select(
+                &latent_t,
+                &void_resolving_mask,
+                &constant(f32::INFINITY, dim4),
+            );
+            let solid_selector = select(
+                &latent_t,
+                &solid_resolving_mask,
+                &constant(f32::NEG_INFINITY, dim4),
+            );
+
+            if void_needs_resolving & (!solid_needs_resolving) {
+                let (i_v, j_v) = argmin2d(&void_selector);
+                self.add_void_touch(&brush, XYOrMask::XY((i_v, j_v)));
+                println!("resolve void ({i_v},{j_v}).")
+            } else if (!void_needs_resolving) & solid_needs_resolving {
+                let (i_s, j_s) = argmax2d(&solid_selector);
+                self.add_solid_touch(&brush, XYOrMask::XY((i_s, j_s)));
+                println!("resolve solid ({i_s},{j_s}).")
+            } else {
+                let (i_v, j_v) = argmin2d(&void_selector);
+                let (i_s, j_s) = argmax2d(&solid_selector);
+                let v = item(&index(
+                    &latent_t,
+                    &[
+                        Seq::new(i_v as f32, i_v as f32, 1.0),
+                        Seq::new(j_v as f32, j_v as f32, 1.0),
+                    ],
+                ));
+                let s = item(&index(
+                    &latent_t,
+                    &[
+                        Seq::new(i_s as f32, i_s as f32, 1.0),
+                        Seq::new(j_s as f32, j_s as f32, 1.0),
+                    ],
+                ));
+                if v.abs() > s.abs() {
+                    self.add_void_touch(&brush, XYOrMask::XY((i_v, j_v)));
+                    println!("touch void ({i_v},{j_v}).")
+                } else {
+                    self.add_solid_touch(&brush, XYOrMask::XY((i_s, j_s)));
+                    println!("touch solid ({i_s},{j_s}).")
+                }
+            }
+        } else if any(&touch_mask) {
+            let void_selector = select(&latent_t, &void_touch_mask, &constant(f32::INFINITY, dim4));
+            let solid_selector = select(
+                &latent_t,
+                &solid_touch_mask,
+                &constant(f32::NEG_INFINITY, dim4),
+            );
+            let (i_v, j_v) = argmin2d(&void_selector);
+            let (i_s, j_s) = argmax2d(&solid_selector);
+            let v = item(&index(
+                &latent_t,
+                &[
+                    Seq::new(i_v as f32, i_v as f32, 1.0),
+                    Seq::new(j_v as f32, j_v as f32, 1.0),
+                ],
+            ));
+            let s = item(&index(
+                &latent_t,
+                &[
+                    Seq::new(i_s as f32, i_s as f32, 1.0),
+                    Seq::new(j_s as f32, j_s as f32, 1.0),
+                ],
+            ));
+            if v.abs() > s.abs() {
+                self.add_void_touch(&brush, XYOrMask::XY((i_v, j_v)));
+                println!("touch void ({i_v},{j_v}).")
+            } else {
+                self.add_solid_touch(&brush, XYOrMask::XY((i_s, j_s)));
+                println!("touch solid ({i_s},{j_s}).")
+            }
+        } else {
+            panic!("This should never happen!");
+        }
+    }
+}
+
+pub fn new_latent_design(shape: (u64, u64), bias: f32) -> Array<f32> {
+    return randn::<f32>(shape) + bias;
+}

@@ -1,9 +1,7 @@
-// use inverse_design::brushes::test_brushes;
-use inverse_design::design::test_design;
 use inverse_design::visualization::test_visualization;
+use inverse_design::conditional_generator::test_conditional_generator;
 
 fn main() {
     test_visualization();
-    // test_brushes();
-    test_design();
+    test_conditional_generator();
 }

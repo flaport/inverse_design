@@ -1,6 +1,6 @@
 use arrayfire::{
-    af_print, convolve2, flat, imax, imin, randn as _randn, randu as _rand, set_seed, Array,
-    ConvDomain, ConvMode, Dim4, FloatingPoint, HasAfEnum,
+    af_print, any_true, constant, convolve2, eq, flat, imax, imin, randn as _randn, randu as _rand,
+    set_seed, sum as _sum, Array, ConvDomain, ConvMode, Dim4, FloatingPoint, HasAfEnum,
 };
 
 pub fn conv2d<T: HasAfEnum>(lhs: &Array<T>, rhs: &Array<T>) -> Array<T> {
@@ -35,6 +35,35 @@ pub fn argmin2d<T: HasAfEnum + Clone>(arr: &Array<T>) -> (u64, u64) {
     ks.host(&mut buffer);
     let val = *buffer.iter().next().unwrap() as u64;
     return (val % m, val / m);
+}
+
+pub fn item(arr: &Array<f32>) -> f32 {
+    let mut buffer: Vec<f32> = Vec::new();
+    buffer.resize(arr.elements(), 0.0);
+    arr.host(&mut buffer);
+    return *buffer.iter().next().unwrap();
+}
+
+pub fn sum(arr: &Array<f32>) -> f32 {
+    return item(&_sum(&flat(&arr), 0));
+}
+
+pub fn any(arr: &Array<bool>) -> bool {
+    let result = any_true(&flat(&arr), 0);
+    let mut buffer: Vec<bool> = Vec::new();
+    buffer.resize(result.elements(), false);
+    result.host(&mut buffer);
+    return *buffer.iter().next().unwrap();
+}
+
+pub fn not(arr: &Array<bool>, batch: bool) -> Array<bool> {
+    let dim4 = arr.dims();
+    let false_ = constant(false, dim4);
+    return eq(arr, &false_, batch);
+}
+
+pub fn all(arr: &Array<bool>) -> bool {
+    return any(&not(&arr, false));
 }
 
 pub fn randn<T: FloatingPoint>(shape: (u64, u64)) -> Array<T> {

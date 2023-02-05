@@ -1,5 +1,5 @@
 use super::brushes::notched_square_brush;
-use super::utils::dilute;
+use super::utils::{dilute,not};
 use super::visualization::visualize_design;
 use arrayfire::{and, assign_seq, constant, eq, or, select, Array, Dim4, Seq};
 use std::convert::From;
@@ -280,12 +280,6 @@ fn find_free_touches(
     let mut free_mask = eq(&sum_mask, &ref_mask, false);
     free_mask = and(&free_mask, &not(&touches_mask, false), false);
     return free_mask;
-}
-
-fn not(arr: &Array<bool>, batch: bool) -> Array<bool> {
-    let dim4 = arr.dims();
-    let false_ = constant(false, dim4);
-    return eq(arr, &false_, batch);
 }
 
 pub enum Status {
