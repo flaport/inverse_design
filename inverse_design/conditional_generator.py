@@ -5,6 +5,8 @@ __all__ = ['new_latent_design', 'transform', 'conditional_algirithm_step', 'cond
            'generate_feasible_design_mask_jvp']
 
 # Cell
+import warnings
+
 import jax
 import jax.numpy as jnp
 import numpy as np
@@ -13,13 +15,13 @@ from .design import (
     TOUCH_RESOLVING,
     TOUCH_VALID,
     UNASSIGNED,
+    Design,
     add_solid_touch,
     add_void_touch,
     design_mask,
     new_design,
     take_free_solid_touches,
     take_free_void_touches,
-    visualize
 )
 from .utils import argmax2d, argmin2d, conv2d, randn
 
@@ -118,15 +120,54 @@ def conditional_generator(latent_t, brush, verbose=False):
         yield design
 
 # Cell
-def generate_feasible_design(latent_t, brush, verbose=False):
+
+def generate_feasible_design(latent_t, brush, verbose=False, backend='auto'): # backend: 'auto', 'rust', 'python'
+    try:
+        from inverse_design_rs import generate_feasible_design as generate_feasible_design_rs
+        if backend == 'auto':
+            backend = 'rust'
+    except ImportError:
+        warnings.warn("falling back on slower python-based feasible design generation!")
+        if backend == 'auto':
+            backend = 'python'
+
+    if backend == 'rust':
+        return _generate_feasible_design_rust(latent_t, brush, verbose=verbose)
+    else:
+        return _generate_feasible_design_python(latent_t, brush, verbose=verbose)
+
+
+def _generate_feasible_design_python(latent_t, brush, verbose=False):
     design = None
     for design in conditional_generator(latent_t, brush, verbose=verbose):
         continue
     return design
 
+def _generate_feasible_design_rust(latent_t, brush, verbose=False):
+    from inverse_design_rs import generate_feasible_design as generate_feasible_design_rs
+
+    m, n = latent_t.shape
+    latent_t = np.asarray(latent_t, dtype=np.float32)
+    brush = np.asarray(brush, dtype=np.float32)
+    void_pixels, solid_pixels, void_touches, solid_touches = generate_feasible_design_rs(
+        latent_t.shape,
+        latent_t.tobytes(),
+        brush.shape,
+        brush.tobytes(),
+        verbose
+    )
+    design = Design(
+        np.asarray(void_pixels).reshape(m, n),
+        np.asarray(solid_pixels).reshape(m, n),
+        np.asarray(void_touches).reshape(m, n),
+        np.asarray(solid_touches).reshape(m, n),
+    )
+    return design
+
+
 # Cell
-def generate_feasible_design_mask_(latent_t, brush):
-    design = generate_feasible_design(latent_t, brush, verbose=False)
+def generate_feasible_design_mask_(latent_t, brush, backend='auto'):
+    design = generate_feasible_design(latent_t, brush, verbose=False, backend=backend)
     return design_mask(design)
 
 # Cell

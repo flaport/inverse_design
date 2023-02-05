@@ -8,7 +8,12 @@ all: lib docs
 docker:
 	docker build . -t id
 
-lib:
+.PHONY: rust
+rust:
+	cd rust && make build && cd -
+	cp rust/inverse_design_rs.so ./
+
+lib: rust
 	nbdev_build_lib
 
 sync:
