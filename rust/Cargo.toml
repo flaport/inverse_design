@@ -10,6 +10,7 @@ crate-type = ["lib", "cdylib"]
 
 [dependencies]
 arrayfire = "3.8.0"
+once_cell = "1.17.0"
 
 [dependencies.pyo3]
 version = "0.13.1"

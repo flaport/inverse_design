@@ -1,3 +1,4 @@
+use super::profiling::Profiler;
 use arrayfire::{
     af_print, any_true, constant, convolve2, eq, flat, imax, imin, randn as _randn, randu as _rand,
     set_seed, sum as _sum, Array, ConvDomain, ConvMode, Dim4, FloatingPoint, HasAfEnum,
@@ -12,7 +13,10 @@ pub fn batch_conv2d<T: HasAfEnum>(lhs: &Array<T>, rhs: &Array<T>) -> Array<T> {
 }
 
 pub fn dilute<T: HasAfEnum>(touches: &Array<T>, brush: &Array<T>) -> Array<T> {
-    convolve2(touches, brush, ConvMode::DEFAULT, ConvDomain::FREQUENCY)
+    let profiler = Profiler::start("dilute");
+    let result = convolve2(touches, brush, ConvMode::DEFAULT, ConvDomain::FREQUENCY);
+    profiler.stop();
+    return result;
 }
 
 pub fn argmax2d<T: HasAfEnum + Clone>(arr: &Array<T>) -> (u64, u64) {

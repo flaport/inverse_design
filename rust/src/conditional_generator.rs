@@ -1,12 +1,12 @@
 use super::brushes::notched_square_brush;
 use super::design::{Design, Status, XYOrMask};
+use super::profiling::{Profiler, print_profiler_summary};
 use super::utils::{any, argmax2d, argmin2d, dilute, item, randn, sum};
 use arrayfire::{
     constant, div, eq, index, or, select, set_seed, tanh, transpose_inplace, Array, Dim4, Seq,
 };
 use std::fs::{metadata, File};
 use std::io::Read;
-// use super::visualization::visualize_array;
 
 pub fn test_conditional_generator() {
     set_seed(42);
@@ -18,6 +18,7 @@ pub fn test_conditional_generator() {
     let latent_t = transform(&latent, &brush, 5.0);
     // visualize_array(&(6.0 * (&latent_t + 1.0)));
     let _design = generate_feasible_design(&latent_t, &brush, true);
+    print_profiler_summary();
 }
 
 pub fn generate_feasible_design(
@@ -25,6 +26,7 @@ pub fn generate_feasible_design(
     brush: &Array<bool>,
     verbose: bool,
 ) -> Design {
+    let profiler = Profiler::start("generate_feasible_design");
     let dim4 = latent_t.dims();
     let shape4 = dim4.get();
     let shape = (shape4[0], shape4[1]);
@@ -45,6 +47,7 @@ pub fn generate_feasible_design(
         // visualize_design(&design);
         i += 1;
     }
+    profiler.stop();
     return design;
 }
 
@@ -74,6 +77,7 @@ impl Design {
         brush: &Array<bool>,
         verbose: bool,
     ) -> Result<(), &str> {
+        let profiler = Profiler::start("step");
         let dim4 = self.void_touches.dims();
         let void_touch_mask = eq(
             &self.void_touches,
@@ -217,7 +221,7 @@ impl Design {
         } else {
             return Err("No steps possible");
         }
-
+        profiler.stop();
         return Ok(());
     }
 }

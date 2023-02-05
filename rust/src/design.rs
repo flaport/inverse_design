@@ -1,5 +1,6 @@
 use super::brushes::notched_square_brush;
 use super::utils::{dilute,not};
+use super::profiling::Profiler;
 use super::visualization::visualize_design;
 use arrayfire::{and, assign_seq, constant, eq, or, select, Array, Dim4, Seq};
 use std::convert::From;
@@ -89,6 +90,7 @@ impl Design {
         return (m, n);
     }
     pub fn design(&self) -> Array<u8> {
+        let profiler = Profiler::start("design_call");
         let dim4 = self.void_pixels.dims();
         let design = constant(Status::Unassigned as u8, dim4);
         let design = select(
@@ -109,6 +111,7 @@ impl Design {
             )),
             &design,
         );
+        profiler.stop();
         return design;
     }
 
@@ -128,8 +131,11 @@ impl Design {
     }
 
     pub fn add_void_touch(&mut self, brush: &Array<bool>, xy_or_mask: XYOrMask) {
+        // let start_time = now();
+        let profiler = Profiler::start("add_void_touch_full");
         let dim4 = self.void_touches.dims();
 
+        let profiler1 = Profiler::start("add_void_touch1");
         let mut void_touch_existing = eq(
             &self.void_touches,
             &constant(Status::TouchExisting as u8, dim4),
@@ -164,6 +170,9 @@ impl Design {
 
         let void_pixel_required = find_required_pixels(&void_pixel_existing, &brush);
         let solid_touch_invalid = dilute(&void_pixel_existing, &brush);
+        profiler1.stop();
+
+        let profiler2 = Profiler::start("add_void_touch2");
         let void_touch_free = find_free_touches(
             &void_touch_existing,
             &or(&void_pixel_existing, &void_pixel_required, false),
@@ -188,7 +197,9 @@ impl Design {
             &void_touch_free,
             &void_touches,
         );
+        profiler2.stop();
 
+        let profiler3 = Profiler::start("add_void_touch3");
         let void_touch_resolving = select(
             &dilute(&void_pixel_required, &brush),
             &eq(
@@ -198,7 +209,9 @@ impl Design {
             ),
             &constant(false, dim4),
         );
+        profiler3.stop();
 
+        let profiler4 = Profiler::start("add_void_touch4");
         void_touches = select(
             &constant(Status::TouchResolving as u8, dim4),
             &void_touch_resolving,
@@ -237,6 +250,8 @@ impl Design {
         self.solid_pixels = solid_pixels;
         self.void_touches = void_touches;
         self.solid_touches = solid_touches;
+        profiler4.stop();
+        profiler.stop();
     }
 
     pub fn take_free_void_touches(&mut self, brush: &Array<bool>) {
@@ -261,11 +276,13 @@ impl Design {
 }
 
 fn find_required_pixels(pixel_map: &Array<bool>, brush: &Array<bool>) -> Array<bool> {
+    let profiler = Profiler::start("find_required_pixels");
     let mask = and(
         &not(pixel_map, false),
         &not(&dilute(pixel_map, brush), false),
         false,
     );
+    profiler.stop();
     return not(&or(&dilute(&mask, brush), pixel_map, false), false);
 }
 

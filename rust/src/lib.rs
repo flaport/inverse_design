@@ -3,6 +3,7 @@ pub mod conditional_generator;
 pub mod design;
 pub mod utils;
 pub mod visualization;
+pub mod profiling;
 
 use arrayfire::transpose_inplace;
 use conditional_generator::{generate_feasible_design as generate_feasible_design_rs, parse_array};
@@ -24,6 +25,7 @@ fn generate_feasible_design(
     let (m, n) = brush_shape;
     let brush = parse_array(&brush_bytes, m, n).cast::<bool>();
 
+    //let mut profiler = Profiler::new();
     let mut design = generate_feasible_design_rs(&latent_t, &brush, verbose);
 
     // F -> C memory layout
