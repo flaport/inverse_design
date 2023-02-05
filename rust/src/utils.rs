@@ -44,6 +44,14 @@ pub fn item(arr: &Array<f32>) -> f32 {
     return *buffer.iter().next().unwrap();
 }
 
+pub fn buffer(arr: &Array<u8>) -> Vec<u8> {
+    let arr_flat = flat(arr);
+    let mut buffer: Vec<u8> = Vec::new();
+    buffer.resize(arr.elements(), 0);
+    arr_flat.host(&mut buffer);
+    return buffer;
+}
+
 pub fn sum(arr: &Array<f32>) -> f32 {
     return item(&_sum(&flat(&arr), 0));
 }

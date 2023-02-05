@@ -11,11 +11,11 @@ use std::io::Read;
 pub fn test_conditional_generator() {
     set_seed(42);
 
+    let (m, n) = (30, 30);
     let brush = notched_square_brush(5, 1);
     // let latent = new_latent_design(shape, 0.0);
-    let (m, n) = (30, 30);
-    let latent = read_latent_design(&format!("latent42_{m}x{n}.bin"));
-    let latent_t = transform(&latent, &brush, 0.5);
+    let latent = read_array(&format!("latent42_{m}x{n}.bin"), m, n);
+    let latent_t = transform(&latent, &brush, 5.0);
     // visualize_array(&(6.0 * (&latent_t + 1.0)));
     let _design = generate_feasible_design(&latent_t, &brush, true);
 }
@@ -226,15 +226,18 @@ pub fn new_latent_design(shape: (u64, u64), bias: f32) -> Array<f32> {
     return randn::<f32>(shape) + bias;
 }
 
-pub fn read_latent_design(filename: &str) -> Array<f32> {
+pub fn read_array(filename: &str, m: usize, n: usize) -> Array<f32> {
     let mut f = File::open(&filename).expect(&format!("no file '{filename}' found."));
     let meta = metadata(&filename).expect(&format!("unable to read '{filename}' metadata."));
     let mut buffer = vec![0; meta.len() as usize];
     f.read(&mut buffer).expect("buffer overflow");
-    let chunks = _chunks(&buffer);
+    return parse_array(&buffer, m, n);
+}
+
+pub fn parse_array(bts: &Vec<u8>, m: usize, n: usize) -> Array<f32> {
+    let chunks = _chunks(&bts);
     let values: Vec<f32> = chunks.into_iter().map(|a| f32::from_le_bytes(a)).collect();
-    let n = (values.len() as f32).sqrt() as u64;
-    let mut array = Array::new(&values, Dim4::new(&[n, n, 1, 1]));
+    let mut array = Array::new(&values, Dim4::new(&[n as u64, m as u64, 1, 1]));
     transpose_inplace(&mut array, false); // C -> F memory layout.
     return array;
 }
