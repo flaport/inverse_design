@@ -11,7 +11,7 @@ use std::io::Read;
 pub fn test_conditional_generator() {
     set_seed(42);
 
-    let (m, n) = (30, 30);
+    let (m, n) = (100, 100);
     let brush = notched_square_brush(5, 1);
     // let latent = new_latent_design(shape, 0.0);
     let latent = read_array(&format!("latent42_{m}x{n}.bin"), m, n);
