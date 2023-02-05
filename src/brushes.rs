@@ -1,7 +1,7 @@
 use super::visualization::visualize_array;
 use arrayfire::{add, assign_seq, constant, lt, pow, range, select, sub, Array, Dim4, Seq};
 
-pub fn circular_brush(diameter: u64) -> Array<f32> {
+pub fn circular_brush(diameter: u64) -> Array<bool> {
     let radius = (diameter as f32) / 2.0;
     let small_radius = radius - 0.5;
     let x = range::<f32>(Dim4::new(&[diameter, diameter, 1, 1]), 0);
@@ -17,10 +17,10 @@ pub fn circular_brush(diameter: u64) -> Array<f32> {
     let zeros = constant(0.0 as f32, dim4);
     let brush = select(&ones, &mask, &zeros);
 
-    return brush;
+    return brush.cast::<bool>();
 }
 
-pub fn notched_square_brush(width: u64, notch: u64) -> Array<f32> {
+pub fn notched_square_brush(width: u64, notch: u64) -> Array<bool> {
     let dim4 = Dim4::new(&[width, width, 1, 1]);
     let mut brush = constant(1.0 as f32, dim4);
 
@@ -36,7 +36,7 @@ pub fn notched_square_brush(width: u64, notch: u64) -> Array<f32> {
         }
     }
 
-    return brush;
+    return brush.cast::<bool>();
 }
 
 pub fn test_brushes() {

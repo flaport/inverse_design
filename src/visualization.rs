@@ -47,7 +47,10 @@ pub fn visualize_design(design: &Design) {
         let i = i as f32;
         assign_seq(
             &mut vis,
-            &[Seq::default(), Seq::new(i * (n+1.0), i * (n+1.0) + n - 1.0, 1.0)],
+            &[
+                Seq::default(),
+                Seq::new(i * (n + 1.0), i * (n + 1.0) + n - 1.0, 1.0),
+            ],
             r,
         );
     }

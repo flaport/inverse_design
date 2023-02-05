@@ -15,6 +15,7 @@ pub fn dilute<T: HasAfEnum>(touches: &Array<T>, brush: &Array<T>) -> Array<T> {
     convolve2(touches, brush, ConvMode::DEFAULT, ConvDomain::SPATIAL)
 }
 
+
 pub fn argmax2d<T: HasAfEnum + Clone>(arr: &Array<T>) -> (u64, u64) {
     let (m, _) = _size2d(&arr);
     let arr_flat = flat(&arr);
