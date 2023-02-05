@@ -110,15 +110,15 @@ impl Block {
             3 => Self::BrightCyan,
             4 => Self::BrightYellow,
             5 => Self::DarkMagenta,
-            6 => Self::DarkGreen,
-            7 => Self::Black,
+            6 => Self::DarkRed,
+            7 => Self::BrightBlue,
             8 => Self::DarkBlue,
-            9 => Self::BrightRed,
+            9 => Self::DarkYellow,
             10 => Self::BrightGreen,
             11 => Self::BrightMagenta,
-            12 => Self::BrightBlue,
-            // 13 => Self::DarkRed,
-            // 14 => Self::DarkYellow,
+            12 => Self::Black,
+            // 13 => Self::DarkGreen,
+            // 14 => Self::BrightRed,
             // 15 => Self::DarkCyan,
             _ => Self::Unknown,
         };
@@ -140,5 +140,13 @@ pub fn test_visualization() {
         let block_str = block.to_string();
         s = format!("{s} {block_str}");
     }
-    println!("{s}\n");
+    println!("{s}");
+
+    let mut s = "".to_string();
+    for i in 0..14 {
+        let status: Status = (i as u8).into();
+        let status_str: String = status.into();
+        s = format!("{s} {status_str}");
+    }
+    println!("{s}");
 }

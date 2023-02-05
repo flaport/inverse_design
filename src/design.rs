@@ -1,9 +1,9 @@
-use std::mem::swap;
 use super::brushes::notched_square_brush;
 use super::utils::dilute;
 use super::visualization::visualize_design;
 use arrayfire::{and, assign_seq, constant, eq, or, select, Array, Dim4, Seq};
 use std::convert::From;
+use std::mem::swap;
 
 pub fn test_design() {
     let brush = notched_square_brush(5, 1);
@@ -22,6 +22,38 @@ pub fn test_design() {
 
     println!("step 4");
     design.add_solid_touch(&brush, XYOrMask::XY((0, 0)));
+    visualize_design(&design);
+
+    println!("step 5");
+    design.add_void_touch(&brush, XYOrMask::XY((4, 6)));
+    visualize_design(&design);
+
+    println!("step 6");
+    design.take_free_void_touches(&brush);
+    visualize_design(&design);
+
+    println!("step 7");
+    design.add_void_touch(&brush, XYOrMask::XY((4, 4)));
+    visualize_design(&design);
+
+    println!("step 8");
+    design.take_free_void_touches(&brush);
+    visualize_design(&design);
+
+    println!("step 9");
+    design.add_void_touch(&brush, XYOrMask::XY((5, 0)));
+    visualize_design(&design);
+
+    println!("step 10");
+    design.take_free_void_touches(&brush);
+    visualize_design(&design);
+
+    println!("step 11");
+    design.add_void_touch(&brush, XYOrMask::XY((2, 5)));
+    visualize_design(&design);
+
+    println!("step 12");
+    design.take_free_void_touches(&brush);
     visualize_design(&design);
 }
 
@@ -132,7 +164,11 @@ impl Design {
 
         let void_pixel_required = find_required_pixels(&void_pixel_existing, &brush);
         let solid_touch_invalid = dilute(&void_pixel_existing, &brush);
-        let void_touch_free = find_free_touches(&void_touch_existing, &void_pixel_existing, &brush);
+        let void_touch_free = find_free_touches(
+            &void_touch_existing,
+            &or(&void_pixel_existing, &void_pixel_required, false),
+            &brush,
+        );
         let mut void_touches = select(
             &constant(Status::TouchValid as u8, dim4),
             &eq(
@@ -286,6 +322,27 @@ impl From<u8> for Status {
             11 => Self::TouchFree,
             12 => Self::TouchResolving,
             _ => Self::Unknown,
+        }
+    }
+}
+
+impl From<Status> for String {
+    fn from(status: Status) -> Self {
+        match status {
+            Status::Unassigned => " U".to_string(),
+            Status::Void => " V".to_string(),
+            Status::Solid => " S".to_string(),
+            Status::PixelImpossible => "PI".to_string(),
+            Status::PixelExisting => "PE".to_string(),
+            Status::PixelPossible => "PP".to_string(),
+            Status::PixelRequired => "PR".to_string(),
+            Status::TouchRequired => "TR".to_string(),
+            Status::TouchInvalid => "TI".to_string(),
+            Status::TouchExisting => "TE".to_string(),
+            Status::TouchValid => "TV".to_string(),
+            Status::TouchFree => "TF".to_string(),
+            Status::TouchResolving => "Tr".to_string(),
+            Status::Unknown => "  ".to_string(),
         }
     }
 }
