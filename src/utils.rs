@@ -4,15 +4,15 @@ use arrayfire::{
 };
 
 pub fn conv2d<T: HasAfEnum>(lhs: &Array<T>, rhs: &Array<T>) -> Array<T> {
-    convolve2(lhs, rhs, ConvMode::DEFAULT, ConvDomain::SPATIAL)
+    convolve2(lhs, rhs, ConvMode::DEFAULT, ConvDomain::FREQUENCY)
 }
 
 pub fn batch_conv2d<T: HasAfEnum>(lhs: &Array<T>, rhs: &Array<T>) -> Array<T> {
-    convolve2(lhs, rhs, ConvMode::DEFAULT, ConvDomain::SPATIAL)
+    convolve2(lhs, rhs, ConvMode::DEFAULT, ConvDomain::FREQUENCY)
 }
 
 pub fn dilute<T: HasAfEnum>(touches: &Array<T>, brush: &Array<T>) -> Array<T> {
-    convolve2(touches, brush, ConvMode::DEFAULT, ConvDomain::SPATIAL)
+    convolve2(touches, brush, ConvMode::DEFAULT, ConvDomain::FREQUENCY)
 }
 
 pub fn argmax2d<T: HasAfEnum + Clone>(arr: &Array<T>) -> (u64, u64) {
