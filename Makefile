@@ -7,4 +7,4 @@ test: build
 
 clean:
 	rm -rf target
-	rm *.so
+	rm -f *.so

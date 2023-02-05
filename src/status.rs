@@ -1,3 +1,4 @@
+#[derive(Debug, Clone, Copy)]
 pub enum Status {
     /*  0 */ Unassigned,
     /*  1 */ Void,
