@@ -31,9 +31,6 @@ pub fn visualize_array<T: HasAfEnum + Copy>(arr: &Array<T>) {
 
 pub fn visualize_design(design: &Design) {
     let (m, n) = design.shape();
-    let dim4 = Dim4::new(&[m, (n + 1) * 5, 1, 1]);
-    // println!("{m} {n} {dim4}");
-    let mut vis = constant(Status::Unknown as u8, dim4);
     let refs = [
         &design.design(),
         &design.void_pixels,
@@ -41,6 +38,10 @@ pub fn visualize_design(design: &Design) {
         &design.void_touches,
         &design.solid_touches,
     ];
+
+    let k = refs.len() as u64;
+    let dim4 = Dim4::new(&[m, (n + 1) * k, 1, 1]);
+    let mut vis = constant(Status::Unknown as u8, dim4);
 
     let n = n as f32;
     for (i, r) in refs.into_iter().enumerate() {

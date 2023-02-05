@@ -1,25 +1,50 @@
 use super::brushes::notched_square_brush;
 use super::design::{Design, Status, XYOrMask};
 use super::utils::{any, argmax2d, argmin2d, dilute, item, randn, sum};
-use super::visualization::visualize_array;
 use arrayfire::{
     constant, div, eq, index, or, select, set_seed, tanh, transpose_inplace, Array, Dim4, Seq,
 };
 use std::fs::{metadata, File};
 use std::io::Read;
+// use super::visualization::visualize_array;
 
 pub fn test_conditional_generator() {
     set_seed(42);
 
-    let shape = (30, 30);
     let brush = notched_square_brush(5, 1);
     // let latent = new_latent_design(shape, 0.0);
     let latent = read_latent_design("latent_42.bin");
     let latent_t = transform(&latent, &brush, 0.5);
-    visualize_array(&(6.0 * (&latent_t + 1.0)));
+    // visualize_array(&(6.0 * (&latent_t + 1.0)));
+    let design = generate_feasible_design(&latent_t, &brush, false);
+}
 
+pub fn generate_feasible_design(
+    latent_t: &Array<f32>,
+    brush: &Array<bool>,
+    verbose: bool,
+) -> Design {
+    let dim4 = latent_t.dims();
+    let shape4 = dim4.get();
+    let shape = (shape4[0], shape4[1]);
     let mut design = Design::new(shape);
-    design.step(&latent_t, &brush);
+    if verbose {
+        println!("create empty design.");
+    }
+
+    let mut i = 0 as usize;
+    loop {
+        if verbose {
+            println!("iteration {i}");
+        }
+        match design.step(latent_t, brush, verbose) {
+            Err(_) => break,
+            Ok(_) => {}
+        }
+        // visualize_design(&design);
+        i += 1;
+    }
+    return design;
 }
 
 pub fn transform(latent: &Array<f32>, brush: &Array<bool>, beta: f32) -> Array<f32> {
@@ -35,7 +60,19 @@ pub fn transform(latent: &Array<f32>, brush: &Array<bool>, beta: f32) -> Array<f
 }
 
 impl Design {
-    pub fn step(&mut self, latent_t: &Array<f32>, brush: &Array<bool>) {
+    pub fn any_unassigned(&self) -> bool {
+        any(&eq(
+            &self.design(),
+            &constant(Status::Unassigned as u8, self.void_pixels.dims()),
+            false,
+        ))
+    }
+    pub fn step(
+        &mut self,
+        latent_t: &Array<f32>,
+        brush: &Array<bool>,
+        verbose: bool,
+    ) -> Result<(), &str> {
         let dim4 = self.void_touches.dims();
         let void_touch_mask = eq(
             &self.void_touches,
@@ -76,12 +113,16 @@ impl Design {
         if any(&free_mask) {
             let void_selector = select(&latent_t, &void_free_mask, &constant(0.0, dim4));
             let solid_selector = select(&latent_t, &solid_free_mask, &constant(0.0, dim4));
-            if sum(&void_selector) > sum(&solid_selector) {
+            if sum(&void_selector).abs() > sum(&solid_selector).abs() {
                 self.take_free_void_touches(&brush);
-                println!("take free void.")
+                if verbose {
+                    println!("take free void.")
+                }
             } else {
                 self.take_free_solid_touches(&brush);
-                println!("take free solid.")
+                if verbose {
+                    println!("take free solid.")
+                }
             }
         } else if any(&resolving_mask) {
             let void_needs_resolving = any(&void_resolving_mask);
@@ -100,11 +141,15 @@ impl Design {
             if void_needs_resolving & (!solid_needs_resolving) {
                 let (i_v, j_v) = argmin2d(&void_selector);
                 self.add_void_touch(&brush, XYOrMask::XY((i_v, j_v)));
-                println!("resolve void ({i_v},{j_v}).")
+                if verbose {
+                    println!("resolve void ({i_v}, {j_v}).")
+                }
             } else if (!void_needs_resolving) & solid_needs_resolving {
                 let (i_s, j_s) = argmax2d(&solid_selector);
                 self.add_solid_touch(&brush, XYOrMask::XY((i_s, j_s)));
-                println!("resolve solid ({i_s},{j_s}).")
+                if verbose {
+                    println!("resolve solid ({i_s}, {j_s}).")
+                }
             } else {
                 let (i_v, j_v) = argmin2d(&void_selector);
                 let (i_s, j_s) = argmax2d(&solid_selector);
@@ -124,10 +169,14 @@ impl Design {
                 ));
                 if v.abs() > s.abs() {
                     self.add_void_touch(&brush, XYOrMask::XY((i_v, j_v)));
-                    println!("touch void ({i_v},{j_v}).")
+                    if verbose {
+                        println!("touch void ({i_v}, {j_v}).")
+                    }
                 } else {
                     self.add_solid_touch(&brush, XYOrMask::XY((i_s, j_s)));
-                    println!("touch solid ({i_s},{j_s}).")
+                    if verbose {
+                        println!("touch solid ({i_s}, {j_s}).")
+                    }
                 }
             }
         } else if any(&touch_mask) {
@@ -155,14 +204,20 @@ impl Design {
             ));
             if v.abs() > s.abs() {
                 self.add_void_touch(&brush, XYOrMask::XY((i_v, j_v)));
-                println!("touch void ({i_v},{j_v}).")
+                if verbose {
+                    println!("touch void ({i_v}, {j_v}).")
+                }
             } else {
                 self.add_solid_touch(&brush, XYOrMask::XY((i_s, j_s)));
-                println!("touch solid ({i_s},{j_s}).")
+                if verbose {
+                    println!("touch solid ({i_s}, {j_s}).")
+                }
             }
         } else {
-            panic!("This should never happen!");
+            return Err("No steps possible");
         }
+
+        return Ok(());
     }
 }
 
