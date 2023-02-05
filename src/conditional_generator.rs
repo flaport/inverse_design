@@ -2,14 +2,19 @@ use super::brushes::notched_square_brush;
 use super::design::{Design, Status, XYOrMask};
 use super::utils::{any, argmax2d, argmin2d, dilute, item, randn, sum};
 use super::visualization::visualize_array;
-use arrayfire::{constant, div, eq, index, or, select, set_seed, tanh, Array, Seq};
+use arrayfire::{
+    constant, div, eq, index, or, select, set_seed, tanh, transpose_inplace, Array, Dim4, Seq,
+};
+use std::fs::{metadata, File};
+use std::io::Read;
 
 pub fn test_conditional_generator() {
     set_seed(42);
 
     let shape = (30, 30);
     let brush = notched_square_brush(5, 1);
-    let latent = new_latent_design(shape, 0.0);
+    // let latent = new_latent_design(shape, 0.0);
+    let latent = read_latent_design("latent_42.bin");
     let latent_t = transform(&latent, &brush, 0.5);
     visualize_array(&(6.0 * (&latent_t + 1.0)));
 
@@ -163,4 +168,37 @@ impl Design {
 
 pub fn new_latent_design(shape: (u64, u64), bias: f32) -> Array<f32> {
     return randn::<f32>(shape) + bias;
+}
+
+pub fn read_latent_design(filename: &str) -> Array<f32> {
+    let mut f = File::open(&filename).expect(&format!("no file '{filename}' found."));
+    let meta = metadata(&filename).expect(&format!("unable to read '{filename}' metadata."));
+    let mut buffer = vec![0; meta.len() as usize];
+    f.read(&mut buffer).expect("buffer overflow");
+    let chunks = _chunks(&buffer);
+    let values: Vec<f32> = chunks.into_iter().map(|a| f32::from_le_bytes(a)).collect();
+    let n = (values.len() as f32).sqrt() as u64;
+    let mut array = Array::new(&values, Dim4::new(&[n, n, 1, 1]));
+    transpose_inplace(&mut array, false); // C -> F memory layout.
+    return array;
+}
+
+fn _chunks(barry: &Vec<u8>) -> Vec<[u8; 4]> {
+    let n = 4;
+    let mut chunks = Vec::new();
+    let length = barry.len();
+
+    if length % n != 0 {
+        panic!("This should never happen.")
+    }
+
+    for i in (0..length).step_by(n) {
+        let mut array = [0u8; 4];
+        for (j, p) in array.iter_mut().enumerate() {
+            *p = barry[i + j];
+        }
+        chunks.push(array);
+    }
+
+    return chunks;
 }
