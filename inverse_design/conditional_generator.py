@@ -19,6 +19,7 @@ from .design import (
     new_design,
     take_free_solid_touches,
     take_free_void_touches,
+    visualize
 )
 from .utils import argmax2d, argmin2d, conv2d, randn
 
@@ -94,10 +95,12 @@ def conditional_algirithm_step(latent_t, design, brush, verbose=False):
         s = latent_t[i_s, j_s]
         if abs(v) > abs(s):
             design = add_void_touch(design, brush, (i_v, j_v))
-            maybe_print(f"touch void  {int(i_v), int(j_v)}.")
+            maybe_print(f"touch void {int(i_v), int(j_v)}.")
         else:
             design = add_solid_touch(design, brush, (i_s, j_s))
-            maybe_print(f"touch solid  {int(i_s), int(j_s)}.")
+            maybe_print(f"touch solid {int(i_s), int(j_s)}.")
+    else:
+        raise ValueError("This should never happen.")
 
     return design
 
@@ -106,11 +109,11 @@ def conditional_generator(latent_t, brush, verbose=False):
     I = 0
     design = new_design(latent_t.shape)
     maybe_print = print if verbose else (lambda *args, **kwargs: None)
-    maybe_print(f"{I} create empty design.")
+    maybe_print(f"create empty design.")
     yield design
     while (design.design == UNASSIGNED).any():
+        maybe_print(f"iteration {I}")
         I += 1
-        maybe_print(I, end=" ")
         design = conditional_algirithm_step(latent_t, design, brush, verbose=verbose)
         yield design
 
