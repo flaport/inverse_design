@@ -4,10 +4,38 @@ use super::profiling::Profiler;
 
 pub fn test_brushes() {
     let (size, notch) = (5, 1);
+    let shape = (size, size);
     let brush = notched_square_brush(size, notch);
     println!("{}", brush.len());
-    let mask = brush_mask(&brush, (size, size));
-    visualize_mask((size, size), &mask);
+    let mask = brush_mask(&brush, shape);
+    visualize_mask(shape, &mask);
+
+    let (big_shape, big_brush) = big_brush((size, size), &brush);
+    let big_mask = brush_mask(&big_brush, big_shape);
+    visualize_mask(big_shape, &big_mask);
+}
+
+pub fn big_brush(size: (usize, usize), brush: &Vec<(i32, i32)>) -> ((usize, usize), Vec<(i32, i32)>) {
+    let (m, n) = size;
+    let (m_, n_) = (2*m, 2*n);
+    let mut mask = new_array(m_*n_, false);
+    for (i, j) in brush.iter() {
+        let i_ = (m_ as i32 / 2 + *i) as usize - m % 2;
+        let j_ = (n_ as i32 / 2 + *j) as usize - n % 2;
+        apply_brush((m_, n_), &mut mask, brush, (i_, j_), true);
+    }
+
+    let mut new_brush = Vec::new();
+    for i in 0..m_{
+        for j in 0..n_ {
+            if mask[k(i, j, n_)] {
+                let i = (i as i32) - (m_ as i32) / 2;
+                let j = (j as i32) - (n_ as i32) / 2;
+                new_brush.push((i+1, j+1)); // yes, +1
+            }
+        }
+    }
+    return ((m_-1, n_-1), new_brush);
 }
 
 pub fn apply_touch<T: Copy>(
