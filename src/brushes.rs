@@ -7,17 +7,32 @@ pub fn test_brushes() {
     let brush = notched_square_brush(size, notch);
     println!("{}", brush.len());
     let mask = brush_mask(&brush, (size, size));
-    visualize_mask(&mask, size);
+    visualize_mask((size, size), &mask);
 }
 
-pub fn touch(
-    mask: &mut Vec<bool>,
-    mask_shape: (usize, usize),
+pub fn apply_touch<T: Copy>(
+    shape: (usize, usize),
+    array: &mut Vec<T>,
+    pos: (usize, usize),
+    value: T,
+) {
+    let profiler = Profiler::start("apply_touch");
+    let (_, size_j) = shape;
+    let (m, n) = pos;
+    let idx = k(m, n, size_j);
+    array[idx] = value;
+    profiler.stop();
+}
+
+pub fn apply_brush<T: Copy>(
+    shape: (usize, usize),
+    array: &mut Vec<T>,
     brush: &Vec<(i32, i32)>,
     pos: (usize, usize),
+    value: T,
 ) {
-    let profiler = Profiler::start("touch");
-    let (size_i, size_j) = mask_shape;
+    let profiler = Profiler::start("apply_brush");
+    let (size_i, size_j) = shape;
     let (m, n) = pos;
     let m = m as i32;
     let n = n as i32;
@@ -37,7 +52,7 @@ pub fn touch(
             continue;
         }
         let idx = k(i as usize, j as usize, size_j);
-        mask[idx] = true;
+        array[idx] = value;
     }
     profiler.stop();
 }

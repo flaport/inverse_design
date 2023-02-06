@@ -1,11 +1,36 @@
+use super::array::k;
+use super::design::Design;
 use super::status::Status;
+use super::brushes::brush_mask;
 
-pub fn visualize_mask(mask: &Vec<bool>, n: usize){
+pub fn visualize_brush(shape: (usize, usize), brush: &Vec<(i32, i32)>){
+    let mask = brush_mask(&brush, shape);
+    visualize_mask(shape, &mask);
+}
+
+pub fn visualize_masks(shape: (usize, usize), masks: &Vec<&Vec<bool>>) {
+    let (m, n) = shape;
+    let l = masks.len();
+    let n_ = l * n;
+    let mut full = Vec::new(); //new_array(m*n_, true);
+    for i in 0..m {
+        for j_ in 0..n_ {
+            let p = j_ / n;
+            let j = j_ % n;
+            let b = masks[p][k(i, j, n)];
+            full.push(b);
+        }
+    }
+    visualize_mask((m, n_), &full);
+}
+
+pub fn visualize_mask(shape: (usize, usize), mask: &Vec<bool>) {
+    let (_, n) = shape;
     let mut s = "".to_string();
-    for (i, b) in mask.iter().enumerate(){
+    for (i, b) in mask.iter().enumerate() {
         let block = match b {
-            true => {Block::White.to_string()},
-            false => {Block::BrightBlack.to_string()},
+            true => Block::White.to_string(),
+            false => Block::BrightBlack.to_string(),
         };
         s = format!("{s}{block}");
         if i % n == n - 1 {
@@ -13,6 +38,45 @@ pub fn visualize_mask(mask: &Vec<bool>, n: usize){
         }
     }
     println!("{s}");
+}
+
+pub fn visualize_design_array(shape: (usize, usize), mask: &Vec<Status>) {
+    let (_, n) = shape;
+    let mut s = "".to_string();
+    for (i, d) in mask.iter().enumerate() {
+        let block = match d {
+            Status::Unassigned => Block::DarkWhite.to_string(),
+            Status::Void => Block::White.to_string(),
+            Status::Solid => Block::BrightBlack.to_string(),
+            _ => Block::DarkWhite.to_string(),
+        };
+        s = format!("{s}{block}");
+        if i % n == n - 1 {
+            s = format!("{s}\n");
+        }
+    }
+    println!("{s}");
+}
+
+impl Design {
+    pub fn visualize(&self) {
+        let design_array: Vec<Status> = self
+            .void_pixels
+            .iter()
+            .zip(self.solid_pixels.iter())
+            .map(|(v, s)| {
+                if *v {
+                    Status::Void
+                } else if *s {
+                    Status::Solid
+                } else {
+                    Status::Unassigned
+                }
+            })
+            .collect();
+        visualize_design_array(self.shape, &design_array);
+        visualize_masks(self.shape, &vec![&self.pixels, &self.touches]);
+    }
 }
 
 #[allow(dead_code)]
@@ -61,8 +125,8 @@ impl Block {
     }
     pub fn from_u8(u: u8) -> Self {
         let block = match u {
-            0 => Self::DarkWhite, //
-            1 => Self::White, //
+            0 => Self::DarkWhite,   //
+            1 => Self::White,       //
             2 => Self::BrightBlack, //
             3 => Self::BrightCyan,
             4 => Self::BrightYellow,
