@@ -87,6 +87,22 @@ pub fn apply_touch<T: Copy>(
     profiler.stop();
 }
 
+pub fn multi_apply_touch<T: Copy>(
+    shape: (usize, usize),
+    arrays: &mut Vec<&mut Vec<T>>,
+    pos: (usize, usize),
+    values: &Vec<T>,
+) {
+    let profiler = Profiler::start("apply_touch");
+    let (_, size_j) = shape;
+    let (m, n) = pos;
+    let idx = k(m, n, size_j);
+    for (array, value) in arrays.iter_mut().zip(values.into_iter()) {
+        array[idx] = *value;
+    }
+    profiler.stop();
+}
+
 pub fn apply_brush<T: Copy>(
     shape: (usize, usize),
     array: &mut Vec<T>,
@@ -116,6 +132,41 @@ pub fn apply_brush<T: Copy>(
         }
         let idx = k(i as usize, j as usize, size_j);
         array[idx] = value;
+    }
+    profiler.stop();
+}
+
+pub fn multi_apply_brush<T: Copy>(
+    shape: (usize, usize),
+    arrays: &mut Vec<&mut Vec<T>>,
+    brush: &Brush,
+    pos: (usize, usize),
+    values: &Vec<T>,
+) {
+    let profiler = Profiler::start("multi_apply_brush");
+    let (size_i, size_j) = shape;
+    let (m, n) = pos;
+    let m = m as i32;
+    let n = n as i32;
+    for (i, j) in brush.brush.iter() {
+        let i = i + m;
+        let j = j + n;
+        if i < 0 {
+            continue;
+        }
+        if j < 0 {
+            continue;
+        }
+        if (size_i as i32) <= i {
+            continue;
+        }
+        if (size_j as i32) <= j {
+            continue;
+        }
+        let idx = k(i as usize, j as usize, size_j);
+        for (array, value) in arrays.iter_mut().zip(values.into_iter()) {
+            array[idx] = *value;
+        }
     }
     profiler.stop();
 }

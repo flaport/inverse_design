@@ -1,5 +1,5 @@
 use super::array::new_array;
-use super::brushes::{Brush,compute_big_brush,apply_brush,apply_touch};
+use super::brushes::{compute_big_brush, multi_apply_brush, multi_apply_touch, Brush};
 
 pub fn test_design() {
     let shape: (usize, usize) = (6, 8);
@@ -10,13 +10,12 @@ pub fn test_design() {
 
     let big_brush = compute_big_brush(&brush);
 
-
     println!("step 1");
     let mut design = Design::new(shape);
     design.visualize();
 
     println!("step 2");
-    design.add_void_touch(&brush, (0, 6));
+    design.add_void_touch(&brush, &big_brush, (0, 6));
     design.visualize();
 }
 
@@ -55,11 +54,21 @@ impl Design {
         };
     }
 
-    pub fn add_void_touch(&mut self, brush: &Brush, pos: (usize, usize)) {
-        apply_brush(self.shape, &mut self.pixels, brush, pos, true);
-        apply_brush(self.shape, &mut self.void_pixels, brush, pos, true);
+    pub fn add_void_touch(&mut self, brush: &Brush, big_brush: &Brush, pos: (usize, usize)) {
+        multi_apply_brush(
+            self.shape,
+            &mut vec![&mut self.pixels, &mut self.void_pixels],
+            brush,
+            pos,
+            &vec![true, true],
+        );
 
-        apply_touch(self.shape, &mut self.touches, pos, true);
-        apply_touch(self.shape, &mut self.void_touches, pos, true);
+        multi_apply_touch(
+            self.shape,
+            &mut vec![&mut self.touches, &mut self.void_touches],
+            pos,
+            &vec![true, true],
+        );
+
     }
 }
