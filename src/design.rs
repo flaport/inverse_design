@@ -1,8 +1,7 @@
 use super::array::new_array;
-use super::brushes::{
-    apply_brush, apply_touch, compute_big_brush, multi_apply_brush, multi_apply_touch, Brush,
-};
+use super::brushes::{apply_brush, compute_big_brush, multi_apply_brush, multi_apply_touch, Brush};
 use super::profiling::Profiler;
+use std::mem::swap;
 
 pub fn test_design() {
     let shape: (usize, usize) = (6, 8);
@@ -19,6 +18,17 @@ pub fn test_design() {
 
     println!("step 2");
     design.add_void_touch(&brush, &big_brush, (0, 6));
+    design.visualize();
+
+    println!("step 3");
+    design.visualize();
+
+    println!("step 4");
+    design.add_solid_touch(&brush, &big_brush, (0, 0));
+    design.visualize();
+
+    println!("step 5");
+    design.add_void_touch(&brush, &big_brush, (4, 6));
     design.visualize();
 }
 
@@ -92,7 +102,7 @@ impl Design {
     }
 
     pub fn add_void_touch(&mut self, brush: &Brush, big_brush: &Brush, pos: (usize, usize)) {
-        let profiler = Profiler::start("add_void_touch");
+        let profiler = Profiler::start("add_touch");
 
         self.void_brush_at_pos(brush, pos);
         self.void_touch_at_pos(pos);
@@ -100,6 +110,26 @@ impl Design {
         self.take_free_void_touches_around_pos(brush, big_brush, pos);
 
         profiler.stop();
+    }
+
+    pub fn add_solid_touch(&mut self, brush: &Brush, big_brush: &Brush, pos: (usize, usize)) {
+        self.invert();
+        self.add_void_touch(brush, big_brush, pos);
+        self.invert();
+    }
+
+    pub fn invert(&mut self) {
+        swap(&mut self.void, &mut self.solid);
+        swap(&mut self.void_pixel_impossible, &mut self.solid_pixel_impossible);
+        swap(&mut self.void_pixel_existing, &mut self.solid_pixel_existing);
+        swap(&mut self.void_pixel_possible, &mut self.solid_pixel_possible);
+        swap(&mut self.void_pixel_required, &mut self.solid_pixel_required);
+        swap(&mut self.void_touch_required, &mut self.solid_touch_required);
+        swap(&mut self.void_touch_invalid, &mut self.solid_touch_invalid);
+        swap(&mut self.void_touch_existing, &mut self.solid_touch_existing);
+        swap(&mut self.void_touch_valid, &mut self.solid_touch_valid);
+        swap(&mut self.void_touch_free, &mut self.solid_touch_free);
+        swap(&mut self.void_touch_resolving, &mut self.solid_touch_resolving);
     }
 
     fn take_free_void_touches_around_pos(
