@@ -1,5 +1,6 @@
 use super::array::{k, new_array};
 use super::visualization::visualize_mask;
+use super::profiling::Profiler;
 
 pub fn test_brushes() {
     let (size, notch) = (5, 1);
@@ -15,6 +16,7 @@ pub fn touch(
     brush: &Vec<(i32, i32)>,
     pos: (usize, usize),
 ) {
+    let profiler = Profiler::start("touch");
     let (size_i, size_j) = mask_shape;
     let (m, n) = pos;
     let m = m as i32;
@@ -37,6 +39,7 @@ pub fn touch(
         let idx = k(i as usize, j as usize, size_j);
         mask[idx] = true;
     }
+    profiler.stop();
 }
 
 pub fn notched_square_brush(width: usize, notch: usize) -> Vec<(i32, i32)> {
