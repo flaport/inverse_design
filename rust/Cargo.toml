@@ -1,0 +1,17 @@
+[package]
+name = "inverse_design_rs"
+version = "0.1.0"
+edition = "2021"
+authors = ["Floris Laporte"]
+
+[lib]
+name = "inverse_design_rs"
+crate-type = ["lib", "cdylib"]
+
+[dependencies]
+itertools = "0.10.5"
+once_cell = "1.17.0"
+
+[dependencies.pyo3]
+version = "0.13.1"
+features = ["extension-module"]

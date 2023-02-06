@@ -1,0 +1,378 @@
+create empty design.
+iteration 0
+touch solid (10, 12).
+iteration 1
+touch void (22, 14).
+iteration 2
+touch solid (27, 5).
+iteration 3
+take free solid.
+iteration 4
+touch solid (20, 22).
+iteration 5
+touch void (15, 20).
+iteration 6
+resolve void (16, 17).
+iteration 7
+resolve void (17, 17).
+iteration 8
+take free void.
+iteration 9
+resolve void (18, 17).
+iteration 10
+take free void.
+iteration 11
+resolve void (21, 14).
+iteration 12
+take free void.
+iteration 13
+touch solid (27, 6).
+iteration 14
+take free solid.
+iteration 15
+touch solid (10, 13).
+iteration 16
+touch void (14, 20).
+iteration 17
+take free void.
+iteration 18
+touch void (18, 27).
+iteration 19
+take free void.
+iteration 20
+resolve void (14, 23).
+iteration 21
+take free void.
+iteration 22
+resolve void (17, 26).
+iteration 23
+take free void.
+iteration 24
+touch solid (5, 29).
+iteration 25
+touch solid (11, 13).
+iteration 26
+touch void (22, 12).
+iteration 27
+take free void.
+iteration 28
+touch solid (23, 19).
+iteration 29
+take free solid.
+iteration 30
+touch solid (6, 29).
+iteration 31
+touch void (23, 14).
+iteration 32
+touch solid (7, 28).
+iteration 33
+take free solid.
+iteration 34
+touch solid (24, 19).
+iteration 35
+touch void (21, 6).
+iteration 36
+resolve void (22, 7).
+iteration 37
+take free void.
+iteration 38
+touch solid (26, 4).
+iteration 39
+resolve solid (25, 3).
+iteration 40
+resolve solid (27, 2).
+iteration 41
+take free solid.
+iteration 42
+touch void (17, 5).
+iteration 43
+take free void.
+iteration 44
+touch void (1, 14).
+iteration 45
+take free void.
+iteration 46
+touch solid (5, 28).
+iteration 47
+take free solid.
+iteration 48
+touch void (13, 22).
+iteration 49
+touch solid (12, 13).
+iteration 50
+touch void (13, 20).
+iteration 51
+take free void.
+iteration 52
+touch void (0, 15).
+iteration 53
+touch void (16, 5).
+iteration 54
+touch solid (26, 18).
+iteration 55
+resolve solid (29, 15).
+iteration 56
+take free solid.
+iteration 57
+resolve solid (28, 14).
+iteration 58
+take free solid.
+iteration 59
+touch solid (4, 29).
+iteration 60
+resolve solid (3, 28).
+iteration 61
+take free solid.
+iteration 62
+touch solid (11, 28).
+iteration 63
+take free solid.
+iteration 64
+touch void (17, 6).
+iteration 65
+take free void.
+iteration 66
+touch solid (11, 12).
+iteration 67
+touch void (17, 3).
+iteration 68
+take free void.
+iteration 69
+resolve void (17, 2).
+iteration 70
+take free void.
+iteration 71
+touch void (19, 27).
+iteration 72
+take free void.
+iteration 73
+touch void (0, 13).
+iteration 74
+touch solid (11, 27).
+iteration 75
+touch solid (9, 10).
+iteration 76
+take free solid.
+iteration 77
+touch void (2, 13).
+iteration 78
+take free void.
+iteration 79
+touch solid (28, 11).
+iteration 80
+take free solid.
+iteration 81
+touch void (4, 9).
+iteration 82
+take free void.
+iteration 83
+touch solid (21, 22).
+iteration 84
+take free solid.
+iteration 85
+touch solid (9, 11).
+iteration 86
+touch solid (12, 2).
+iteration 87
+take free solid.
+iteration 88
+resolve solid (11, 4).
+iteration 89
+resolve solid (9, 4).
+iteration 90
+take free solid.
+iteration 91
+resolve solid (10, 10).
+iteration 92
+take free solid.
+iteration 93
+touch void (4, 20).
+iteration 94
+take free void.
+iteration 95
+resolve void (7, 20).
+iteration 96
+take free void.
+iteration 97
+resolve void (7, 21).
+iteration 98
+take free void.
+iteration 99
+touch solid (4, 27).
+iteration 100
+touch void (20, 27).
+iteration 101
+take free void.
+iteration 102
+touch void (17, 27).
+iteration 103
+take free void.
+iteration 104
+touch void (3, 20).
+iteration 105
+take free void.
+iteration 106
+touch void (15, 17).
+iteration 107
+touch void (3, 8).
+iteration 108
+take free void.
+iteration 109
+touch solid (28, 27).
+iteration 110
+take free solid.
+iteration 111
+resolve solid (29, 25).
+iteration 112
+take free solid.
+iteration 113
+touch void (23, 9).
+iteration 114
+take free void.
+iteration 115
+touch void (1, 21).
+iteration 116
+take free void.
+iteration 117
+touch solid (8, 12).
+iteration 118
+take free solid.
+iteration 119
+touch solid (6, 27).
+iteration 120
+take free solid.
+iteration 121
+touch solid (27, 28).
+iteration 122
+take free solid.
+iteration 123
+touch solid (11, 14).
+iteration 124
+touch void (4, 8).
+iteration 125
+touch solid (9, 13).
+iteration 126
+touch void (6, 21).
+iteration 127
+take free void.
+iteration 128
+touch void (18, 7).
+iteration 129
+take free void.
+iteration 130
+touch void (19, 9).
+iteration 131
+take free void.
+iteration 132
+touch void (8, 20).
+iteration 133
+take free void.
+iteration 134
+touch void (16, 6).
+iteration 135
+take free void.
+iteration 136
+touch void (15, 7).
+iteration 137
+take free void.
+iteration 138
+touch void (20, 5).
+iteration 139
+take free void.
+iteration 140
+touch solid (9, 14).
+iteration 141
+take free solid.
+iteration 142
+touch void (16, 27).
+iteration 143
+take free void.
+iteration 144
+touch void (7, 19).
+iteration 145
+take free void.
+iteration 146
+touch void (3, 12).
+iteration 147
+take free void.
+iteration 148
+touch void (17, 16).
+iteration 149
+take free void.
+iteration 150
+touch void (16, 16).
+iteration 151
+take free void.
+iteration 152
+touch void (10, 22).
+iteration 153
+take free void.
+iteration 154
+touch solid (7, 1).
+iteration 155
+take free solid.
+iteration 156
+touch solid (8, 14).
+iteration 157
+take free solid.
+iteration 158
+touch void (0, 24).
+iteration 159
+take free void.
+iteration 160
+touch void (7, 22).
+iteration 161
+take free void.
+iteration 162
+touch solid (6, 1).
+iteration 163
+take free solid.
+iteration 164
+touch solid (11, 11).
+iteration 165
+touch solid (8, 4).
+iteration 166
+take free solid.
+iteration 167
+touch solid (0, 4).
+iteration 168
+take free solid.
+iteration 169
+touch void (8, 19).
+iteration 170
+take free void.
+iteration 171
+touch void (16, 10).
+iteration 172
+take free void.
+iteration 173
+touch void (20, 4).
+iteration 174
+take free void.
+iteration 175
+touch solid (6, 3).
+iteration 176
+take free solid.
+iteration 177
+touch solid (11, 10).
+iteration 178
+touch void (22, 28).
+iteration 179
+take free void.
+iteration 180
+touch void (21, 27).
+iteration 181
+touch solid (25, 24).
+iteration 182
+take free solid.
+iteration 183
+touch solid (25, 2).
+iteration 184
+take free solid.
+iteration 185
+touch solid (24, 1).
+iteration 186
+take free solid.
+iteration 187
+touch solid (23, 0).
+iteration 188
