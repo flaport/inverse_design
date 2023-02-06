@@ -11,18 +11,33 @@ pub fn test_brushes() {
 
 pub struct Brush {
     pub brush: Vec<(i32, i32)>,
-    pub size: (usize, usize),
+    pub shape: (usize, usize),
 }
 
 impl Brush {
     pub fn notched_square(width: usize, notch: usize) -> Self {
         let brush = notched_square_brush(width, notch);
-        let size = (width, width);
-        return Self { brush, size };
+        let shape = (width, width);
+        return Self { brush, shape };
+    }
+
+    pub fn from_f32_mask(shape: (usize, usize), mask: &Vec<f32>) -> Self {
+        let (m, n) = shape;
+        let mut brush = Vec::new();
+        let m_ = m as i32 / 2;
+        let n_ = n as i32 / 2;
+        for i in 0..m {
+            for j in 0..n {
+                if mask[i * n + j] > 0.5 {
+                    brush.push((i as i32 - m_, j as i32 - n_));
+                }
+            }
+        }
+        return Self { brush, shape };
     }
 
     pub fn mask(&self) -> Vec<bool> {
-        let (size_i, size_j) = self.size;
+        let (size_i, size_j) = self.shape;
         let mut mask = new_array(size_i * size_j, false);
         for (i, j) in self.brush.iter() {
             let i = i + (size_i as i32) / 2;
@@ -45,7 +60,7 @@ impl Brush {
         return mask;
     }
 
-    pub fn at(&self, pos: (usize, usize), shape: (usize, usize)) -> Vec<(usize, usize)>{
+    pub fn at(&self, pos: (usize, usize), shape: (usize, usize)) -> Vec<(usize, usize)> {
         let (m, n) = pos;
         let (size_i, size_j) = shape;
 
@@ -78,7 +93,7 @@ impl Brush {
 }
 
 pub fn compute_big_brush(brush: &Brush) -> Brush {
-    let (m, n) = brush.size;
+    let (m, n) = brush.shape;
     let (m_, n_) = (2 * m, 2 * n);
     let mut mask = new_array(m_ * n_, false);
     for (i, j) in brush.brush.iter() {
@@ -99,7 +114,7 @@ pub fn compute_big_brush(brush: &Brush) -> Brush {
     }
     return Brush {
         brush: new_brush,
-        size: (m_ - 1, n_ - 1),
+        shape: (m_ - 1, n_ - 1),
     };
 }
 
@@ -226,7 +241,7 @@ fn notched_square_brush(width: usize, notch: usize) -> Vec<(i32, i32)> {
     return brush;
 }
 
-pub fn subtract<T: Copy + Eq>(v1: &Vec<T>, v2: &Vec<T>) -> Vec<T>{
+pub fn subtract<T: Copy + Eq>(v1: &Vec<T>, v2: &Vec<T>) -> Vec<T> {
     let mut v = Vec::new();
     for x in v1.iter() {
         let mut found = false;

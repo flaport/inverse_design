@@ -59,7 +59,7 @@ fn visualize_arrays<T: Copy, F: Fn(T) -> Color>(
 impl Brush {
     pub fn visualize(&self) {
         let mask = self.mask();
-        visualize_array(self.size, &mask, &|b| match b {
+        visualize_array(self.shape, &mask, &|b| match b {
             true => Color::White,
             false => Color::BrightBlack,
         });
