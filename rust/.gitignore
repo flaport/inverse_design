@@ -1,0 +1,9 @@
+*.profraw
+.tags
+.ipynb_checkpoints
+.tags
+.vscode/
+Cargo.lock
+biased.gds
+debug
+target

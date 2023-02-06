@@ -4,37 +4,29 @@ use super::design::Design;
 use super::status::Status;
 use itertools::izip;
 
-impl Brush {
-    pub fn visualize(&self) {
-        let mask = self.mask();
-        visualize_mask(self.size, &mask);
-    }
+pub fn visualize_u8_array(shape: (usize, usize), array: &Vec<u8>) {
+    visualize_array(shape, array, |n| Color::from_u8(n));
 }
 
-pub fn visualize_masks(shape: (usize, usize), masks: &Vec<&Vec<bool>>) {
-    let (m, n) = shape;
-    let l = masks.len();
-    let n_ = l * n;
-    let mut full = Vec::new(); //new_array(m*n_, true);
-    for i in 0..m {
-        for j_ in 0..n_ {
-            let p = j_ / n;
-            let j = j_ % n;
-            let b = masks[p][k(i, j, n)];
-            full.push(b);
-        }
-    }
-    visualize_mask((m, n_), &full);
+pub fn visualize_f32_array(shape: (usize, usize), array: &Vec<f32>) {
+    let min = array.iter().fold(f32::INFINITY, |a, &b| a.min(b));
+    let max = array.iter().fold(f32::NEG_INFINITY, |a, &b| a.max(b));
+    let array_u8: Vec<u8> = array
+        .iter()
+        .map(|x| (3.0 * (x - min) / (max - min)) as u8)
+        .collect();
+    visualize_array(shape, &array_u8, |n| match n {
+        0 => Color::White,
+        1 => Color::DarkWhite,
+        _ => Color::BrightBlack,
+    });
 }
 
-pub fn visualize_mask(shape: (usize, usize), mask: &Vec<bool>) {
+fn visualize_array<T: Copy, F: Fn(T) -> Color>(shape: (usize, usize), array: &Vec<T>, fun: F) {
     let (_, n) = shape;
     let mut s = "".to_string();
-    for (i, b) in mask.iter().enumerate() {
-        let block = match b {
-            true => Block::White.to_string(),
-            false => Block::BrightBlack.to_string(),
-        };
+    for (i, elem) in array.iter().enumerate() {
+        let block = fun(*elem).to_string();
         s = format!("{s}{block}");
         if i % n == n - 1 {
             s = format!("{s}\n");
@@ -43,37 +35,35 @@ pub fn visualize_mask(shape: (usize, usize), mask: &Vec<bool>) {
     println!("{s}");
 }
 
-pub fn visualize_status_array(shape: (usize, usize), mask: &Vec<Status>) {
-    let (_, n) = shape;
-    let mut s = "".to_string();
-    for (i, d) in mask.iter().enumerate() {
-        let block = Block::from_status(d).to_string();
-        s = format!("{s}{block}");
-        if i % n == n - 1 {
-            s = format!("{s}\n");
-        }
-    }
-    println!("{s}");
-}
-
-pub fn visualize_status_arrays(shape: (usize, usize), masks: &Vec<&Vec<Status>>) {
+fn visualize_arrays<T: Copy, F: Fn(T) -> Color>(
+    shape: (usize, usize),
+    arrays: &Vec<&Vec<T>>,
+    empty: T,
+    fun: F,
+) {
     let (m, n) = shape;
-    let l = masks.len();
+    let l = arrays.len();
     let n_ = l * (n + 1);
     let mut full = Vec::new(); //new_array(m*n_, true);
     for i in 0..m {
         for j_ in 0..n_ {
             let p = j_ / (n + 1);
             let j = j_ % (n + 1);
-            let b = if j < n {
-                masks[p][k(i, j, n)]
-            } else {
-                Status::Unknown
-            };
+            let b = if j < n { arrays[p][k(i, j, n)] } else { empty };
             full.push(b);
         }
     }
-    visualize_status_array((m, n_), &full);
+    visualize_array((m, n_), &full, fun);
+}
+
+impl Brush {
+    pub fn visualize(&self) {
+        let mask = self.mask();
+        visualize_array(self.size, &mask, &|b| match b {
+            true => Color::White,
+            false => Color::BrightBlack,
+        });
+    }
 }
 
 impl Design {
@@ -83,7 +73,7 @@ impl Design {
         let solid_pixel_view = self.solid_pixel_view();
         let void_touches_view = self.void_touches_view();
         let solid_touches_view = self.solid_touches_view();
-        visualize_status_arrays(
+        visualize_arrays(
             self.shape,
             &vec![
                 &design_view,
@@ -92,12 +82,14 @@ impl Design {
                 &void_touches_view,
                 &solid_touches_view,
             ],
+            Status::Unknown,
+            &|s| Color::from_status(&s),
         );
     }
 }
 
 #[allow(dead_code)]
-enum Block {
+enum Color {
     Black,
     DarkRed,
     DarkGreen,
@@ -117,7 +109,7 @@ enum Block {
     Transparent,
 }
 
-impl Block {
+impl Color {
     pub fn to_string(&self) -> String {
         let s = match self {
             Self::Black => "\x1b[0;40m█\x1b[0m\x1b[0;40m█\x1b[0m",
@@ -196,7 +188,7 @@ pub fn test_visualization() {
 
     let mut s = "".to_string();
     for i in 0..14 {
-        let block = Block::from_u8(i as u8);
+        let block = Color::from_u8(i as u8);
         let block_str = block.to_string();
         s = format!("{s} {block_str}");
     }
