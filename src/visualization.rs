@@ -1,5 +1,20 @@
 use super::status::Status;
 
+pub fn visualize_mask(mask: &Vec<bool>, n: usize){
+    let mut s = "".to_string();
+    for (i, b) in mask.iter().enumerate(){
+        let block = match b {
+            true => {Block::White.to_string()},
+            false => {Block::BrightBlack.to_string()},
+        };
+        s = format!("{s}{block}");
+        if i % n == n - 1 {
+            s = format!("{s}\n");
+        }
+    }
+    println!("{s}");
+}
+
 #[allow(dead_code)]
 enum Block {
     Black,
