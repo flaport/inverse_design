@@ -9,6 +9,7 @@ name = "inverse_design_rs"
 crate-type = ["lib", "cdylib"]
 
 [dependencies]
+itertools = "0.10.5"
 once_cell = "1.17.0"
 
 [dependencies.pyo3]

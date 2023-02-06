@@ -3,7 +3,6 @@ use super::profiling::Profiler;
 
 pub fn test_brushes() {
     let brush = Brush::notched_square(5, 1);
-    let mask = brush.mask();
     let big_brush = compute_big_brush(&brush);
 
     brush.visualize();
@@ -44,6 +43,37 @@ impl Brush {
             mask[idx] = true;
         }
         return mask;
+    }
+
+    pub fn at(&self, pos: (usize, usize), shape: (usize, usize)) -> Vec<(usize, usize)>{
+        let (m, n) = pos;
+        let (size_i, size_j) = shape;
+
+        let m = m as i32;
+        let n = n as i32;
+        let size_i = size_i as i32;
+        let size_j = size_j as i32;
+
+        let mut new = Vec::new();
+
+        for (i, j) in self.brush.iter() {
+            let i = *i + m;
+            let j = *j + n;
+            if i < 0 {
+                continue;
+            }
+            if j < 0 {
+                continue;
+            }
+            if size_i <= i {
+                continue;
+            }
+            if size_j <= j {
+                continue;
+            }
+            new.push((i as usize, j as usize));
+        }
+        return new;
     }
 }
 
@@ -194,14 +224,4 @@ fn notched_square_brush(width: usize, notch: usize) -> Vec<(i32, i32)> {
         }
     }
     return brush;
-}
-
-fn _translate_brush(brush: &Vec<(i32, i32)>, m: i32, n: i32) -> Vec<(i32, i32)> {
-    let m = m as i32;
-    let n = n as i32;
-    let mut new = Vec::new();
-    for (i, j) in brush.iter() {
-        new.push(((*i + m), (*j + n)));
-    }
-    return new;
 }

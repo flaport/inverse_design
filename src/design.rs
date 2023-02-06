@@ -1,5 +1,8 @@
 use super::array::new_array;
-use super::brushes::{compute_big_brush, multi_apply_brush, multi_apply_touch, Brush};
+use super::brushes::{
+    apply_brush, apply_touch, compute_big_brush, multi_apply_brush, multi_apply_touch, Brush,
+};
+use super::profiling::Profiler;
 
 pub fn test_design() {
     let shape: (usize, usize) = (6, 8);
@@ -22,53 +25,163 @@ pub fn test_design() {
 pub struct Design {
     pub shape: (usize, usize),
 
-    pub pixels: Vec<bool>,
-    pub void_pixels: Vec<bool>,
-    pub solid_pixels: Vec<bool>,
+    pub unassigned: Vec<bool>, /*  0 */
+    pub void: Vec<bool>,       /*  1 */
+    pub solid: Vec<bool>,      /*  2 */
 
-    pub touches: Vec<bool>,
-    pub void_touches: Vec<bool>,
-    pub solid_touches: Vec<bool>,
+    pub void_pixel_impossible: Vec<bool>, /*  3 */
+    pub void_pixel_existing: Vec<bool>,   /*  4 */
+    pub void_pixel_possible: Vec<bool>,   /*  5 */
+    pub void_pixel_required: Vec<bool>,   /*  6 */
+
+    pub solid_pixel_impossible: Vec<bool>, /*  3 */
+    pub solid_pixel_existing: Vec<bool>,   /*  4 */
+    pub solid_pixel_possible: Vec<bool>,   /*  5 */
+    pub solid_pixel_required: Vec<bool>,   /*  6 */
+
+    pub void_touch_required: Vec<bool>,  /*  7 */
+    pub void_touch_invalid: Vec<bool>,   /*  8 */
+    pub void_touch_existing: Vec<bool>,  /*  9 */
+    pub void_touch_valid: Vec<bool>,     /* 10 */
+    pub void_touch_free: Vec<bool>,      /* 11 */
+    pub void_touch_resolving: Vec<bool>, /* 12 */
+
+    pub solid_touch_required: Vec<bool>,  /*  7 */
+    pub solid_touch_invalid: Vec<bool>,   /*  8 */
+    pub solid_touch_existing: Vec<bool>,  /*  9 */
+    pub solid_touch_valid: Vec<bool>,     /* 10 */
+    pub solid_touch_free: Vec<bool>,      /* 11 */
+    pub solid_touch_resolving: Vec<bool>, /* 12 */
 }
 
 impl Design {
     pub fn new(shape: (usize, usize)) -> Self {
         let (size_x, size_y) = shape;
 
-        let pixels = new_array(size_x * size_y, false);
-        let void_pixels = new_array(size_x * size_y, false);
-        let solid_pixels = new_array(size_x * size_y, false);
-
-        let touches = new_array(size_x * size_y, false);
-        let void_touches = new_array(size_x * size_y, false);
-        let solid_touches = new_array(size_x * size_y, false);
-
         return Self {
-            shape,
-            pixels,
-            void_pixels,
-            solid_pixels,
-            touches,
-            void_touches,
-            solid_touches,
+            shape: (size_x, size_y),
+
+            unassigned: new_array(size_x * size_y, true),
+            void: new_array(size_x * size_y, false),
+            solid: new_array(size_x * size_y, false),
+
+            void_pixel_impossible: new_array(size_x * size_y, false),
+            void_pixel_existing: new_array(size_x * size_y, false),
+            void_pixel_possible: new_array(size_x * size_y, true),
+            void_pixel_required: new_array(size_x * size_y, false),
+
+            solid_pixel_impossible: new_array(size_x * size_y, false),
+            solid_pixel_existing: new_array(size_x * size_y, false),
+            solid_pixel_possible: new_array(size_x * size_y, true),
+            solid_pixel_required: new_array(size_x * size_y, false),
+
+            void_touch_required: new_array(size_x * size_y, false),
+            void_touch_invalid: new_array(size_x * size_y, false),
+            void_touch_existing: new_array(size_x * size_y, false),
+            void_touch_valid: new_array(size_x * size_y, true),
+            void_touch_free: new_array(size_x * size_y, false),
+            void_touch_resolving: new_array(size_x * size_y, false),
+
+            solid_touch_required: new_array(size_x * size_y, false),
+            solid_touch_invalid: new_array(size_x * size_y, false),
+            solid_touch_existing: new_array(size_x * size_y, false),
+            solid_touch_valid: new_array(size_x * size_y, true),
+            solid_touch_free: new_array(size_x * size_y, false),
+            solid_touch_resolving: new_array(size_x * size_y, false),
         };
     }
 
     pub fn add_void_touch(&mut self, brush: &Brush, big_brush: &Brush, pos: (usize, usize)) {
+        let profiler = Profiler::start("add_void_touch");
+
+        self.void_brush_at_pos(brush, pos);
+        self.void_touch_at_pos(pos);
+        self.big_void_brush_at_pos(big_brush, pos);
+        self.take_free_void_touches_around_pos(brush, big_brush, pos);
+
+        profiler.stop();
+    }
+
+    fn take_free_void_touches_around_pos(
+        &mut self,
+        brush: &Brush,
+        big_brush: &Brush,
+        pos: (usize, usize),
+    ) {
+        let (_, n) = self.shape;
+        for pos_ in big_brush.at(pos, self.shape) {
+            if pos_ == pos {
+                continue;
+            }
+            let is_free_touch = brush
+                .at(pos_, self.shape)
+                .iter()
+                .all(|(i_, j_)| self.void_pixel_existing[i_ * n + j_]);
+            if is_free_touch {
+                multi_apply_touch(
+                    self.shape,
+                    // &mut vec![&mut self.void_touch_free],
+                    &mut vec![&mut self.void_touch_existing],
+                    pos_,
+                    &vec![true],
+                );
+            }
+        }
+    }
+
+    fn big_void_brush_at_pos(&mut self, big_brush: &Brush, pos: (usize, usize)) {
+        apply_brush(
+            self.shape,
+            &mut self.solid_touch_invalid,
+            big_brush,
+            pos,
+            true,
+        )
+    }
+
+    fn void_brush_at_pos(&mut self, brush: &Brush, pos: (usize, usize)) {
         multi_apply_brush(
             self.shape,
-            &mut vec![&mut self.pixels, &mut self.void_pixels],
+            &mut vec![
+                &mut self.unassigned,
+                &mut self.void,
+                &mut self.void_pixel_impossible,
+                &mut self.void_pixel_existing,
+                &mut self.void_pixel_possible,
+                &mut self.void_pixel_required,
+                &mut self.solid_pixel_impossible,
+                &mut self.solid_pixel_existing,
+                &mut self.solid_pixel_possible,
+                &mut self.solid_pixel_required,
+            ],
             brush,
             pos,
-            &vec![true, true],
+            &vec![
+                true, true, false, true, false, false, true, false, false, false,
+            ],
         );
+    }
 
+    fn void_touch_at_pos(&mut self, pos: (usize, usize)) {
         multi_apply_touch(
             self.shape,
-            &mut vec![&mut self.touches, &mut self.void_touches],
+            &mut vec![
+                &mut self.void_touch_required,
+                &mut self.void_touch_invalid,
+                &mut self.void_touch_existing,
+                &mut self.void_touch_valid,
+                &mut self.void_touch_free,
+                &mut self.void_touch_resolving,
+                &mut self.solid_touch_required,
+                &mut self.solid_touch_existing,
+                &mut self.solid_touch_valid,
+                &mut self.solid_touch_free,
+                &mut self.solid_touch_resolving,
+            ],
             pos,
-            &vec![true, true],
+            &vec![
+                false, false, true, false, false, false, false, false, false, false, false,
+            ],
         );
-
     }
 }

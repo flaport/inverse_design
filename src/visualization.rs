@@ -1,7 +1,8 @@
 use super::array::k;
+use super::brushes::Brush;
 use super::design::Design;
 use super::status::Status;
-use super::brushes::Brush;
+use itertools::izip;
 
 impl Brush {
     pub fn visualize(&self) {
@@ -42,16 +43,11 @@ pub fn visualize_mask(shape: (usize, usize), mask: &Vec<bool>) {
     println!("{s}");
 }
 
-pub fn visualize_design_array(shape: (usize, usize), mask: &Vec<Status>) {
+pub fn visualize_status_array(shape: (usize, usize), mask: &Vec<Status>) {
     let (_, n) = shape;
     let mut s = "".to_string();
     for (i, d) in mask.iter().enumerate() {
-        let block = match d {
-            Status::Unassigned => Block::DarkWhite.to_string(),
-            Status::Void => Block::White.to_string(),
-            Status::Solid => Block::BrightBlack.to_string(),
-            _ => Block::DarkWhite.to_string(),
-        };
+        let block = Block::from_status(d).to_string();
         s = format!("{s}{block}");
         if i % n == n - 1 {
             s = format!("{s}\n");
@@ -60,24 +56,43 @@ pub fn visualize_design_array(shape: (usize, usize), mask: &Vec<Status>) {
     println!("{s}");
 }
 
+pub fn visualize_status_arrays(shape: (usize, usize), masks: &Vec<&Vec<Status>>) {
+    let (m, n) = shape;
+    let l = masks.len();
+    let n_ = l * (n + 1);
+    let mut full = Vec::new(); //new_array(m*n_, true);
+    for i in 0..m {
+        for j_ in 0..n_ {
+            let p = j_ / (n + 1);
+            let j = j_ % (n + 1);
+            let b = if j < n {
+                masks[p][k(i, j, n)]
+            } else {
+                Status::Unknown
+            };
+            full.push(b);
+        }
+    }
+    visualize_status_array((m, n_), &full);
+}
+
 impl Design {
     pub fn visualize(&self) {
-        let design_array: Vec<Status> = self
-            .void_pixels
-            .iter()
-            .zip(self.solid_pixels.iter())
-            .map(|(v, s)| {
-                if *v {
-                    Status::Void
-                } else if *s {
-                    Status::Solid
-                } else {
-                    Status::Unassigned
-                }
-            })
-            .collect();
-        visualize_design_array(self.shape, &design_array);
-        visualize_masks(self.shape, &vec![&self.pixels, &self.touches]);
+        let design_view = self.design_view();
+        let void_pixel_view = self.void_pixel_view();
+        let solid_pixel_view = self.solid_pixel_view();
+        let void_touches_view = self.void_touches_view();
+        let solid_touches_view = self.solid_touches_view();
+        visualize_status_arrays(
+            self.shape,
+            &vec![
+                &design_view,
+                &void_pixel_view,
+                &solid_pixel_view,
+                &void_touches_view,
+                &solid_touches_view,
+            ],
+        );
     }
 }
 
@@ -99,7 +114,7 @@ enum Block {
     BrightMagenta,
     BrightCyan,
     White,
-    Unknown,
+    Transparent,
 }
 
 impl Block {
@@ -121,7 +136,7 @@ impl Block {
             Self::BrightMagenta => "\x1b[0;95m█\x1b[0m\x1b[0;95m█\x1b[0m",
             Self::BrightCyan => "\x1b[0;96m█\x1b[0m\x1b[0;96m█\x1b[0m",
             Self::White => "\x1b[0;97m█\x1b[0m\x1b[0;97m█\x1b[0m",
-            Self::Unknown => "  ",
+            Self::Transparent => "  ",
         };
         return s.to_string();
     }
@@ -143,7 +158,29 @@ impl Block {
             // 13 => Self::DarkGreen,
             // 14 => Self::BrightRed,
             // 15 => Self::DarkCyan,
-            _ => Self::Unknown,
+            _ => Self::Transparent,
+        };
+        return block;
+    }
+    pub fn from_status(status: &Status) -> Self {
+        let block = match status {
+            Status::Unassigned => Self::DarkWhite, //
+            Status::Void => Self::White,           //
+            Status::Solid => Self::BrightBlack,    //
+            Status::PixelImpossible => Self::BrightCyan,
+            Status::PixelExisting => Self::BrightYellow,
+            Status::PixelPossible => Self::DarkMagenta,
+            Status::PixelRequired => Self::DarkRed,
+            Status::TouchRequired => Self::BrightBlue,
+            Status::TouchInvalid => Self::DarkBlue,
+            Status::TouchExisting => Self::DarkYellow,
+            Status::TouchValid => Self::BrightGreen,
+            Status::TouchFree => Self::BrightMagenta,
+            Status::TouchResolving => Self::Black,
+            // _ => Self::DarkGreen,
+            // _ => Self::BrightRed,
+            // _ => Self::DarkCyan,
+            _ => Self::Transparent,
         };
         return block;
     }
@@ -172,4 +209,118 @@ pub fn test_visualization() {
         s = format!("{s} {status_str}");
     }
     println!("{s}");
+}
+
+impl Design {
+    pub fn design_view(&self) -> Vec<Status> {
+        self.void
+            .iter()
+            .zip(self.solid.iter())
+            .map(|(v, s)| {
+                if *v {
+                    Status::Void
+                } else if *s {
+                    Status::Solid
+                } else {
+                    Status::Unassigned
+                }
+            })
+            .collect()
+    }
+
+    pub fn void_pixel_view(&self) -> Vec<Status> {
+        izip!(
+            self.void_pixel_impossible.iter(),
+            self.void_pixel_existing.iter(),
+            self.void_pixel_possible.iter(),
+            self.void_pixel_required.iter(),
+        )
+        .map(|(i, e, _, r)| {
+            if *e {
+                Status::PixelExisting
+            } else if *i {
+                Status::PixelImpossible
+            } else if *r {
+                Status::PixelRequired
+            } else {
+                Status::PixelPossible
+            }
+        })
+        .collect()
+    }
+
+    pub fn solid_pixel_view(&self) -> Vec<Status> {
+        izip!(
+            self.solid_pixel_impossible.iter(),
+            self.solid_pixel_existing.iter(),
+            self.solid_pixel_possible.iter(),
+            self.solid_pixel_required.iter(),
+        )
+        .map(|(i, e, _, r)| {
+            if *e {
+                Status::PixelExisting
+            } else if *i {
+                Status::PixelImpossible
+            } else if *r {
+                Status::PixelRequired
+            } else {
+                Status::PixelPossible
+            }
+        })
+        .collect()
+    }
+
+    pub fn void_touches_view(&self) -> Vec<Status> {
+        izip!(
+            self.void_touch_required.iter(),
+            self.void_touch_invalid.iter(),
+            self.void_touch_existing.iter(),
+            self.void_touch_valid.iter(),
+            self.void_touch_free.iter(),
+            self.void_touch_resolving.iter(),
+        )
+        .map(|(r, i, e, _, f, g)| {
+            if *g {
+                Status::TouchResolving
+            } else if *r {
+                Status::TouchRequired
+            } else if *f {
+                Status::TouchFree
+            } else if *i {
+                Status::TouchInvalid
+            } else if *e {
+                Status::TouchExisting
+            } else {
+                Status::TouchValid
+            }
+        })
+        .collect()
+    }
+
+    pub fn solid_touches_view(&self) -> Vec<Status> {
+        izip!(
+            self.solid_touch_required.iter(),
+            self.solid_touch_invalid.iter(),
+            self.solid_touch_existing.iter(),
+            self.solid_touch_valid.iter(),
+            self.solid_touch_free.iter(),
+            self.solid_touch_resolving.iter(),
+        )
+        .map(|(r, i, e, _, f, g)| {
+            if *g {
+                Status::TouchResolving
+            } else if *r {
+                Status::TouchRequired
+            } else if *f {
+                Status::TouchFree
+            } else if *i {
+                Status::TouchInvalid
+            } else if *e {
+                Status::TouchExisting
+            } else {
+                Status::TouchValid
+            }
+        })
+        .collect()
+    }
 }
