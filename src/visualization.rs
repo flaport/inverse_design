@@ -1,11 +1,13 @@
 use super::array::k;
 use super::design::Design;
 use super::status::Status;
-use super::brushes::brush_mask;
+use super::brushes::Brush;
 
-pub fn visualize_brush(shape: (usize, usize), brush: &Vec<(i32, i32)>){
-    let mask = brush_mask(&brush, shape);
-    visualize_mask(shape, &mask);
+impl Brush {
+    pub fn visualize(&self) {
+        let mask = self.mask();
+        visualize_mask(self.size, &mask);
+    }
 }
 
 pub fn visualize_masks(shape: (usize, usize), masks: &Vec<&Vec<bool>>) {

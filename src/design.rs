@@ -1,12 +1,15 @@
 use super::array::new_array;
-use super::brushes::{apply_brush, apply_touch, notched_square_brush};
-use super::visualization::visualize_brush;
+use super::brushes::{Brush,compute_big_brush,apply_brush,apply_touch};
 
 pub fn test_design() {
     let shape: (usize, usize) = (6, 8);
     let (brush_size, notch): (usize, usize) = (5, 1);
-    let brush = notched_square_brush(brush_size, notch);
-    visualize_brush((brush_size, brush_size), &brush);
+
+    let brush = Brush::notched_square(brush_size, notch);
+    brush.visualize();
+
+    let big_brush = compute_big_brush(&brush);
+
 
     println!("step 1");
     let mut design = Design::new(shape);
@@ -52,7 +55,7 @@ impl Design {
         };
     }
 
-    pub fn add_void_touch(&mut self, brush: &Vec<(i32, i32)>, pos: (usize, usize)) {
+    pub fn add_void_touch(&mut self, brush: &Brush, pos: (usize, usize)) {
         apply_brush(self.shape, &mut self.pixels, brush, pos, true);
         apply_brush(self.shape, &mut self.void_pixels, brush, pos, true);
 
