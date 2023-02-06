@@ -225,3 +225,20 @@ fn notched_square_brush(width: usize, notch: usize) -> Vec<(i32, i32)> {
     }
     return brush;
 }
+
+pub fn subtract<T: Copy + Eq>(v1: &Vec<T>, v2: &Vec<T>) -> Vec<T>{
+    let mut v = Vec::new();
+    for x in v1.iter() {
+        let mut found = false;
+        for y in v2.iter() {
+            if x == y {
+                found = true;
+                break;
+            }
+        }
+        if !found {
+            v.push(*x);
+        }
+    }
+    return v;
+}

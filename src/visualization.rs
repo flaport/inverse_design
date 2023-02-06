@@ -236,12 +236,12 @@ impl Design {
             self.void_pixel_required.iter(),
         )
         .map(|(i, e, _, r)| {
-            if *e {
+            if *r {
+                Status::PixelRequired
+            } else if *e {
                 Status::PixelExisting
             } else if *i {
                 Status::PixelImpossible
-            } else if *r {
-                Status::PixelRequired
             } else {
                 Status::PixelPossible
             }

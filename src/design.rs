@@ -1,5 +1,7 @@
 use super::array::new_array;
-use super::brushes::{apply_brush, compute_big_brush, multi_apply_brush, multi_apply_touch, Brush};
+use super::brushes::{
+    apply_brush, apply_touch, compute_big_brush, multi_apply_brush, multi_apply_touch, Brush,
+};
 use super::profiling::Profiler;
 use std::mem::swap;
 
@@ -12,23 +14,47 @@ pub fn test_design() {
 
     let big_brush = compute_big_brush(&brush);
 
-    println!("step 1");
+    println!("step 1 (new)");
     let mut design = Design::new(shape);
     design.visualize();
 
-    println!("step 2");
+    println!("step 2 (0, 6)");
     design.add_void_touch(&brush, &big_brush, (0, 6));
     design.visualize();
 
-    println!("step 3");
+    println!("step 3 (skipped)");
     design.visualize();
 
-    println!("step 4");
+    println!("step 4 (0, 0)");
     design.add_solid_touch(&brush, &big_brush, (0, 0));
     design.visualize();
 
-    println!("step 5");
+    println!("step 5 (4, 6)");
     design.add_void_touch(&brush, &big_brush, (4, 6));
+    design.visualize();
+
+    println!("step 6 (skipped)");
+    design.visualize();
+
+    println!("step 7 (4, 4)");
+    design.add_void_touch(&brush, &big_brush, (4, 4));
+    design.visualize();
+
+    println!("step 8 (skipped)");
+    design.visualize();
+
+    println!("step 9 (5, 0)");
+    design.add_void_touch(&brush, &big_brush, (5, 0));
+    design.visualize();
+
+    println!("step 10 (skipped)");
+    design.visualize();
+
+    println!("step 11 (2, 5)");
+    design.add_void_touch(&brush, &big_brush, (2, 5));
+    design.visualize();
+
+    println!("step 12 (skipped)");
     design.visualize();
 }
 
@@ -107,8 +133,10 @@ impl Design {
         self.void_brush_at_pos(brush, pos);
         self.void_touch_at_pos(pos);
         self.big_void_brush_at_pos(big_brush, pos);
+        let required_pixels = self.find_required_pixels_around_pos(brush, big_brush, pos);
         self.take_free_void_touches_around_pos(brush, big_brush, pos);
-
+        let _resolving_touches =
+            self.find_resolving_touches_for_required_pixels(brush, required_pixels);
         profiler.stop();
     }
 
@@ -118,18 +146,62 @@ impl Design {
         self.invert();
     }
 
-    pub fn invert(&mut self) {
-        swap(&mut self.void, &mut self.solid);
-        swap(&mut self.void_pixel_impossible, &mut self.solid_pixel_impossible);
-        swap(&mut self.void_pixel_existing, &mut self.solid_pixel_existing);
-        swap(&mut self.void_pixel_possible, &mut self.solid_pixel_possible);
-        swap(&mut self.void_pixel_required, &mut self.solid_pixel_required);
-        swap(&mut self.void_touch_required, &mut self.solid_touch_required);
-        swap(&mut self.void_touch_invalid, &mut self.solid_touch_invalid);
-        swap(&mut self.void_touch_existing, &mut self.solid_touch_existing);
-        swap(&mut self.void_touch_valid, &mut self.solid_touch_valid);
-        swap(&mut self.void_touch_free, &mut self.solid_touch_free);
-        swap(&mut self.void_touch_resolving, &mut self.solid_touch_resolving);
+    fn find_resolving_touches_for_required_pixels(
+        &mut self,
+        brush: &Brush,
+        required_pixels: Vec<(usize, usize)>,
+    ) -> Vec<(usize, usize)> {
+        let (_, n) = self.shape;
+        let mut resolving_touches = Vec::new();
+        for (i, j) in required_pixels.into_iter() {
+            if self.void_pixel_existing[i * n + j] {
+                continue;
+            }
+            for (it, jt) in brush.at((i, j), self.shape).iter() {
+                if self.void_touch_invalid[*it * n + *jt] {
+                    continue;
+                }
+                apply_touch(self.shape, &mut self.void_touch_resolving, (*it, *jt), true);
+                resolving_touches.push((*it, *jt));
+            }
+        }
+        return resolving_touches;
+    }
+
+    fn find_required_pixels_around_pos(
+        &mut self,
+        brush: &Brush,
+        big_brush: &Brush,
+        pos: (usize, usize),
+    ) -> Vec<(usize, usize)> {
+        let (_, n) = self.shape;
+        let big_brush_pixels = big_brush.at(pos, self.shape);
+
+        let mut relevant_pixels = Vec::new();
+        for (i, j) in big_brush_pixels.iter() {
+            if !(self.void_pixel_existing[i * n + j] | self.void_pixel_impossible[i * n + j]) {
+                relevant_pixels.push((*i, *j));
+            }
+        }
+
+        let mut required_pixels = Vec::new();
+        for (ip, jp) in relevant_pixels.iter() {
+            let all_touches_invalid = brush
+                .at((*ip, *jp), self.shape)
+                .iter()
+                .all(|(i, j)| self.solid_touch_invalid[i * n + j]);
+            if all_touches_invalid {
+                multi_apply_touch(
+                    self.shape,
+                    &mut vec![&mut self.void_pixel_required],
+                    (*ip, *jp),
+                    &vec![true],
+                );
+                required_pixels.push((*ip, *jp));
+            }
+        }
+
+        return required_pixels;
     }
 
     fn take_free_void_touches_around_pos(
@@ -143,18 +215,12 @@ impl Design {
             if pos_ == pos {
                 continue;
             }
-            let is_free_touch = brush
-                .at(pos_, self.shape)
-                .iter()
-                .all(|(i_, j_)| self.void_pixel_existing[i_ * n + j_]);
+            let is_free_touch = brush.at(pos_, self.shape).iter().all(|(i_, j_)| {
+                self.void_pixel_existing[i_ * n + j_] | self.void_pixel_required[i_ * n + j_]
+            });
             if is_free_touch {
-                multi_apply_touch(
-                    self.shape,
-                    // &mut vec![&mut self.void_touch_free],
-                    &mut vec![&mut self.void_touch_existing],
-                    pos_,
-                    &vec![true],
-                );
+                self.void_touch_at_pos(pos_);
+                self.void_brush_at_pos(brush, pos_);
             }
         }
     }
@@ -212,6 +278,40 @@ impl Design {
             &vec![
                 false, false, true, false, false, false, false, false, false, false, false,
             ],
+        );
+    }
+    pub fn invert(&mut self) {
+        swap(&mut self.void, &mut self.solid);
+        swap(
+            &mut self.void_pixel_impossible,
+            &mut self.solid_pixel_impossible,
+        );
+        swap(
+            &mut self.void_pixel_existing,
+            &mut self.solid_pixel_existing,
+        );
+        swap(
+            &mut self.void_pixel_possible,
+            &mut self.solid_pixel_possible,
+        );
+        swap(
+            &mut self.void_pixel_required,
+            &mut self.solid_pixel_required,
+        );
+        swap(
+            &mut self.void_touch_required,
+            &mut self.solid_touch_required,
+        );
+        swap(&mut self.void_touch_invalid, &mut self.solid_touch_invalid);
+        swap(
+            &mut self.void_touch_existing,
+            &mut self.solid_touch_existing,
+        );
+        swap(&mut self.void_touch_valid, &mut self.solid_touch_valid);
+        swap(&mut self.void_touch_free, &mut self.solid_touch_free);
+        swap(
+            &mut self.void_touch_resolving,
+            &mut self.solid_touch_resolving,
         );
     }
 }
