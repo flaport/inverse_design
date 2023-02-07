@@ -3,7 +3,7 @@
 # %% auto 0
 __all__ = ['conv', 'conv2d', 'batch_conv2d', 'dilute', 'randn', 'rand', 'argmax2d', 'argmin2d']
 
-# %% ../notebooks/01_utils.ipynb 3
+# %% ../notebooks/01_utils.ipynb 2
 from functools import partial, wraps
 
 import jax
@@ -12,7 +12,7 @@ import numpy as np
 from jax import lax
 from jax.lib import xla_bridge
 
-# %% ../notebooks/01_utils.ipynb 5
+# %% ../notebooks/01_utils.ipynb 4
 @partial(jax.jit, static_argnames=("window_strides", "padding"))
 def conv(lhs, rhs, window_strides=(1, 1), padding="SAME", **kwargs):
     if xla_bridge.get_backend().platform == "cpu":
@@ -34,7 +34,7 @@ def conv(lhs, rhs, window_strides=(1, 1), padding="SAME", **kwargs):
             result = jnp.asarray(result, dtype=dtype)
         return result
 
-# %% ../notebooks/01_utils.ipynb 6
+# %% ../notebooks/01_utils.ipynb 5
 @wraps(conv)
 def conv2d(lhs, rhs, window_strides=(1, 1), padding="SAME", **kwargs):
     lhs = lhs[None, None, :, :]
@@ -42,18 +42,18 @@ def conv2d(lhs, rhs, window_strides=(1, 1), padding="SAME", **kwargs):
     result = conv(lhs, rhs, window_strides, padding, **kwargs)[0, 0, :, :]
     return result
 
-# %% ../notebooks/01_utils.ipynb 7
+# %% ../notebooks/01_utils.ipynb 6
 @wraps(conv)
 def batch_conv2d(lhs, rhs, window_strides=(1, 1), padding="SAME", **kwargs):
     lhs = lhs[:, None, :, :]
     rhs = rhs[:, None, :, :]
     return conv(lhs, rhs, window_strides, padding, **kwargs)[:, 0, :, :]
 
-# %% ../notebooks/01_utils.ipynb 8
+# %% ../notebooks/01_utils.ipynb 7
 def dilute(touches, brush):
     return conv2d(lhs=touches, rhs=brush, window_strides=(1, 1), padding="SAME")
 
-# %% ../notebooks/01_utils.ipynb 11
+# %% ../notebooks/01_utils.ipynb 10
 def randn(shape, r=None, dtype=float):
     if r is not None:
         if isinstance(r, int):
@@ -62,7 +62,7 @@ def randn(shape, r=None, dtype=float):
         r = np.random
     return jnp.asarray(r.randn(*shape), dtype=dtype)
 
-# %% ../notebooks/01_utils.ipynb 12
+# %% ../notebooks/01_utils.ipynb 11
 def rand(shape, r=None, dtype=float):
     if r is not None:
         if isinstance(r, int):
@@ -71,7 +71,7 @@ def rand(shape, r=None, dtype=float):
         r = np.random
     return jnp.asarray(r.rand(*shape), dtype=dtype)
 
-# %% ../notebooks/01_utils.ipynb 14
+# %% ../notebooks/01_utils.ipynb 13
 @jax.jit
 def argmax2d(arr2d):
     _, n = arr2d.shape
@@ -79,7 +79,7 @@ def argmax2d(arr2d):
     k = jnp.argmax(arr1d)
     return k // n, k % n
 
-# %% ../notebooks/01_utils.ipynb 15
+# %% ../notebooks/01_utils.ipynb 14
 @jax.jit
 def argmin2d(arr2d):
     _, n = arr2d.shape

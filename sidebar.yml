@@ -14,3 +14,4 @@ website:
           - notebooks/08_naive_generator.ipynb
           - notebooks/09_local_generator.ipynb
           - notebooks/10_inverse_design_local.ipynb
+          - notebooks/11_ceviche_challenges.ipynb

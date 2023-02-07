@@ -132,7 +132,7 @@ pub fn compute_very_big_square_brush(brush: &Brush) -> Brush {
     return Brush {
         brush: new_brush,
         shape: (m_, n_),
-    }
+    };
 }
 
 pub fn compute_big_square_brush(brush: &Brush) -> Brush {
@@ -140,9 +140,9 @@ pub fn compute_big_square_brush(brush: &Brush) -> Brush {
     let (m_, n_) = (2 * m, 2 * n);
 
     let mut new_brush = Vec::new();
-    for i in 0..m_{
+    for i in 0..m_ {
         for j in 0..n_ {
-            new_brush.push((i as i32 - m  as i32, j as i32 - m as i32));
+            new_brush.push((i as i32 - m as i32, j as i32 - m as i32));
         }
     }
     return Brush {

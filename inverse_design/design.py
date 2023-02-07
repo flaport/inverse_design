@@ -6,7 +6,7 @@ __all__ = ['UNASSIGNED', 'VOID', 'SOLID', 'PIXEL_IMPOSSIBLE', 'PIXEL_EXISTING', 
            'Design', 'new_design', 'design_mask', 'visualize', 'add_void_touch', 'take_free_void_touches',
            'invert_design', 'add_solid_touch', 'take_free_solid_touches']
 
-# %% ../notebooks/03_design.ipynb 3
+# %% ../notebooks/03_design.ipynb 2
 from typing import NamedTuple
 
 import jax
@@ -17,7 +17,7 @@ from inverse_design.brushes import notched_square_brush, show_mask
 from inverse_design.utils import batch_conv2d, dilute
 from matplotlib.colors import ListedColormap
 
-# %% ../notebooks/03_design.ipynb 4
+# %% ../notebooks/03_design.ipynb 3
 UNASSIGNED = 0
 VOID = 1
 SOLID = 2
@@ -32,7 +32,7 @@ TOUCH_VALID = 10
 TOUCH_FREE = 11
 TOUCH_RESOLVING = 12
 
-# %% ../notebooks/03_design.ipynb 5
+# %% ../notebooks/03_design.ipynb 4
 class Design(NamedTuple):
     void_pixels: jnp.ndarray
     solid_pixels: jnp.ndarray
@@ -54,7 +54,7 @@ class Design(NamedTuple):
         kwargs = {name: kwargs.get(name, getattr(self, name)) for name in self._fields}
         return Design(*kwargs.values())
 
-# %% ../notebooks/03_design.ipynb 6
+# %% ../notebooks/03_design.ipynb 5
 def new_design(shape):
     return Design(
         void_pixels=jnp.zeros(shape, dtype=jnp.uint8).at[:,:].set(PIXEL_POSSIBLE),
@@ -63,14 +63,14 @@ def new_design(shape):
         solid_touches=jnp.zeros(shape, dtype=jnp.uint8).at[:,:].set(TOUCH_VALID),
     )
 
-# %% ../notebooks/03_design.ipynb 7
+# %% ../notebooks/03_design.ipynb 6
 def design_mask(design, dtype=float):
     one = jnp.ones_like(design.design, dtype=dtype)
     mask = jnp.where(design.design == VOID, -1, one)
     return mask
 
-# %% ../notebooks/03_design.ipynb 8
-def visualize(design):
+# %% ../notebooks/03_design.ipynb 7
+def visualize(design, grid=True):
     _cmap = ListedColormap(colors={UNASSIGNED: "#929292", VOID: "#cbcbcb", SOLID: "#515151", PIXEL_IMPOSSIBLE: "#8dd3c7", PIXEL_EXISTING: "#ffffb3", PIXEL_POSSIBLE: "#bebada", PIXEL_REQUIRED: "#fb7f72", TOUCH_REQUIRED: "#00ff00", TOUCH_INVALID: "#7fb1d3", TOUCH_EXISTING: "#fdb462", TOUCH_VALID: "#b3de69", TOUCH_FREE: "#fccde5", TOUCH_RESOLVING: "#e0e0e0"}.values(), name="cmap")
     nx, ny = design.design.shape
     _, axs = plt.subplots(1, 5, figsize=(15,3*nx/ny))
@@ -89,13 +89,15 @@ def visualize(design):
         ax.set_xlim(-0.5, ny-0.5)
         ax.set_ylim(nx-0.5, -0.5)
         ax.grid(visible=True, which="major", c="k")
+        if not grid:
+            ax.set_axis_off()
 
 @patch_to(Design)
 def _repr_html_(self):
     visualize(self)
     return ""
 
-# %% ../notebooks/03_design.ipynb 11
+# %% ../notebooks/03_design.ipynb 10
 @jax.jit
 def _find_free_touches(touches_mask, pixels_mask, brush):
     r = jnp.zeros_like(touches_mask, dtype=bool)
@@ -119,13 +121,13 @@ def _find_free_touches_alternative(touches_mask, pixels_mask, brush):
     free_mask = free_mask & (~touches_mask)
     return free_mask
 
-# %% ../notebooks/03_design.ipynb 12
+# %% ../notebooks/03_design.ipynb 11
 @jax.jit
 def _find_required_pixels(pixel_map, brush):
     mask = (~pixel_map) & (~dilute(pixel_map, brush))
     return ~(dilute(mask, brush) | pixel_map)
 
-# %% ../notebooks/03_design.ipynb 13
+# %% ../notebooks/03_design.ipynb 12
 @jax.jit
 def add_void_touch(design, brush, pos):
     if isinstance(pos, tuple):
@@ -149,17 +151,17 @@ def add_void_touch(design, brush, pos):
     solid_touches = jnp.where(solid_touch_invalid, TOUCH_INVALID, design.solid_touches)
     return Design(void_pixels, solid_pixels, void_touches, solid_touches)
 
-# %% ../notebooks/03_design.ipynb 15
+# %% ../notebooks/03_design.ipynb 14
 @jax.jit
 def take_free_void_touches(design, brush):
     free_touches_mask = design.void_touches == TOUCH_FREE
     return add_void_touch(design, brush, free_touches_mask)
 
-# %% ../notebooks/03_design.ipynb 17
+# %% ../notebooks/03_design.ipynb 16
 def invert_design(design):
     return Design(design.solid_pixels, design.void_pixels, design.solid_touches, design.void_touches)
 
-# %% ../notebooks/03_design.ipynb 19
+# %% ../notebooks/03_design.ipynb 18
 @jax.jit
 def add_solid_touch(design, brush, pos):
     inverted_design = invert_design(design)
@@ -167,7 +169,7 @@ def add_solid_touch(design, brush, pos):
     design = invert_design(inverted_design)
     return design
 
-# %% ../notebooks/03_design.ipynb 20
+# %% ../notebooks/03_design.ipynb 19
 @jax.jit
 def take_free_solid_touches(design, brush):
     free_touches_mask = design.solid_touches == TOUCH_FREE

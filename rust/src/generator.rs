@@ -65,8 +65,8 @@ pub fn generate_feasible_design(
         };
 
         // I thought I would not need a check like this, but I was wrong...
-        if (prev_idxs[0] == (i, j)) & (prev_idxs[1] == (i, j)){
-            break
+        if (prev_idxs[0] == (i, j)) & (prev_idxs[1] == (i, j)) {
+            break;
         } else {
             prev_idxs[prev_indexer] = (i, j);
             prev_indexer = (prev_indexer + 1) % 2
@@ -164,7 +164,7 @@ pub fn resolve_required_void_pixels(
         }
         let (ir, jr) = match resolving_touches.pop() {
             None => {
-                println!("pop from resolving touches");
+                // println!("pop from resolving touches");
                 break;
             }
             Some(idxs) => idxs,
