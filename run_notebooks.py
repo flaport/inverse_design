@@ -14,7 +14,7 @@ def iter_notebooks():
                 continue
             yield os.path.join(root, fn)
 
-for i, path in enumerate(iter_notebooks()):
+for i, path in enumerate(sorted(iter_notebooks())):
     if i > 9: # don't run unfinished notebooks
         break
     print(path)
