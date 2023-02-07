@@ -1,5 +1,6 @@
 import os
-import sys;
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 import time
@@ -13,10 +14,11 @@ from inverse_design_rs import generate_feasible_design
 from inverse_design.design import Design, visualize
 
 seed = 42
-m = n = 30
+m = n = 128
 
-brush = np.asarray(notched_square_brush(5, 1), dtype=np.float32)
-latent = np.asarray(new_latent_design((m,n), r=seed), dtype=np.float32)
+start_time = time.time()
+brush = np.asarray(notched_square_brush(9, 2), dtype=np.float32)
+latent = np.asarray(new_latent_design((m, n), r=seed), dtype=np.float32)
 latent_t = np.asarray(transform(latent, brush, beta=5.0), dtype=np.float32)
 
 # with open(f"latent_t_{seed}_{m}x{n}.bin", "wb") as file:
@@ -44,6 +46,7 @@ design = Design(
     np.asarray(void_touches).reshape(m, n),
     np.asarray(solid_touches).reshape(m, n),
 )
+print(f"execution time: {time.time()-start_time:.3f}")
 
-visualize(design)
-plt.show()
+# visualize(design)
+# plt.show()

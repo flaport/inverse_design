@@ -5,6 +5,9 @@ build:
 test: build
 	python test.py
 
+time: build
+	python test.py
+
 clean:
 	rm -rf target
-	rm *.so
+	rm -f *.so

@@ -1,6 +1,6 @@
-use std::io::Read;
-use std::fs::{metadata, File};
 use super::status::Status;
+use std::fs::{metadata, File};
+use std::io::Read;
 
 pub fn test_array() {
     let arr = read_f32("latent42_100x100.bin");
@@ -17,7 +17,7 @@ pub fn ij(k: usize, n: usize) -> (usize, usize) {
     return (i, j);
 }
 
-pub fn new_array<T: Copy>(size: usize, _default: T) -> Vec<T>{
+pub fn new_array<T: Copy>(size: usize, _default: T) -> Vec<T> {
     let mut arr = Vec::new();
     for _ in 0..size {
         arr.push(_default);
@@ -57,7 +57,6 @@ pub fn parse_status(bts: &Vec<u8>) -> Vec<Status> {
     }
     return array;
 }
-
 
 fn _chunks_4(barry: &Vec<u8>) -> Vec<[u8; 4]> {
     let n = 4;
