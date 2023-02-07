@@ -16,15 +16,11 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
-    container:
-      image: flaport/sax
-      volumes:
-        - ${{ github.workspace }}:/github/workspace
     steps:
       - name: Checkout
         uses: actions/checkout@master
       - name: Install dependencies
-        run: mamba env update -n base
+        run: pip install -e .
       - name: Install Proper Ceviche version
         run: pip install git+https://github.com/fancompute/ceviche
       - name: Run notebooks
