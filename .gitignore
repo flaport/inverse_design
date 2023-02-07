@@ -1,3 +1,6 @@
+notebooks/*.png
+.tags
+
 # IDE settings
 .vscode/
 .idea/

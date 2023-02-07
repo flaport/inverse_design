@@ -19,7 +19,7 @@ lib: rust
 	nbdev_export
 
 run:
-	find . -name "*.ipynb" | grep -v ipynb_checkpoints | xargs -I {} papermill {} {}
+	python run_notebooks.py
 
 dist: clean
 	python -m build --sdist --wheel
