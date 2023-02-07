@@ -25,6 +25,8 @@ jobs:
         uses: actions/checkout@master
       - name: Install dependencies
         run: mamba env update -n base
+      - name: Install Proper Ceviche version
+        run: pip install git+https://github.com/fancompute/ceviche
       - name: Run notebooks
         run: python run_notebooks.py
       - name: Convert to docs

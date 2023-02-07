@@ -23,6 +23,7 @@ dependencies:
   - scipy
   - tqdm
   - pip:
+    - javice
     - git+https://github.com/fancompute/ceviche
     - pymkl>=0.0.3
     - -e .
