@@ -37,8 +37,8 @@ def run_notebook(path):
     print(f"START {fn}")
     cwd = os.path.dirname(path)
 
-    sys.stdout, old_stdout = open(os.devnull, "w"), sys.stdout
-    sys.stderr, old_stderr = sys.stdout, sys.stderr
+    #sys.stdout, old_stdout = open(os.devnull, "w"), sys.stdout
+    #sys.stderr, old_stderr = sys.stdout, sys.stderr
     success = True
     try:
         papermill.execute_notebook(
@@ -51,8 +51,9 @@ def run_notebook(path):
         success = False
         return
     finally:
-        sys.stdout = old_stdout
-        sys.stderr = old_stderr
+        pass
+        #sys.stdout = old_stdout
+        #sys.stderr = old_stderr
     print(f"SUCCESS {fn}" if success else f"FAIL {fn}")
 
 
