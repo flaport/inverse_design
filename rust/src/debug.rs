@@ -100,6 +100,9 @@ impl Counter {
     pub fn inc(&mut self) {
         self.index += 1;
     }
+    pub fn dec(&mut self) {
+        self.index -= 1;
+    }
     pub fn eq(&self, value: usize) -> bool {
         self.index == value
     }

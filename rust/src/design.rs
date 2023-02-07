@@ -216,6 +216,7 @@ impl Design {
 
     fn take_free_void_touches_around_pos(&mut self, pos: (usize, usize)) {
         let (_, n) = self.shape;
+        let mut found_free_touches = false;
         for pos_ in self.big_brush.at(pos, self.shape) {
             if pos_ == pos {
                 continue;
@@ -224,10 +225,15 @@ impl Design {
                 self.void_pixel_existing[i_ * n + j_] | self.void_pixel_required[i_ * n + j_]
             });
             if is_free_touch {
-                counter().inc();
+                found_free_touches = true;
                 self.void_touch_at_pos(pos_);
                 self.void_brush_at_pos(pos_);
             }
+        }
+        if found_free_touches {
+            // counter().inc();
+            // println!("iteration {}", counter().value());
+            println!("take free.");
         }
     }
 

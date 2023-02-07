@@ -8,13 +8,13 @@ use std::mem::swap;
 pub fn test_generator() {
     let profiler = Profiler::start("test_generator");
     let seed = 42;
-    let (m, n) = (30, 30);
+    let (m, n) = (100, 100);
     let brush = Brush::notched_square(5, 1);
     let latent_t = read_f32(&format!("latent_t_{seed}_{m}x{n}.bin"));
     brush.visualize();
     // visualize_f32_array((m, n), &latent_t);
-    let _design = generate_feasible_design((m, n), &latent_t, brush, true);
-    // design.visualize();
+    let design = generate_feasible_design((m, n), &latent_t, brush, true);
+    design.visualize();
     profiler.stop();
 }
 
@@ -35,11 +35,12 @@ pub fn generate_feasible_design(
     let mut indices: Vec<(usize, usize)> = (0..m * n).map(|k| (k / n, k % n)).collect();
     sort_indices_by_value(&mut indices, &latent_t_abs, shape);
 
-    loop {
-        if verbose {
-            println!("iteration {}", counter().value());
-        }
+    for (k, (i, j)) in indices.iter().enumerate() {
+        println!("{k} {i} {j} {}", latent_t[i*n+j] > 0.0);
+    }
+    // return design;
 
+    loop {
         let loop_profiler = Profiler::start("loop_body");
         let (i, j) = match indices.pop() {
             None => break,
@@ -48,13 +49,28 @@ pub fn generate_feasible_design(
 
         // when it's a solid touch, invert everything and treat as void touch.
         let is_solid_touch = latent_t[i * n + j] > 0.0;
+
         if is_solid_touch {
             design.invert();
             swap(&mut latent_t, &mut latent_t_neg);
         }
+
+        if design.void_touch_invalid[i * n + j] | design.void_touch_existing[i*n + j] {
+            if is_solid_touch {
+                design.invert();
+                swap(&mut latent_t, &mut latent_t_neg);
+            }
+            continue;
+        }
+
+        if verbose {
+            println!("iteration {}", counter().value());
+        }
+
+
         if verbose {
             if is_solid_touch {
-                println!("touch solid ({i}, {j}).");
+                println!("touch solid ({i}, {j})");
             } else {
                 println!("touch void ({i}, {j}).");
             }
@@ -79,11 +95,11 @@ pub fn generate_feasible_design(
 
         loop_profiler.stop();
 
-        design.visualize();
+        //design.visualize();
 
-        if counter().gt(10) {
-            break;
-        }
+        // if counter().gt(14) {
+        //     break;
+        // }
         counter().inc();
     }
 
@@ -133,6 +149,7 @@ pub fn resolve_required_void_pixels(
         counter().inc();
         let (mut new_required_pixels, mut new_resolving_touches) = void_step(design, (ir, jr));
         if verbose {
+            println!("iteration {}", counter().value());
             if is_solid_touch {
                 println!("resolve solid ({ir}, {jr}).");
             } else {
