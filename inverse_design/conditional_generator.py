@@ -5,6 +5,8 @@ __all__ = ['new_latent_design', 'transform', 'conditional_algirithm_step', 'cond
            'generate_feasible_design_mask_jvp']
 
 # Cell
+import warnings
+
 import jax
 import jax.numpy as jnp
 import numpy as np
@@ -13,6 +15,7 @@ from .design import (
     TOUCH_RESOLVING,
     TOUCH_VALID,
     UNASSIGNED,
+    Design,
     add_solid_touch,
     add_void_touch,
     design_mask,
@@ -94,10 +97,12 @@ def conditional_algirithm_step(latent_t, design, brush, verbose=False):
         s = latent_t[i_s, j_s]
         if abs(v) > abs(s):
             design = add_void_touch(design, brush, (i_v, j_v))
-            maybe_print(f"touch void  {int(i_v), int(j_v)}.")
+            maybe_print(f"touch void {int(i_v), int(j_v)}.")
         else:
             design = add_solid_touch(design, brush, (i_s, j_s))
-            maybe_print(f"touch solid  {int(i_s), int(j_s)}.")
+            maybe_print(f"touch solid {int(i_s), int(j_s)}.")
+    else:
+        raise ValueError("This should never happen.")
 
     return design
 
@@ -106,24 +111,72 @@ def conditional_generator(latent_t, brush, verbose=False):
     I = 0
     design = new_design(latent_t.shape)
     maybe_print = print if verbose else (lambda *args, **kwargs: None)
-    maybe_print(f"{I} create empty design.")
+    maybe_print(f"create empty design.")
     yield design
     while (design.design == UNASSIGNED).any():
+        maybe_print(f"iteration {I}")
         I += 1
-        maybe_print(I, end=" ")
         design = conditional_algirithm_step(latent_t, design, brush, verbose=verbose)
         yield design
 
 # Cell
-def generate_feasible_design(latent_t, brush, verbose=False):
+
+def generate_feasible_design(latent_t, brush, verbose=False, backend='auto'): # backend: 'auto', 'rust', 'python'
+    try:
+        from inverse_design_rs import generate_feasible_design as generate_feasible_design_rs
+        if backend == 'auto':
+            backend = 'rust'
+    except ImportError:
+        warnings.warn("falling back on slower python-based feasible design generation!")
+        if backend == 'auto':
+            backend = 'python'
+
+    if backend == 'rust':
+        return _generate_feasible_design_rust(latent_t, brush, verbose=verbose)
+    else:
+        return _generate_feasible_design_python(latent_t, brush, verbose=verbose)
+
+
+def _generate_feasible_design_python(latent_t, brush, verbose=False):
     design = None
     for design in conditional_generator(latent_t, brush, verbose=verbose):
         continue
     return design
 
+def _generate_feasible_design_rust(latent_t, brush, verbose=False):
+    from inverse_design_rs import generate_feasible_design as generate_feasible_design_rs
+    m, n = latent_t.shape
+
+    brush = np.asarray(brush, dtype=np.float32)
+    latent_t = np.asarray(latent_t, dtype=np.float32)
+
+    void, void_touch_existing, solid_touch_existing = generate_feasible_design_rs(
+        latent_t.shape,
+        latent_t.tobytes(),
+        brush.shape,
+        brush.tobytes(),
+        verbose,
+    )
+    void = np.asarray(void).reshape(m, n)
+    void_touch_existing = np.asarray(void_touch_existing).reshape(m, n)
+    solid_touch_existing = np.asarray(solid_touch_existing).reshape(m, n)
+
+    void_pixels = np.asarray(np.where(void, 4, 3), dtype=np.uint8)
+    solid_pixels = np.asarray(np.where(void, 3, 4), dtype=np.uint8)
+    void_touches = np.asarray(np.where(void_touch_existing, 9, 8), dtype=np.uint8)
+    solid_touches = np.asarray(np.where(solid_touch_existing, 9, 8), dtype=np.uint8)
+
+    design = Design(
+        np.asarray(void_pixels).reshape(m, n),
+        np.asarray(solid_pixels).reshape(m, n),
+        np.asarray(void_touches).reshape(m, n),
+        np.asarray(solid_touches).reshape(m, n),
+    )
+    return design
+
 # Cell
-def generate_feasible_design_mask_(latent_t, brush):
-    design = generate_feasible_design(latent_t, brush, verbose=False)
+def generate_feasible_design_mask_(latent_t, brush, backend='auto'):
+    design = generate_feasible_design(latent_t, brush, verbose=False, backend=backend)
     return design_mask(design)
 
 # Cell

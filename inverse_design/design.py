@@ -108,6 +108,16 @@ def _find_free_touches(touches_mask, pixels_mask, brush):
     free_touches_mask = jnp.where(free_idxs[:, None, None], R, 0).sum(0, dtype=bool)
     return free_touches_mask ^ touches_mask
 
+
+@jax.jit
+def _find_free_touches_alternative(touches_mask, pixels_mask, brush):
+    brush_u32 = jnp.asarray(brush, dtype=jnp.uint32)
+    sum_mask = dilute(jnp.asarray(pixels_mask, dtype=jnp.uint32), brush_u32)
+    ref_mask = dilute(jnp.ones_like(sum_mask), brush_u32)
+    free_mask = sum_mask == ref_mask
+    free_mask = free_mask & (~touches_mask)
+    return free_mask
+
 # Internal Cell
 @jax.jit
 def _find_required_pixels(pixel_map, brush):

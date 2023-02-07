@@ -19,10 +19,9 @@ brush = np.asarray(notched_square_brush(5, 1), dtype=np.float32)
 latent = np.asarray(new_latent_design((m,n), r=seed), dtype=np.float32)
 latent_t = np.asarray(transform(latent, brush, beta=5.0), dtype=np.float32)
 
-with open(f"latent_t_{seed}_{m}x{n}.bin", "wb") as file:
-    file.write(latent_t.tobytes());
+# with open(f"latent_t_{seed}_{m}x{n}.bin", "wb") as file:
+#     file.write(latent_t.tobytes());
 
-#void_pixels, solid_pixels, void_touches, solid_touches =
 void, void_touch_existing, solid_touch_existing = generate_feasible_design(
     latent_t.shape,
     latent_t.tobytes(),
