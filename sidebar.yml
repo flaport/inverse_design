@@ -1,0 +1,16 @@
+website:
+  sidebar:
+    contents:
+      - index.ipynb
+      - section: notebooks
+        contents:
+          - notebooks/01_utils.ipynb
+          - notebooks/02_brushes.ipynb
+          - notebooks/03_design.ipynb
+          - notebooks/04_conditional_generator.ipynb
+          - notebooks/05_direct_optimization.ipynb
+          - notebooks/06_naive_inverse_design.ipynb
+          - notebooks/07_inverse_design.ipynb
+          - notebooks/08_naive_generator.ipynb
+          - notebooks/09_local_generator.ipynb
+          - notebooks/10_inverse_design_local.ipynb
