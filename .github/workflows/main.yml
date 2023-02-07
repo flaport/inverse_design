@@ -29,7 +29,9 @@ jobs:
           pip install -e .[dev]
           pip install git+https://github.com/fancompute/ceviche
       - name: Run notebooks
-        run: python run_notebooks.py
+        run: |
+          papermill index.ipynb index.ipynb
+          papermill notebooks/01_utils.ipynb notebooks/01_utils.ipynb --cwd notebooks
       - name: Convert to docs
         run: nbdev_docs
       - name: Expose 'notebooks' as artifact
