@@ -8,13 +8,13 @@ use std::mem::swap;
 pub fn test_generator() {
     let profiler = Profiler::start("test_generator");
     let seed = 42;
-    let (m, n) = (100, 100);
+    let (m, n) = (300, 300);
     let brush = Brush::notched_square(5, 1);
     let latent_t = read_f32(&format!("latent_t_{seed}_{m}x{n}.bin"));
     brush.visualize();
     // visualize_f32_array((m, n), &latent_t);
-    let design = generate_feasible_design((m, n), &latent_t, brush, true);
-    design.visualize();
+    let design = generate_feasible_design((m, n), &latent_t, brush, false);
+    // design.visualize();
     profiler.stop();
 }
 
@@ -27,38 +27,63 @@ pub fn generate_feasible_design(
     let profiler = Profiler::start("generate_feasible_design");
     let (m, n) = shape;
 
-    let latent_t_abs: Vec<f32> = latent_t.iter().map(|l| l.abs()).collect();
-    let mut latent_t_neg: Vec<f32> = latent_t.iter().map(|l| -l).collect();
-    let mut latent_t: Vec<f32> = latent_t.iter().map(|l| *l).collect();
+    let mut void_latent_t: Vec<f32> = latent_t.iter().map(|l| -l).collect();
+    let mut solid_latent_t: Vec<f32> = latent_t.iter().map(|l| *l).collect();
 
     let mut design = Design::new(shape, brush);
-    let mut indices: Vec<(usize, usize)> = (0..m * n).map(|k| (k / n, k % n)).collect();
-    sort_indices_by_value(&mut indices, &latent_t_abs, shape);
+    let mut solid_indices: Vec<(usize, usize)> = (0..m * n).map(|k| (k / n, k % n)).collect();
+    sort_indices_by_value(&mut solid_indices, &solid_latent_t, shape);
+    let mut void_indices: Vec<(usize, usize)> = (0..m * n).map(|k| (k / n, k % n)).collect();
+    sort_indices_by_value(&mut void_indices, &void_latent_t, shape);
 
-    for (k, (i, j)) in indices.iter().enumerate() {
-        println!("{k} {i} {j} {}", latent_t[i*n+j] > 0.0);
-    }
-    // return design;
-
+    let mut prev_idxs = vec![(m, n), (m, n)];
+    let mut prev_indexer = 0;
     loop {
         let loop_profiler = Profiler::start("loop_body");
-        let (i, j) = match indices.pop() {
-            None => break,
-            Some(idxs) => idxs,
+
+        let ijv = void_indices.pop();
+        let ijs = solid_indices.pop();
+
+        let ((iv, jv), (is, js)) = match (ijv, ijs) {
+            (None, None) => break,
+            (Some(ijv), None) => (ijv, ijv),
+            (None, Some(ijs)) => (ijs, ijs),
+            (Some(ijv), Some(ijs)) => (ijv, ijs),
         };
 
-        // when it's a solid touch, invert everything and treat as void touch.
-        let is_solid_touch = latent_t[i * n + j] > 0.0;
+        let latent_v = void_latent_t[iv * n + jv];
+        let latent_s = solid_latent_t[is * n + js];
+
+        let is_solid_touch = latent_s > latent_v;
+
+        let (i, j) = if is_solid_touch {
+            void_indices.push((iv, jv));
+            (is, js)
+        } else {
+            solid_indices.push((is, js));
+            (iv, jv)
+        };
+
+        // I thought I would not need a check like this, but I was wrong...
+        if (prev_idxs[0] == (i, j)) & (prev_idxs[1] == (i, j)){
+            break
+        } else {
+            prev_idxs[prev_indexer] = (i, j);
+            prev_indexer = (prev_indexer + 1) % 2
+        }
 
         if is_solid_touch {
             design.invert();
-            swap(&mut latent_t, &mut latent_t_neg);
+            swap(&mut solid_latent_t, &mut void_latent_t);
         }
 
-        if design.void_touch_invalid[i * n + j] | design.void_touch_existing[i*n + j] {
+        let void_touch_possible =
+            !(design.void_touch_invalid[i * n + j] | design.void_touch_existing[i * n + j]);
+
+        if !void_touch_possible {
             if is_solid_touch {
                 design.invert();
-                swap(&mut latent_t, &mut latent_t_neg);
+                swap(&mut solid_latent_t, &mut void_latent_t);
             }
             continue;
         }
@@ -66,7 +91,6 @@ pub fn generate_feasible_design(
         if verbose {
             println!("iteration {}", counter().value());
         }
-
 
         if verbose {
             if is_solid_touch {
@@ -82,7 +106,7 @@ pub fn generate_feasible_design(
             &mut design,
             &mut required_pixels,
             &mut resolving_touches,
-            &latent_t_neg,
+            &void_latent_t,
             is_solid_touch,
             verbose,
         );
@@ -90,16 +114,16 @@ pub fn generate_feasible_design(
         // revert inversion
         if is_solid_touch {
             design.invert();
-            swap(&mut latent_t, &mut latent_t_neg);
+            swap(&mut solid_latent_t, &mut void_latent_t);
         }
 
         loop_profiler.stop();
 
         //design.visualize();
 
-        // if counter().gt(14) {
-        //     break;
-        // }
+        //if counter().gt(20) {
+        //    break;
+        //}
         counter().inc();
     }
 
@@ -124,13 +148,13 @@ pub fn resolve_required_void_pixels(
     design: &mut Design,
     required_pixels: &mut Vec<(usize, usize)>,
     resolving_touches: &mut Vec<(usize, usize)>,
-    latent_t_neg: &Vec<f32>,
+    void_latent_t: &Vec<f32>,
     is_solid_touch: bool,
     verbose: bool,
 ) {
     let (_, n) = design.shape;
     loop {
-        sort_indices_by_value(resolving_touches, &latent_t_neg, design.shape);
+        sort_indices_by_value(resolving_touches, &void_latent_t, design.shape);
 
         let any_required_pixels = required_pixels
             .iter()
@@ -176,7 +200,7 @@ pub fn resolve_required_void_pixels(
         swap(required_pixels, &mut new_required_pixels);
         swap(resolving_touches, &mut new_resolving_touches);
 
-        sort_indices_by_value(resolving_touches, &latent_t_neg, design.shape);
+        sort_indices_by_value(resolving_touches, &void_latent_t, design.shape);
     }
 }
 

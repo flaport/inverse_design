@@ -217,7 +217,7 @@ impl Design {
     fn take_free_void_touches_around_pos(&mut self, pos: (usize, usize)) {
         let (_, n) = self.shape;
         let mut found_free_touches = false;
-        for pos_ in self.big_brush.at(pos, self.shape) {
+        for pos_ in self.very_big_brush.at(pos, self.shape) {
             if pos_ == pos {
                 continue;
             }
@@ -233,7 +233,7 @@ impl Design {
         if found_free_touches {
             // counter().inc();
             // println!("iteration {}", counter().value());
-            println!("take free.");
+            // println!("take free.");
         }
     }
 
