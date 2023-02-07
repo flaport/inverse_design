@@ -24,7 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Install dependencies
-        run: conda env update -n base
+        run: mamba env update -n base
       - name: Run notebooks
         run: python run_notebooks.py
       - name: Convert to docs
