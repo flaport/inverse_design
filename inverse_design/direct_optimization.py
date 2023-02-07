@@ -3,7 +3,7 @@
 # %% auto 0
 __all__ = ['mse', 'huber_loss']
 
-# %% ../notebooks/05_direct_optimization.ipynb 2
+# %% ../notebooks/05_direct_optimization.ipynb 3
 import jax
 from .brushes import notched_square_brush
 from inverse_design.conditional_generator import (
@@ -14,10 +14,10 @@ from inverse_design.conditional_generator import (
 from jax.example_libraries.optimizers import adam
 from tqdm.notebook import trange
 
-# %% ../notebooks/05_direct_optimization.ipynb 11
+# %% ../notebooks/05_direct_optimization.ipynb 12
 def mse(x, y) -> float:
     return ((x - y) ** 2).mean()
 
-# %% ../notebooks/05_direct_optimization.ipynb 12
+# %% ../notebooks/05_direct_optimization.ipynb 13
 def huber_loss(x, y, delta=0.5) -> float:
     return ((delta**2) * ((1.0 + ((x - y) / delta) ** 2) ** 0.5 - 1.0)).mean()

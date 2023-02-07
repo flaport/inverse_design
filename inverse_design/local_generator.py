@@ -445,7 +445,6 @@ def generate_feasible_design(latent_t, brush,
       solid_touches=state.t_s*TOUCH_EXISTING
     )
 
-
 # %% ../notebooks/09_local_generator.ipynb 19
 @jax.custom_jvp
 def generate_feasible_design_mask(
