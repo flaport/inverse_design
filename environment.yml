@@ -10,6 +10,7 @@ dependencies:
   - ipykernel
   - jax
   - jaxlib
+  - maturin
   - matplotlib>=3.0.3
   - nbdev<2
   - nbstripout
@@ -17,9 +18,11 @@ dependencies:
   - openssl
   - papermill
   - pre-commit
-  - pymkl>=0.0.3
   - rsync
   - scikit-image
   - scipy
+  - tqdm
   - pip:
-    - git+https://github.com/fancompute/ceviche
+    - ceviche
+    - pymkl>=0.0.3
+    - -e .

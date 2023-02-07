@@ -8,9 +8,12 @@ all: lib docs
 docker:
 	docker build . -t id
 
+arm_env:
+	CONDA_SUBDIR=osx-arm64 conda env create -f environment.yml -n y
+
 .PHONY: rust
 rust:
-	cd rust && make build && cd -
+	cd rust && maturin develop --release  && cd -
 
 lib: rust
 	nbdev_build_lib
