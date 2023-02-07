@@ -70,7 +70,7 @@ def design_mask(design, dtype=float):
     return mask
 
 # %% ../notebooks/03_design.ipynb 8
-def visualize(design):
+def visualize(design, grid=True):
     _cmap = ListedColormap(colors={UNASSIGNED: "#929292", VOID: "#cbcbcb", SOLID: "#515151", PIXEL_IMPOSSIBLE: "#8dd3c7", PIXEL_EXISTING: "#ffffb3", PIXEL_POSSIBLE: "#bebada", PIXEL_REQUIRED: "#fb7f72", TOUCH_REQUIRED: "#00ff00", TOUCH_INVALID: "#7fb1d3", TOUCH_EXISTING: "#fdb462", TOUCH_VALID: "#b3de69", TOUCH_FREE: "#fccde5", TOUCH_RESOLVING: "#e0e0e0"}.values(), name="cmap")
     nx, ny = design.design.shape
     _, axs = plt.subplots(1, 5, figsize=(15,3*nx/ny))
@@ -89,6 +89,8 @@ def visualize(design):
         ax.set_xlim(-0.5, ny-0.5)
         ax.set_ylim(nx-0.5, -0.5)
         ax.grid(visible=True, which="major", c="k")
+        if not grid:
+            ax.set_axis_off()
 
 @patch_to(Design)
 def _repr_html_(self):

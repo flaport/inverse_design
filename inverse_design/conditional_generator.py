@@ -34,7 +34,7 @@ def new_latent_design(shape, bias=0, r=None, r_scale=1):
 # %% ../notebooks/04_conditional_generator.ipynb 11
 @jax.jit
 def transform(latent, brush, beta=5.0):
-    convolved = conv2d(latent, jnp.asarray(brush, dtype=float)) / brush.sum()
+    convolved = conv2d(latent, jnp.asarray(brush, dtype=latent.dtype)) / brush.sum()
     return jnp.tanh(beta * convolved)
 
 # %% ../notebooks/04_conditional_generator.ipynb 14
