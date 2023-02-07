@@ -122,6 +122,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-submit-button-title": "Submit"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
@@ -292,7 +296,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
 <p>Our toy optimization problem will be to design a device that converts an input in the first-order mode into an output as the second-order mode. First, we define the parameters of our device and optimization:</p>
-<div class="cell">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:49:23.291244Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:49:23.290898Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:49:23.295082Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:49:23.294540Z&quot;}" data-papermill="{&quot;duration&quot;:0.018962,&quot;end_time&quot;:&quot;2023-02-07T23:49:23.296411&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:49:23.277449&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Angular frequency of the source in Hz</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>omega <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> <span class="fl">200e12</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Spatial resolution in meters</span></span>
@@ -319,34 +323,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="brush" class="level2">
 <h2 class="anchored" data-anchor-id="brush">Brush</h2>
-<div class="cell">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:49:23.329649Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:49:23.329382Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:49:23.911350Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:49:23.910570Z&quot;}" data-papermill="{&quot;duration&quot;:0.595633,&quot;end_time&quot;:&quot;2023-02-07T23:49:23.913003&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:49:23.317370&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>brush <span class="op">=</span> notched_square_brush(<span class="dv">5</span>, <span class="dv">1</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>show_mask(brush)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07_inverse_design_files/figure-html/cell-3-output-2.png" class="img-fluid"></p>
+</div>
 </div>
 </section>
 <section id="initial-device" class="level2">
 <h2 class="anchored" data-anchor-id="initial-device">Initial Device</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the parametrization rho and the design region</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>epsr, bg_epsr, design_region, input_slice, output_slice <span class="op">=</span> init_domain(</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    Nx, Ny, Npml, space<span class="op">=</span>space, wg_width<span class="op">=</span>wg_width, space_slice<span class="op">=</span>space_slice</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>epsr_total <span class="op">=</span> mask_combine_epsr(epsr, bg_epsr, design_region)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup source</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>source <span class="op">=</span> insert_mode(omega, dl, input_slice.x, input_slice.y, epsr_total, m<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup probe</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>probe <span class="op">=</span> insert_mode(omega, dl, output_slice.x, output_slice.y, epsr_total, m<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:49:23.933264Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:49:23.932799Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:49:23.949399Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:49:23.948714Z&quot;}" data-papermill="{&quot;duration&quot;:0.023892,&quot;end_time&quot;:&quot;2023-02-07T23:49:23.951074&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:49:23.927182&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the parametrization rho and the design region</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>epsr, bg_epsr, design_region, input_slice, output_slice <span class="op">=</span> init_domain(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    Nx, Ny, Npml, space<span class="op">=</span>space, wg_width<span class="op">=</span>wg_width, space_slice<span class="op">=</span>space_slice</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>epsr_total <span class="op">=</span> mask_combine_epsr(epsr, bg_epsr, design_region)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup source</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>source <span class="op">=</span> insert_mode(omega, dl, input_slice.x, input_slice.y, epsr_total, m<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup probe</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>probe <span class="op">=</span> insert_mode(omega, dl, output_slice.x, output_slice.y, epsr_total, m<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate initial device</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>simulation, ax <span class="op">=</span> viz_sim(epsr_total, source, slices<span class="op">=</span>[input_slice, output_slice])</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get normalization factor (field overlap before optimizing)</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>_, _, Ez <span class="op">=</span> simulation.solve(source)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>E0 <span class="op">=</span> mode_overlap(Ez, probe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:49:23.965692Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:49:23.965141Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:49:24.860385Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:49:24.859800Z&quot;}" data-papermill="{&quot;duration&quot;:0.903058,&quot;end_time&quot;:&quot;2023-02-07T23:49:24.862373&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:49:23.959315&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate initial device</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>simulation, ax <span class="op">=</span> viz_sim(epsr_total, source, slices<span class="op">=</span>[input_slice, output_slice])</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get normalization factor (field overlap before optimizing)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>_, _, Ez <span class="op">=</span> simulation.solve(source)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>E0 <span class="op">=</span> mode_overlap(Ez, probe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="07_inverse_design_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
+</div>
 </div>
 <hr>
 <p><a href="https://github.com/flaport/inverse_design/tree/master/blob/master/inverse_design/inverse_design.py#L70" target="_blank" style="float:right; font-size:smaller">source</a></p>
@@ -375,40 +388,53 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="latent-weights" class="level2">
 <h2 class="anchored" data-anchor-id="latent-weights">Latent Weights</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#latent = get_design_region(new_latent_design((Nx, Ny), r=0))</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>latent <span class="op">=</span> new_latent_design((Nx, Ny), r<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>latent_t <span class="op">=</span> transform(latent, brush)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>plt.imshow(get_design_region(latent_t), cmap<span class="op">=</span><span class="st">"Greys"</span>, vmin<span class="op">=-</span><span class="dv">1</span>, vmax<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:49:24.949876Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:49:24.949615Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:49:25.369458Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:49:25.368885Z&quot;}" data-papermill="{&quot;duration&quot;:0.427736,&quot;end_time&quot;:&quot;2023-02-07T23:49:25.371180&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:49:24.943444&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#latent = get_design_region(new_latent_design((Nx, Ny), r=0))</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>latent <span class="op">=</span> new_latent_design((Nx, Ny), r<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>latent_t <span class="op">=</span> transform(latent, brush)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>plt.imshow(get_design_region(latent_t), cmap<span class="op">=</span><span class="st">"Greys"</span>, vmin<span class="op">=-</span><span class="dv">1</span>, vmax<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="07_inverse_design_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
+</div>
 </div>
 </section>
 <section id="forward-pass" class="level2">
 <h2 class="anchored" data-anchor-id="forward-pass">Forward Pass</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>design <span class="op">=</span> generate_feasible_design(latent_t, brush, verbose<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:49:25.395766Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:49:25.395501Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:49:25.595842Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:49:25.595247Z&quot;}" data-papermill="{&quot;duration&quot;:0.208733,&quot;end_time&quot;:&quot;2023-02-07T23:49:25.597595&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:49:25.388862&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>design <span class="op">=</span> generate_feasible_design(latent_t, brush, verbose<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> generate_feasible_design_mask(latent_t, brush)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:49:25.622929Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:49:25.622652Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:49:25.926319Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:49:25.925649Z&quot;}" data-papermill="{&quot;duration&quot;:0.31243,&quot;end_time&quot;:&quot;2023-02-07T23:49:25.928378&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:49:25.615948&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> generate_feasible_design_mask(latent_t, brush)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>full_mask <span class="op">=</span> np.zeros_like(epsr, dtype<span class="op">=</span><span class="bu">bool</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#full_mask = set_design_region(full_mask, mask)</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>plt.imshow(mask, cmap<span class="op">=</span><span class="st">"Greys"</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>plt.imshow(full_mask, cmap<span class="op">=</span><span class="st">"Greys"</span>)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:49:25.942013Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:49:25.941555Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:49:26.757885Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:49:26.757299Z&quot;}" data-papermill="{&quot;duration&quot;:0.825302,&quot;end_time&quot;:&quot;2023-02-07T23:49:26.759628&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:49:25.934326&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>full_mask <span class="op">=</span> np.zeros_like(epsr, dtype<span class="op">=</span><span class="bu">bool</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#full_mask = set_design_region(full_mask, mask)</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>plt.imshow(mask, cmap<span class="op">=</span><span class="st">"Greys"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>plt.imshow(full_mask, cmap<span class="op">=</span><span class="st">"Greys"</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>CPU times: user 143 ms, sys: 0 ns, total: 143 ms
+Wall time: 297 ms</code></pre>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward(latent_weights, brush):</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    latent_t <span class="op">=</span> transform(latent_weights, brush)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    design_mask <span class="op">=</span> generate_feasible_design_mask(latent_t, brush)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    epsr <span class="op">=</span> np.where(design_mask, <span class="fl">12.0</span>, <span class="fl">1.0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="07_inverse_design_files/figure-html/cell-12-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07_inverse_design_files/figure-html/cell-12-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:49:26.780963Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:49:26.780517Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:49:26.784109Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:49:26.783574Z&quot;}" data-papermill="{&quot;duration&quot;:0.020739,&quot;end_time&quot;:&quot;2023-02-07T23:49:26.786981&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:49:26.766242&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> forward(latent_weights, brush):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    latent_t <span class="op">=</span> transform(latent_weights, brush)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    design_mask <span class="op">=</span> generate_feasible_design_mask(latent_t, brush)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    epsr <span class="op">=</span> np.where(design_mask, <span class="fl">12.0</span>, <span class="fl">1.0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
 <p><a href="https://github.com/flaport/inverse_design/tree/master/blob/master/inverse_design/inverse_design.py#L80" target="_blank" style="float:right; font-size:smaller">source</a></p>
@@ -417,12 +443,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <pre><code> forward (latent_weights, brush)</code></pre>
 </blockquote>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> loss_fn(epsr):</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    epsr <span class="op">=</span> epsr.reshape((Nx, Ny))</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    simulation.eps_r <span class="op">=</span> mask_combine_epsr(epsr, bg_epsr, design_region)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    _, _, Ez <span class="op">=</span> simulation.solve(source)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span>mode_overlap(Ez, probe) <span class="op">/</span> E0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:49:26.806881Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:49:26.806624Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:49:26.810445Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:49:26.809908Z&quot;}" data-papermill="{&quot;duration&quot;:0.013727,&quot;end_time&quot;:&quot;2023-02-07T23:49:26.812922&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:49:26.799195&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> loss_fn(epsr):</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    epsr <span class="op">=</span> epsr.reshape((Nx, Ny))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    simulation.eps_r <span class="op">=</span> mask_combine_epsr(epsr, bg_epsr, design_region)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    _, _, Ez <span class="op">=</span> simulation.solve(source)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span>mode_overlap(Ez, probe) <span class="op">/</span> E0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
 <p><a href="https://github.com/flaport/inverse_design/tree/master/blob/master/inverse_design/naive_inverse_design.py#L135" target="_blank" style="float:right; font-size:smaller">source</a></p>
@@ -432,19 +458,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <pre><code> loss_fn (epsr)</code></pre>
 </blockquote>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>grad_fn <span class="op">=</span> jacobian(loss_fn, mode<span class="op">=</span><span class="st">'reverse'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:49:26.826982Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:49:26.826757Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:49:26.829734Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:49:26.829179Z&quot;}" data-papermill="{&quot;duration&quot;:0.012643,&quot;end_time&quot;:&quot;2023-02-07T23:49:26.832044&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:49:26.819401&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>grad_fn <span class="op">=</span> jacobian(loss_fn, mode<span class="op">=</span><span class="st">'reverse'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="optimization" class="level3">
 <h3 class="anchored" data-anchor-id="optimization">Optimization</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate initial device</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>simulation, ax <span class="op">=</span> viz_sim(epsr_total, source, slices<span class="op">=</span>[input_slice, output_slice])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:49:26.859311Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:49:26.859051Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:49:27.481233Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:49:27.480674Z&quot;}" data-papermill="{&quot;duration&quot;:0.631481,&quot;end_time&quot;:&quot;2023-02-07T23:49:27.483033&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:49:26.851552&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate initial device</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>simulation, ax <span class="op">=</span> viz_sim(epsr_total, source, slices<span class="op">=</span>[input_slice, output_slice])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="07_inverse_design_files/figure-html/cell-18-output-1.png" class="img-fluid"></p>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>init_fn, update_fn, params_fn <span class="op">=</span> adam(step_size)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> init_fn(epsr.reshape(<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:49:27.509975Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:49:27.509701Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:49:27.539068Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:49:27.538360Z&quot;}" data-papermill="{&quot;duration&quot;:0.050404,&quot;end_time&quot;:&quot;2023-02-07T23:49:27.540840&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:49:27.490436&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>init_fn, update_fn, params_fn <span class="op">=</span> adam(step_size)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> init_fn(epsr.reshape(<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>this is the optimization step:</p>
 <hr>
@@ -456,30 +485,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code> step_fn (step, state)</code></pre>
 </blockquote>
 <p>we can now loop over the optimization:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>range_ <span class="op">=</span> trange(<span class="dv">500</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> step <span class="kw">in</span> range_:</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    loss, state <span class="op">=</span> step_fn(step, state)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    range_.set_postfix(loss<span class="op">=</span><span class="bu">float</span>(loss))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:49:27.661042Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:49:27.660668Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:52:49.729598Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:52:49.729066Z&quot;}" data-papermill="{&quot;duration&quot;:202.090843,&quot;end_time&quot;:&quot;2023-02-07T23:52:49.731267&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:49:27.640424&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>range_ <span class="op">=</span> trange(<span class="dv">500</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> step <span class="kw">in</span> range_:</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    loss, state <span class="op">=</span> step_fn(step, state)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    range_.set_postfix(loss<span class="op">=</span><span class="bu">float</span>(loss))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"80b159d63aee4ad996118dab92b406ee","version_major":2,"version_minor":0}
+</script>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>epsr_optimum <span class="op">=</span> params_fn(state)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>epsr_optimum <span class="op">=</span> epsr_optimum.reshape((Nx, Ny))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate and show the optimal device</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>epsr_optimum_total <span class="op">=</span> mask_combine_epsr(epsr_optimum, bg_epsr, design_region)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>simulation, ax <span class="op">=</span> viz_sim(epsr_optimum_total, source, slices<span class="op">=</span>[input_slice, output_slice])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:52:49.747718Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:52:49.747472Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:52:49.763902Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:52:49.763377Z&quot;}" data-papermill="{&quot;duration&quot;:0.026499,&quot;end_time&quot;:&quot;2023-02-07T23:52:49.765603&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:52:49.739104&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>epsr_optimum <span class="op">=</span> params_fn(state)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>epsr_optimum <span class="op">=</span> epsr_optimum.reshape((Nx, Ny))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:52:49.781777Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:52:49.781543Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:52:50.235998Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:52:50.235442Z&quot;}" data-papermill="{&quot;duration&quot;:0.464773,&quot;end_time&quot;:&quot;2023-02-07T23:52:50.237861&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:52:49.773088&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate and show the optimal device</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>epsr_optimum_total <span class="op">=</span> mask_combine_epsr(epsr_optimum, bg_epsr, design_region)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>simulation, ax <span class="op">=</span> viz_sim(epsr_optimum_total, source, slices<span class="op">=</span>[input_slice, output_slice])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="07_inverse_design_files/figure-html/cell-23-output-1.png" class="img-fluid"></p>
+</div>
 </div>
 <p>At the end of the optimization we can see our final device. From the field pattern, we can easily observe that the device is doing what we intend: the <em>even</em> mode enters from the left and exits as the <em>odd</em> mode on the right.</p>
 <p>However, an additional observation is that our device’s permittivity changes continuously. This is not ideal if we wanted to fabricated our device. We’re also not constraining the minimum and maximum values of <span class="math inline">\(\epsilon_r\)</span>. Thus, we need to consider alternative ways of parameterizing our device.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>plt.imshow(np.sqrt(epsr_optimum_total.T), cmap<span class="op">=</span><span class="st">"plasma"</span>, vmin<span class="op">=</span><span class="dv">1</span>, vmax<span class="op">=</span><span class="dv">4</span>)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="op">*</span>plt.ylim()[::<span class="op">-</span><span class="dv">1</span>])</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>plt.colorbar(ticks<span class="op">=</span>[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>], label<span class="op">=</span><span class="st">"n"</span>)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"y"</span>)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:52:50.272979Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:52:50.272710Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:52:50.445912Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:52:50.445384Z&quot;}" data-papermill="{&quot;duration&quot;:0.184147,&quot;end_time&quot;:&quot;2023-02-07T23:52:50.447419&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:52:50.263272&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>plt.imshow(np.sqrt(epsr_optimum_total.T), cmap<span class="op">=</span><span class="st">"plasma"</span>, vmin<span class="op">=</span><span class="dv">1</span>, vmax<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="op">*</span>plt.ylim()[::<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>plt.colorbar(ticks<span class="op">=</span>[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>], label<span class="op">=</span><span class="st">"n"</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"y"</span>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="07_inverse_design_files/figure-html/cell-24-output-1.png" class="img-fluid"></p>
+</div>
 </div>
 
 
@@ -487,6 +527,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 
 </main> <!-- /main -->
+<script type="application/vnd.jupyter.widget-state+json">
+{"state":{"1994554356d14e92a1779b21e132e35e":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"4100608d5db74154a5c85fe790a2bc98":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"41f8b9c101934649b8d6bdab331d6fe1":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"StyleView","background":null,"description_width":"","font_size":null,"text_color":null}},"51380f34e5884d2d94f97de47bd55068":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"StyleView","background":null,"description_width":"","font_size":null,"text_color":null}},"644893c3a742421c8ec249f2c0ea37b4":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"6f4e9732c1ab4032b4c8b3dcbbffdfda":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"80b159d63aee4ad996118dab92b406ee":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HBoxModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"HBoxView","box_style":"","children":["IPY_MODEL_9659f791ed1a49fc888465ffb11e2263","IPY_MODEL_cb766b1a26d14cc6bf76b46269c98028","IPY_MODEL_b5051b25c65e4ee9bcd077bbc72ebebe"],"layout":"IPY_MODEL_644893c3a742421c8ec249f2c0ea37b4","tabbable":null,"tooltip":null}},"9659f791ed1a49fc888465ffb11e2263":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"HTMLView","description":"","description_allow_html":false,"layout":"IPY_MODEL_4100608d5db74154a5c85fe790a2bc98","placeholder":"​","style":"IPY_MODEL_51380f34e5884d2d94f97de47bd55068","tabbable":null,"tooltip":null,"value":"100%"}},"b5051b25c65e4ee9bcd077bbc72ebebe":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"HTMLModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"HTMLView","description":"","description_allow_html":false,"layout":"IPY_MODEL_6f4e9732c1ab4032b4c8b3dcbbffdfda","placeholder":"​","style":"IPY_MODEL_41f8b9c101934649b8d6bdab331d6fe1","tabbable":null,"tooltip":null,"value":" 500/500 [03:22&lt;00:00,  2.85it/s, loss=-1.72e+7]"}},"c1421bb0b0fe4d0d88723ee2296f8f4a":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"ProgressStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"ProgressStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"StyleView","bar_color":null,"description_width":""}},"cb766b1a26d14cc6bf76b46269c98028":{"model_module":"@jupyter-widgets/controls","model_module_version":"2.0.0","model_name":"FloatProgressModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"2.0.0","_model_name":"FloatProgressModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"2.0.0","_view_name":"ProgressView","bar_style":"success","description":"","description_allow_html":false,"layout":"IPY_MODEL_1994554356d14e92a1779b21e132e35e","max":500,"min":0,"orientation":"horizontal","style":"IPY_MODEL_c1421bb0b0fe4d0d88723ee2296f8f4a","tabbable":null,"tooltip":null,"value":500}}},"version_major":2,"version_minor":0}
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

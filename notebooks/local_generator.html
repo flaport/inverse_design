@@ -293,7 +293,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="generating-a-latent-space-representation" class="level2">
 <h2 class="anchored" data-anchor-id="generating-a-latent-space-representation">Generating a latent space representation</h2>
 <p>To make it more “understandable” where material is placed we generate a slowly varying landscape by interpolation of a low resolution map.</p>
-<div class="cell">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:50:08.692380Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:50:08.692067Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:50:09.082711Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:50:09.082100Z&quot;}" data-papermill="{&quot;duration&quot;:0.406316,&quot;end_time&quot;:&quot;2023-02-07T23:50:09.084772&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:50:08.678456&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_heatmap(features <span class="op">=</span> <span class="dv">8</span>, zoom <span class="op">=</span> <span class="dv">16</span>):</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  heatmap <span class="op">=</span> np.random.random((features,features))<span class="op">-</span><span class="fl">0.5</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  large_heatmap <span class="op">=</span> scipy.ndimage.zoom(heatmap, zoom)</span>
@@ -304,11 +304,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"x"</span>)</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"y"</span>)</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>plt.grid()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="09_local_generator_files/figure-html/cell-2-output-1.png" class="img-fluid"></p>
+</div>
 </div>
 </section>
 <section id="generating-the-brush" class="level2">
 <h2 class="anchored" data-anchor-id="generating-the-brush">Generating the brush</h2>
-<div class="cell">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:50:09.111405Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:50:09.111013Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:50:09.115486Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:50:09.114936Z&quot;}" data-papermill="{&quot;duration&quot;:0.014168,&quot;end_time&quot;:&quot;2023-02-07T23:50:09.117804&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:50:09.103636&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> circular_brush(diameter):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    radius <span class="op">=</span> diameter <span class="op">/</span> <span class="dv">2</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    X, Y <span class="op">=</span> np.mgrid[<span class="op">-</span>radius : radius : <span class="ot">1j</span> <span class="op">*</span> diameter, <span class="op">-</span>radius : radius : <span class="ot">1j</span> <span class="op">*</span> diameter]</span>
@@ -316,7 +319,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    brush <span class="op">=</span> _int(X) <span class="op">**</span> <span class="dv">2</span> <span class="op">+</span> _int(Y) <span class="op">**</span> <span class="dv">2</span> <span class="op">&lt;</span> radius <span class="op">**</span> <span class="dv">2</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> brush</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:50:09.133855Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:50:09.133604Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:50:09.361231Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:50:09.360665Z&quot;}" data-papermill="{&quot;duration&quot;:0.236523,&quot;end_time&quot;:&quot;2023-02-07T23:50:09.362975&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:50:09.126452&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>kernel_size<span class="op">=</span><span class="dv">9</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>brush <span class="op">=</span> np.ones((kernel_size, kernel_size))</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>brush[<span class="dv">0</span>,<span class="dv">0</span>] <span class="op">=</span> <span class="dv">0</span></span>
@@ -342,8 +345,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  plt.grid()</span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>show_brush(brush)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="09_local_generator_files/figure-html/cell-4-output-1.png" class="img-fluid"></p>
 </div>
-<div class="cell">
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:50:09.378238Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:50:09.377978Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:50:10.533128Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:50:10.532573Z&quot;}" data-papermill="{&quot;duration&quot;:1.165281,&quot;end_time&quot;:&quot;2023-02-07T23:50:10.534880&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:50:09.369599&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>conv_brush <span class="op">=</span> scipy.ndimage.binary_dilation(np.pad(brush, <span class="bu">len</span>(brush)<span class="op">//</span><span class="dv">2</span>), brush)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>show_brush(conv_brush)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span>
@@ -352,6 +358,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>double_conv_brush <span class="op">=</span> scipy.ndimage.binary_dilation(np.pad(conv_brush, <span class="bu">len</span>(brush)<span class="op">//</span><span class="dv">2</span>), brush)</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>show_brush(double_conv_brush)</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>&lt;matplotlib.colorbar.Colorbar at 0x7fa09c5c77f0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="09_local_generator_files/figure-html/cell-5-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="09_local_generator_files/figure-html/cell-5-output-3.png" class="img-fluid"></p>
+</div>
 </div>
 </section>
 <section id="running-the-generator" class="level2">
@@ -392,76 +407,76 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <pre><code> log (*args, level=1)</code></pre>
 </blockquote>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compare(s_try, s_actual, v_try, v_actual, name):</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">"""</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">  Compares properties of a new implementation and the original slow one.</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">  Raises Error if they are not equal and plots the comparison</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">  """</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  compare_s <span class="op">=</span> np.logical_xor(s_try,s_actual)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  compare_v <span class="op">=</span> np.logical_xor(v_try,v_actual)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> compare_s.<span class="bu">any</span>() <span class="kw">or</span> compare_v.<span class="bu">any</span>():</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize <span class="op">=</span> (<span class="dv">6</span>,<span class="dv">9</span>))</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">321</span>)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Compare Solid"</span>)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    plt.imshow(compare_s, vmax<span class="op">=</span><span class="dv">1</span>, vmin<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">322</span>)</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Compare Void"</span>)</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    plt.imshow(compare_v, vmax<span class="op">=</span><span class="dv">1</span>, vmin<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">323</span>)</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> Solid"</span>)</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    plt.imshow(s_try, vmax<span class="op">=</span><span class="dv">1</span>, vmin<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">324</span>)</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> Void"</span>)</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    plt.imshow(v_try, vmax<span class="op">=</span><span class="dv">1</span>, vmin<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">325</span>)</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"Actual </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> Solid"</span>)</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    plt.imshow(s_actual, vmax<span class="op">=</span><span class="dv">1</span>, vmin<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">326</span>)</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"Actual </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> Void"</span>)</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    plt.imshow(v_actual, vmax<span class="op">=</span><span class="dv">1</span>, vmin<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Calculation of </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> wrong"</span>)</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> check_valid(state: GeneratorState):</span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> debug<span class="op">&gt;</span><span class="dv">2</span>:</span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    times.possible <span class="op">-=</span> time.process_time() </span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    p_s_possible_real <span class="op">=</span> possible_pixels(state.t_s_valid,state.t_s,brush)</span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>    p_v_possible_real <span class="op">=</span> possible_pixels(state.t_v_valid,state.t_v,brush)</span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>    times.possible <span class="op">+=</span> time.process_time() </span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    compare(state.p_s_possible,p_s_possible_real, state.p_v_possible,p_v_possible_real, <span class="st">"possible"</span>)</span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> debug<span class="op">&gt;</span><span class="dv">2</span>:</span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>    p_s_possible_dilated_real <span class="op">=</span> dilate(state.p_s_possible, state.brush, <span class="va">False</span>)</span>
-<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    p_v_possible_dilated_real <span class="op">=</span> dilate(state.p_v_possible, state.brush, <span class="va">False</span>)</span>
-<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    compare(state.dilated_p_s_possible,p_s_possible_dilated_real, state.dilated_p_v_possible,p_v_possible_dilated_real, <span class="st">"dilated possible"</span>)</span>
-<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>    t_s_free_real <span class="op">=</span> free_touches(state.p_v_possible, state.t_s_valid, state.brush)</span>
-<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>    t_v_free_real <span class="op">=</span> free_touches(state.p_s_possible, state.t_v_valid, state.brush)</span>
-<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>    compare(state.t_s_free,t_s_free_real, state.t_v_free,t_v_free_real, <span class="st">"free"</span>)</span>
-<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> debug<span class="op">&gt;</span><span class="dv">1</span>:</span>
-<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>    t_s_valid_real <span class="op">=</span> valid_touches(state.t_s_impossible, state.t_s)</span>
-<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>    t_v_valid_real <span class="op">=</span> valid_touches(state.t_v_impossible, state.t_v)</span>
-<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>    compare(state.t_s_valid, t_s_valid_real, state.t_v_valid, t_v_valid_real, <span class="st">"valid"</span>)</span>
-<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> state.t_s_free.<span class="bu">any</span>() <span class="kw">or</span> state.t_v_free.<span class="bu">any</span>():</span>
-<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span>
-<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> debug<span class="op">&gt;</span><span class="dv">1</span>:</span>
-<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>    p_s_required_real <span class="op">=</span> required_pixels(state.p_s_existing, state.p_v_possible)</span>
-<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>    p_v_required_real <span class="op">=</span> required_pixels(state.p_v_existing, state.p_s_possible)</span>
-<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>    compare(state.p_s_required,p_s_required_real, state.p_v_required,p_v_required_real, <span class="st">"required"</span>)</span>
-<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> debug<span class="op">&gt;</span><span class="dv">1</span>:</span>
-<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>    p_s_required_dilated_real <span class="op">=</span> dilate(state.p_s_required, state.brush)</span>
-<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>    p_v_required_dilated_real <span class="op">=</span> dilate(state.p_v_required, state.brush)</span>
-<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>    compare(state.dilated_p_s_required, p_s_required_dilated_real, state.dilated_p_v_required, p_v_required_dilated_real, <span class="st">"dilated required"</span>)</span>
-<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>    t_s_resolving_real <span class="op">=</span> resolving_touches(state.p_s_required, state.t_s_valid, state.brush)</span>
-<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>    t_v_resolving_real <span class="op">=</span> resolving_touches(state.p_v_required, state.t_v_valid, state.brush)</span>
-<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>    compare(state.t_s_resolving,t_s_resolving_real, state.t_v_resolving,t_v_resolving_real, <span class="st">"resolving"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:50:10.688855Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:50:10.688611Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:50:10.703443Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:50:10.702898Z&quot;}" data-papermill="{&quot;duration&quot;:0.025153,&quot;end_time&quot;:&quot;2023-02-07T23:50:10.705282&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:50:10.680129&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compare(s_try, s_actual, v_try, v_actual, name):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">"""</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">  Compares properties of a new implementation and the original slow one.</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">  Raises Error if they are not equal and plots the comparison</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">  """</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  compare_s <span class="op">=</span> np.logical_xor(s_try,s_actual)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  compare_v <span class="op">=</span> np.logical_xor(v_try,v_actual)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> compare_s.<span class="bu">any</span>() <span class="kw">or</span> compare_v.<span class="bu">any</span>():</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize <span class="op">=</span> (<span class="dv">6</span>,<span class="dv">9</span>))</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">321</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Compare Solid"</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    plt.imshow(compare_s, vmax<span class="op">=</span><span class="dv">1</span>, vmin<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">322</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Compare Void"</span>)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    plt.imshow(compare_v, vmax<span class="op">=</span><span class="dv">1</span>, vmin<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">323</span>)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> Solid"</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    plt.imshow(s_try, vmax<span class="op">=</span><span class="dv">1</span>, vmin<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">324</span>)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> Void"</span>)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    plt.imshow(v_try, vmax<span class="op">=</span><span class="dv">1</span>, vmin<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">325</span>)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"Actual </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> Solid"</span>)</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    plt.imshow(s_actual, vmax<span class="op">=</span><span class="dv">1</span>, vmin<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">326</span>)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"Actual </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> Void"</span>)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    plt.imshow(v_actual, vmax<span class="op">=</span><span class="dv">1</span>, vmin<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Calculation of </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> wrong"</span>)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> check_valid(state: GeneratorState):</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> debug<span class="op">&gt;</span><span class="dv">2</span>:</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>    times.possible <span class="op">-=</span> time.process_time() </span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    p_s_possible_real <span class="op">=</span> possible_pixels(state.t_s_valid,state.t_s,brush)</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    p_v_possible_real <span class="op">=</span> possible_pixels(state.t_v_valid,state.t_v,brush)</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>    times.possible <span class="op">+=</span> time.process_time() </span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    compare(state.p_s_possible,p_s_possible_real, state.p_v_possible,p_v_possible_real, <span class="st">"possible"</span>)</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> debug<span class="op">&gt;</span><span class="dv">2</span>:</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    p_s_possible_dilated_real <span class="op">=</span> dilate(state.p_s_possible, state.brush, <span class="va">False</span>)</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    p_v_possible_dilated_real <span class="op">=</span> dilate(state.p_v_possible, state.brush, <span class="va">False</span>)</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    compare(state.dilated_p_s_possible,p_s_possible_dilated_real, state.dilated_p_v_possible,p_v_possible_dilated_real, <span class="st">"dilated possible"</span>)</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    t_s_free_real <span class="op">=</span> free_touches(state.p_v_possible, state.t_s_valid, state.brush)</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>    t_v_free_real <span class="op">=</span> free_touches(state.p_s_possible, state.t_v_valid, state.brush)</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>    compare(state.t_s_free,t_s_free_real, state.t_v_free,t_v_free_real, <span class="st">"free"</span>)</span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> debug<span class="op">&gt;</span><span class="dv">1</span>:</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>    t_s_valid_real <span class="op">=</span> valid_touches(state.t_s_impossible, state.t_s)</span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>    t_v_valid_real <span class="op">=</span> valid_touches(state.t_v_impossible, state.t_v)</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>    compare(state.t_s_valid, t_s_valid_real, state.t_v_valid, t_v_valid_real, <span class="st">"valid"</span>)</span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> state.t_s_free.<span class="bu">any</span>() <span class="kw">or</span> state.t_v_free.<span class="bu">any</span>():</span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> debug<span class="op">&gt;</span><span class="dv">1</span>:</span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>    p_s_required_real <span class="op">=</span> required_pixels(state.p_s_existing, state.p_v_possible)</span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>    p_v_required_real <span class="op">=</span> required_pixels(state.p_v_existing, state.p_s_possible)</span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>    compare(state.p_s_required,p_s_required_real, state.p_v_required,p_v_required_real, <span class="st">"required"</span>)</span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> debug<span class="op">&gt;</span><span class="dv">1</span>:</span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>    p_s_required_dilated_real <span class="op">=</span> dilate(state.p_s_required, state.brush)</span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>    p_v_required_dilated_real <span class="op">=</span> dilate(state.p_v_required, state.brush)</span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>    compare(state.dilated_p_s_required, p_s_required_dilated_real, state.dilated_p_v_required, p_v_required_dilated_real, <span class="st">"dilated required"</span>)</span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>    t_s_resolving_real <span class="op">=</span> resolving_touches(state.p_s_required, state.t_s_valid, state.brush)</span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a>    t_v_resolving_real <span class="op">=</span> resolving_touches(state.p_v_required, state.t_v_valid, state.brush)</span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>    compare(state.t_s_resolving,t_s_resolving_real, state.t_v_resolving,t_v_resolving_real, <span class="st">"resolving"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
 <p><a href="https://github.com/flaport/inverse_design/tree/master/blob/master/inverse_design/local_generator.py#L335" target="_blank" style="float:right; font-size:smaller">source</a></p>
@@ -584,10 +599,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <pre><code> generate_feasible_design_mask_jvp (primals, tangents)</code></pre>
 </blockquote>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>times <span class="op">=</span> Times()</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>debug<span class="op">=</span><span class="dv">0</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>generate(large_heatmap, brush)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:50:11.436458Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:50:11.436188Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:50:15.751760Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:50:15.751198Z&quot;}" data-papermill="{&quot;duration&quot;:4.333538,&quot;end_time&quot;:&quot;2023-02-07T23:50:15.753451&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:50:11.419913&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>times <span class="op">=</span> Times()</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>debug<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>generate(large_heatmap, brush)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>&lt;__main__.GeneratorState at 0x7fa08ccfd3d0&gt;</code></pre>
+</div>
 </div>
 </section>
 <section id="times-for-128-sidelength" class="level3">
@@ -596,53 +614,75 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>With partial tracking of existing: 6.09s</p>
 <p>With full tracking of existing: 5.72s</p>
 <p>With tracking of existing, impossible touches and possible pixels: 3.77s</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>times.__dict__</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:50:15.806650Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:50:15.806353Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:50:15.810854Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:50:15.810306Z&quot;}" data-papermill="{&quot;duration&quot;:0.027547,&quot;end_time&quot;:&quot;2023-02-07T23:50:15.819713&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:50:15.792166&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>times.__dict__</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>{'update': 0.9670974000000028,
+ 'dilate': 0.9226746999999982,
+ 'required': 0.004335000000005529,
+ 'resolving': 0.9273703000000051,
+ 'select': 2.1701427000000035,
+ 'convolute': 1.2666136000000074,
+ 'existing': 0.1988380999999988,
+ 'impossible': 0,
+ 'possible': 0,
+ 'valid': 0.01137620000000883,
+ 'free': 0.08332150000000382,
+ 'local_required': 0.005919800000003583,
+ 'local_resolving': 0.3748742000000034,
+ 'local_dilate': 0.5014807000000232}</code></pre>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm.notebook <span class="im">import</span> tqdm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:50:15.854760Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:50:15.854481Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:50:16.140059Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:50:16.139484Z&quot;}" data-papermill="{&quot;duration&quot;:0.308533,&quot;end_time&quot;:&quot;2023-02-07T23:50:16.142039&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:50:15.833506&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm.notebook <span class="im">import</span> tqdm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>debug=0 df = [] for features in tqdm([2, 4, 8, 10, 12, 13, 14, 15, 16, 17, 18], desc=“features”, position=0):</p>
 <p>for i in tqdm(range(50//features), desc=“iteration”, position=1, leave=False): heatmap = generate_heatmap(features, zoom=16) times = Times() generate(heatmap) dic = times.__dict__ dic[“features”] = features df.append(dic)</p>
 <p>df = pd.DataFrame(df)</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">#df.to_pickle("timing.pkl")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:50:16.200247Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:50:16.199973Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:50:16.202917Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:50:16.202382Z&quot;}" data-papermill="{&quot;duration&quot;:0.023189,&quot;end_time&quot;:&quot;2023-02-07T23:50:16.208010&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:50:16.184821&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#df.to_pickle("timing.pkl")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_pickle(<span class="st">"../resources/timing.pkl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:50:16.229987Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:50:16.229735Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:50:16.233472Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:50:16.232933Z&quot;}" data-papermill="{&quot;duration&quot;:0.014945,&quot;end_time&quot;:&quot;2023-02-07T23:50:16.235791&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:50:16.220846&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_pickle(<span class="st">"../resources/timing.pkl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"pixels"</span>] <span class="op">=</span> df[<span class="st">"features"</span>]<span class="op">**</span><span class="dv">2</span><span class="op">*</span><span class="dv">16</span><span class="op">**</span><span class="dv">2</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"total"</span>] <span class="op">=</span> df[<span class="st">"update"</span>]<span class="op">+</span>df[<span class="st">"select"</span>]</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>linear <span class="op">=</span> [<span class="st">"local_dilate"</span>, <span class="st">"local_required"</span>, <span class="st">"local_resolving"</span>, <span class="st">"existing"</span>, <span class="st">"impossible"</span>, <span class="st">"possible"</span>, <span class="st">"valid"</span>, <span class="st">"free"</span>]</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"linear_ops"</span>] <span class="op">=</span> df[linear].<span class="bu">sum</span>(axis<span class="op">=</span><span class="st">"columns"</span>)</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>exclude <span class="op">=</span> [<span class="st">"features"</span>, <span class="st">"required"</span>, <span class="st">"update+select"</span>, <span class="st">"features_sq"</span>, <span class="st">"update"</span>, <span class="st">"select"</span>]</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(columns<span class="op">=</span>exclude)</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>t_mean <span class="op">=</span> df.groupby(<span class="st">"pixels"</span>).agg(np.mean)</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>t_std <span class="op">=</span> df.groupby(<span class="st">"pixels"</span>).agg(np.std)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:50:16.253041Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:50:16.252796Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:50:16.265218Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:50:16.264689Z&quot;}" data-papermill="{&quot;duration&quot;:0.023009,&quot;end_time&quot;:&quot;2023-02-07T23:50:16.266892&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:50:16.243883&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"pixels"</span>] <span class="op">=</span> df[<span class="st">"features"</span>]<span class="op">**</span><span class="dv">2</span><span class="op">*</span><span class="dv">16</span><span class="op">**</span><span class="dv">2</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"total"</span>] <span class="op">=</span> df[<span class="st">"update"</span>]<span class="op">+</span>df[<span class="st">"select"</span>]</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>linear <span class="op">=</span> [<span class="st">"local_dilate"</span>, <span class="st">"local_required"</span>, <span class="st">"local_resolving"</span>, <span class="st">"existing"</span>, <span class="st">"impossible"</span>, <span class="st">"possible"</span>, <span class="st">"valid"</span>, <span class="st">"free"</span>]</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"linear_ops"</span>] <span class="op">=</span> df[linear].<span class="bu">sum</span>(axis<span class="op">=</span><span class="st">"columns"</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>exclude <span class="op">=</span> [<span class="st">"features"</span>, <span class="st">"required"</span>, <span class="st">"update+select"</span>, <span class="st">"features_sq"</span>, <span class="st">"update"</span>, <span class="st">"select"</span>]</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(columns<span class="op">=</span>exclude)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>t_mean <span class="op">=</span> df.groupby(<span class="st">"pixels"</span>).agg(np.mean)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>t_std <span class="op">=</span> df.groupby(<span class="st">"pixels"</span>).agg(np.std)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_timing(t_mean, t_std):</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> ((col_mean,val_mean), (col_std, val_std)) <span class="kw">in</span> <span class="bu">zip</span>(t_mean.items(), t_std.items()):</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>      plt.errorbar(val_mean.index, val_mean, val_std<span class="op">*</span><span class="dv">2</span>, label<span class="op">=</span>col_mean)</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>      <span class="co">#t_mean.drop(columns=linear).plot(y="mean", yerr="std")</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>      plt.ylabel(<span class="st">"Time [s]"</span>)</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>      plt.xlabel(<span class="st">"Number Pixels"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:50:16.284938Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:50:16.284687Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:50:16.288864Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:50:16.288322Z&quot;}" data-papermill="{&quot;duration&quot;:0.015924,&quot;end_time&quot;:&quot;2023-02-07T23:50:16.291210&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:50:16.275286&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_timing(t_mean, t_std):</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> ((col_mean,val_mean), (col_std, val_std)) <span class="kw">in</span> <span class="bu">zip</span>(t_mean.items(), t_std.items()):</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>      plt.errorbar(val_mean.index, val_mean, val_std<span class="op">*</span><span class="dv">2</span>, label<span class="op">=</span>col_mean)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>      <span class="co">#t_mean.drop(columns=linear).plot(y="mean", yerr="std")</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>      plt.ylabel(<span class="st">"Time [s]"</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>      plt.xlabel(<span class="st">"Number Pixels"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>plt.figure(constrained_layout<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>plot_timing(t_mean.drop(columns<span class="op">=</span>linear), t_std.drop(columns<span class="op">=</span>linear))</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"total_time.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:50:16.308450Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:50:16.308210Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:50:16.772774Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:50:16.772180Z&quot;}" data-papermill="{&quot;duration&quot;:0.475293,&quot;end_time&quot;:&quot;2023-02-07T23:50:16.774583&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:50:16.299290&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>plt.figure(constrained_layout<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>plot_timing(t_mean.drop(columns<span class="op">=</span>linear), t_std.drop(columns<span class="op">=</span>linear))</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"total_time.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="09_local_generator_files/figure-html/cell-28-output-1.png" class="img-fluid"></p>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>plt.figure(constrained_layout<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>plot_timing(t_mean[linear], t_std[linear])</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"linear_time.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-07T23:50:16.803355Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-07T23:50:16.803094Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-07T23:50:17.447352Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-07T23:50:17.446786Z&quot;}" data-papermill="{&quot;duration&quot;:0.663856,&quot;end_time&quot;:&quot;2023-02-07T23:50:17.449051&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-07T23:50:16.785195&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>plt.figure(constrained_layout<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>plot_timing(t_mean[linear], t_std[linear])</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"linear_time.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="09_local_generator_files/figure-html/cell-29-output-1.png" class="img-fluid"></p>
+</div>
 </div>
 
 
