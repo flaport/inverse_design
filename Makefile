@@ -11,7 +11,6 @@ docker:
 .PHONY: rust
 rust:
 	cd rust && make build && cd -
-	cp rust/inverse_design_rs.so ./
 
 lib: rust
 	nbdev_build_lib

@@ -17,9 +17,10 @@ seed = 42
 m = n = 128
 
 start_time = time.time()
-brush = np.asarray(notched_square_brush(9, 2), dtype=np.float32)
+brush = np.asarray(notched_square_brush(5, 1), dtype=np.float32)
 latent = np.asarray(new_latent_design((m, n), r=seed), dtype=np.float32)
 latent_t = np.asarray(transform(latent, brush, beta=5.0), dtype=np.float32)
+latent_t = latent_t + latent_t[::-1]
 
 # with open(f"latent_t_{seed}_{m}x{n}.bin", "wb") as file:
 #     file.write(latent_t.tobytes());
@@ -48,5 +49,5 @@ design = Design(
 )
 print(f"execution time: {time.time()-start_time:.3f}")
 
-# visualize(design)
-# plt.show()
+visualize(design, grid=False)
+plt.show()
