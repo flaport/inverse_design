@@ -127,7 +127,12 @@ impl Design {
         };
     }
 
-    pub fn add_void_touch(&mut self, brush: &Brush, big_brush: &Brush, pos: (usize, usize)) {
+    pub fn add_void_touch(
+        &mut self,
+        brush: &Brush,
+        big_brush: &Brush,
+        pos: (usize, usize),
+    ) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
         let profiler = Profiler::start("add_touch");
 
         self.void_brush_at_pos(brush, pos);
@@ -135,21 +140,28 @@ impl Design {
         self.big_void_brush_at_pos(big_brush, pos);
         let required_pixels = self.find_required_pixels_around_pos(brush, big_brush, pos);
         self.take_free_void_touches_around_pos(brush, big_brush, pos);
-        let _resolving_touches =
-            self.find_resolving_touches_for_required_pixels(brush, required_pixels);
+        let resolving_touches =
+            self.find_resolving_touches_for_required_pixels(brush, &required_pixels);
         profiler.stop();
+        return (required_pixels, resolving_touches);
     }
 
-    pub fn add_solid_touch(&mut self, brush: &Brush, big_brush: &Brush, pos: (usize, usize)) {
+    pub fn add_solid_touch(
+        &mut self,
+        brush: &Brush,
+        big_brush: &Brush,
+        pos: (usize, usize),
+    ) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
         self.invert();
-        self.add_void_touch(brush, big_brush, pos);
+        let (required_pixels, resolving_touches) = self.add_void_touch(brush, big_brush, pos);
         self.invert();
+        return (required_pixels, resolving_touches);
     }
 
     fn find_resolving_touches_for_required_pixels(
         &mut self,
         brush: &Brush,
-        required_pixels: Vec<(usize, usize)>,
+        required_pixels: &Vec<(usize, usize)>,
     ) -> Vec<(usize, usize)> {
         let (_, n) = self.shape;
         let mut resolving_touches = Vec::new();
@@ -157,7 +169,7 @@ impl Design {
             if self.void_pixel_existing[i * n + j] {
                 continue;
             }
-            for (it, jt) in brush.at((i, j), self.shape).iter() {
+            for (it, jt) in brush.at((*i, *j), self.shape).iter() {
                 if self.void_touch_invalid[*it * n + *jt] {
                     continue;
                 }
