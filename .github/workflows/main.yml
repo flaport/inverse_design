@@ -36,17 +36,17 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: notebooks
-          path: /github/workspace/notebooks
+          path: notebooks
       - name: Expose 'index.ipynb' as artifact
         uses: actions/upload-artifact@master
         with:
           name: index.ipynb
-          path: /github/workspace/index.ipynb
+          path: index.ipynb
       - name: Expose '_docs' as artifact
         uses: actions/upload-artifact@master
         with:
           name: _docs
-          path: /github/workspace/_docs
+          path: _docs
 
   pages:
     runs-on: ubuntu-latest
