@@ -3,7 +3,7 @@
 # %% auto 0
 __all__ = []
 
-# %% ../notebooks/10_inverse_design_local.ipynb 3
+# %% ../notebooks/10_inverse_design_local.ipynb 2
 from inverse_design.inverse_design import *
 from inverse_design.brushes import notched_square_brush
 from inverse_design.naive_inverse_design import (
@@ -16,7 +16,7 @@ from tqdm.notebook import trange
 from jax.example_libraries.optimizers import adam
 from ceviche.modes import insert_mode
 
-# %% ../notebooks/10_inverse_design_local.ipynb 4
+# %% ../notebooks/10_inverse_design_local.ipynb 3
 import jax
 import jax.numpy as jnp
 from javiche import jaxit

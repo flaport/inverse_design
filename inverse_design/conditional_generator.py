@@ -4,7 +4,7 @@
 __all__ = ['new_latent_design', 'transform', 'conditional_algirithm_step', 'conditional_generator', 'generate_feasible_design',
            'generate_feasible_design_mask_', 'generate_feasible_design_mask', 'generate_feasible_design_mask_jvp']
 
-# %% ../notebooks/04_conditional_generator.ipynb 3
+# %% ../notebooks/04_conditional_generator.ipynb 2
 import warnings
 
 import jax
@@ -25,19 +25,19 @@ from inverse_design.design import (
 )
 from .utils import argmax2d, argmin2d, conv2d, randn
 
-# %% ../notebooks/04_conditional_generator.ipynb 7
+# %% ../notebooks/04_conditional_generator.ipynb 6
 def new_latent_design(shape, bias=0, r=None, r_scale=1):
     arr = randn(shape, r=r)*r_scale
     arr += bias
     return jnp.asarray(arr, dtype=float)
 
-# %% ../notebooks/04_conditional_generator.ipynb 11
+# %% ../notebooks/04_conditional_generator.ipynb 10
 @jax.jit
 def transform(latent, brush, beta=5.0):
     convolved = conv2d(latent, jnp.asarray(brush, dtype=latent.dtype)) / brush.sum()
     return jnp.tanh(beta * convolved)
 
-# %% ../notebooks/04_conditional_generator.ipynb 14
+# %% ../notebooks/04_conditional_generator.ipynb 13
 def conditional_algirithm_step(latent_t, design, brush, verbose=False):
     maybe_print = print if verbose else (lambda *args, **kwargs: None)
     void_touch_mask = design.void_touches == TOUCH_VALID
@@ -106,7 +106,7 @@ def conditional_algirithm_step(latent_t, design, brush, verbose=False):
 
     return design
 
-# %% ../notebooks/04_conditional_generator.ipynb 15
+# %% ../notebooks/04_conditional_generator.ipynb 14
 def conditional_generator(latent_t, brush, verbose=False):
     I = 0
     design = new_design(latent_t.shape)
@@ -119,7 +119,7 @@ def conditional_generator(latent_t, brush, verbose=False):
         design = conditional_algirithm_step(latent_t, design, brush, verbose=verbose)
         yield design
 
-# %% ../notebooks/04_conditional_generator.ipynb 16
+# %% ../notebooks/04_conditional_generator.ipynb 15
 def generate_feasible_design(latent_t, brush, verbose=False, backend='auto'): # backend: 'auto', 'rust', 'python'
     try:
         from inverse_design_rs import generate_feasible_design as generate_feasible_design_rs
@@ -173,18 +173,18 @@ def _generate_feasible_design_rust(latent_t, brush, verbose=False):
     )
     return design
 
-# %% ../notebooks/04_conditional_generator.ipynb 20
+# %% ../notebooks/04_conditional_generator.ipynb 19
 def generate_feasible_design_mask_(latent_t, brush, backend='auto'):
     design = generate_feasible_design(latent_t, brush, verbose=False, backend=backend)
     return design_mask(design)
 
-# %% ../notebooks/04_conditional_generator.ipynb 28
+# %% ../notebooks/04_conditional_generator.ipynb 27
 @jax.custom_jvp
 def generate_feasible_design_mask(latent_t, brush):
     design = generate_feasible_design(latent_t, brush, verbose=False)
     return design_mask(design)
 
-# %% ../notebooks/04_conditional_generator.ipynb 29
+# %% ../notebooks/04_conditional_generator.ipynb 28
 @generate_feasible_design_mask.defjvp
 def generate_feasible_design_mask_jvp(primals, tangents):
     return primals[0], tangents[0]  # identity function for first argument: latent_t

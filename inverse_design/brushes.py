@@ -3,12 +3,12 @@
 # %% auto 0
 __all__ = ['show_mask', 'circular_brush', 'notched_square_brush']
 
-# %% ../notebooks/02_brushes.ipynb 3
+# %% ../notebooks/02_brushes.ipynb 2
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
-# %% ../notebooks/02_brushes.ipynb 4
+# %% ../notebooks/02_brushes.ipynb 3
 def show_mask(brush):
     nx, ny = brush.shape
     _cmap = ListedColormap(colors={0: "#ffffff", 1: "#929292"}.values())
@@ -27,7 +27,7 @@ def show_mask(brush):
     plt.imshow(brush, cmap=_cmap, vmin=0, vmax=1)
     plt.colorbar()
 
-# %% ../notebooks/02_brushes.ipynb 5
+# %% ../notebooks/02_brushes.ipynb 4
 def circular_brush(diameter):
     radius = diameter / 2
     X, Y = jnp.mgrid[-radius : radius : 1j * diameter, -radius : radius : 1j * diameter]
@@ -35,7 +35,7 @@ def circular_brush(diameter):
     brush = _int(X) ** 2 + _int(Y) ** 2 < radius ** 2
     return brush
 
-# %% ../notebooks/02_brushes.ipynb 7
+# %% ../notebooks/02_brushes.ipynb 6
 def notched_square_brush(width, notch):
     Z = jnp.ones((width, width), dtype=bool)
     notch = abs(notch)
