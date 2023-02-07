@@ -13,7 +13,7 @@ arm_env:
 
 .PHONY: rust
 rust:
-	cd rust && maturin develop && cd -
+	cd rust && maturin develop --release && cd -
 
 lib: rust
 	nbdev_build_lib
