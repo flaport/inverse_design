@@ -39,6 +39,7 @@ def run_notebook(path):
 
     sys.stdout, old_stdout = open(os.devnull, "w"), sys.stdout
     sys.stderr, old_stderr = sys.stdout, sys.stderr
+    success = True
     try:
         papermill.execute_notebook(
             input_path=path,
@@ -47,12 +48,12 @@ def run_notebook(path):
             progress_bar=False,
         )
     except Exception:
-        print(f"FAIL {fn}")
+        success = False
         return
     finally:
         sys.stdout = old_stdout
         sys.stderr = old_stderr
-    print(f"SUCCESS {fn}")
+    print(f"SUCCESS {fn}" if success else f"FAIL {fn}")
 
 
 if __name__ == '__main__':
