@@ -39,10 +39,14 @@ jobs:
           cd rust && cargo build --release && cd -
           cp rust/target/release/libinverse_design_rs.so inverse_design_rs.so
           cp rust/target/release/libinverse_design_rs.so notebooks/inverse_design_rs.so
+          python -c "import inverse_design_rs" && echo "root: rust library found!"
+          cd notebooks && python -c "import inverse_design_rs" && echo "root: rust library found!" && cd -
       - name: Run notebooks
         run: |
           papermill index.ipynb index.ipynb
           papermill notebooks/01_utils.ipynb notebooks/01_utils.ipynb --cwd notebooks
+          papermill notebooks/02_brushes.ipynb notebooks/02_brushes.ipynb --cwd notebooks
+          papermill notebooks/03_design.ipynb notebooks/03_design.ipynb --cwd notebooks
       - name: Convert to docs
         run: nbdev_docs
       - name: Expose 'notebooks' as artifact
