@@ -8,13 +8,13 @@ use std::mem::swap;
 pub fn test_generator() {
     let profiler = Profiler::start("test_generator");
     let seed = 42;
-    let (m, n) = (300, 300);
+    let (m, n) = (30, 30);
     let brush = Brush::notched_square(5, 1);
     let latent_t = read_f32(&format!("latent_t_{seed}_{m}x{n}.bin"));
     brush.visualize();
     // visualize_f32_array((m, n), &latent_t);
     let design = generate_feasible_design((m, n), &latent_t, brush, false);
-    // design.visualize();
+    design.visualize();
     profiler.stop();
 }
 

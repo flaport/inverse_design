@@ -28,7 +28,6 @@ pub fn new_array<T: Copy>(size: usize, _default: T) -> Vec<T>{
 pub fn read_u8(filename: &str) -> Vec<u8> {
     let mut f = File::open(filename).expect(&format!("no file '{filename}' found."));
     let meta = metadata(filename).expect(&format!("unable to read '{filename}' metadata."));
-    let length = meta.len();
     let mut buffer = vec![0; meta.len() as usize];
     f.read(&mut buffer).expect("buffer overflow");
     return buffer;

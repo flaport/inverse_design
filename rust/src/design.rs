@@ -3,7 +3,7 @@ use super::brushes::{
     apply_brush, apply_touch, compute_big_brush, compute_very_big_square_brush, multi_apply_brush,
     multi_apply_touch, Brush,
 };
-use super::debug::{counter, Profiler};
+use super::debug::Profiler;
 use std::mem::swap;
 
 pub fn test_design() {

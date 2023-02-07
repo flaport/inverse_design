@@ -1,5 +1,6 @@
 use super::array::k;
 use super::brushes::Brush;
+use super::debug::Profiler;
 use super::design::Design;
 use super::status::Status;
 use itertools::izip;
