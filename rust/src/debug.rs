@@ -3,10 +3,15 @@ use std::collections::HashMap;
 use std::sync::{Mutex, MutexGuard};
 use std::time::SystemTime;
 
-static PROFILER: Lazy<Mutex<HashMap<String, Vec<f32>>>> = Lazy::new(|| Mutex::new(HashMap::new()));
+static _COUNTER: Lazy<Mutex<Counter>> = Lazy::new(|| Mutex::new(Counter { index: 0 }));
+static _PROFILER: Lazy<Mutex<HashMap<String, Vec<f32>>>> = Lazy::new(|| Mutex::new(HashMap::new()));
 
 pub fn profiler<'a>() -> MutexGuard<'a, HashMap<String, Vec<f32>>> {
-    return PROFILER.lock().unwrap();
+    return _PROFILER.lock().unwrap();
+}
+
+pub fn counter<'a>() -> MutexGuard<'a, Counter> {
+    return _COUNTER.lock().unwrap();
 }
 
 pub fn profiler_summary() -> HashMap<String, S> {
@@ -85,4 +90,23 @@ pub fn since(start_time: SystemTime) -> f32 {
         .duration_since(start_time)
         .unwrap()
         .as_secs_f32();
+}
+
+pub struct Counter {
+    pub index: usize,
+}
+
+impl Counter {
+    pub fn inc(&mut self) {
+        self.index += 1;
+    }
+    pub fn eq(&self, value: usize) -> bool {
+        self.index == value
+    }
+    pub fn gt(&self, value: usize) -> bool {
+        self.index > value
+    }
+    pub fn value(&self) -> usize {
+        self.index
+    }
 }

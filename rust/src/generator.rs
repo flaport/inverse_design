@@ -1,7 +1,8 @@
 use super::array::read_f32;
-use super::brushes::Brush;
+use super::brushes::{apply_touch, Brush};
+use super::debug::{counter, Profiler};
 use super::design::Design;
-use super::profiling::Profiler;
+use std::mem::swap;
 // use super::visualize_f32_array;
 
 pub fn test_generator() {
@@ -27,15 +28,16 @@ pub fn generate_feasible_design(
     let (m, n) = shape;
 
     let latent_t_abs: Vec<f32> = latent_t.iter().map(|l| l.abs()).collect();
+    let mut latent_t_neg: Vec<f32> = latent_t.iter().map(|l| -l).collect();
+    let mut latent_t: Vec<f32> = latent_t.iter().map(|l| *l).collect();
 
     let mut design = Design::new(shape, brush);
     let mut indices: Vec<(usize, usize)> = (0..m * n).map(|k| (k / n, k % n)).collect();
     sort_indices_by_value(&mut indices, &latent_t_abs, shape);
 
-    let mut I = 0 as usize;
     loop {
         if verbose {
-            println!("iteration {I}");
+            println!("iteration {}", counter().value());
         }
 
         let loop_profiler = Profiler::start("loop_body");
@@ -48,6 +50,7 @@ pub fn generate_feasible_design(
         let is_solid_touch = latent_t[i * n + j] > 0.0;
         if is_solid_touch {
             design.invert();
+            swap(&mut latent_t, &mut latent_t_neg);
         }
         if verbose {
             if is_solid_touch {
@@ -59,26 +62,29 @@ pub fn generate_feasible_design(
 
         let (mut required_pixels, mut resolving_touches) = void_step(&mut design, (i, j));
 
-        resolve_required_pixels(
+        resolve_required_void_pixels(
             &mut design,
             &mut required_pixels,
             &mut resolving_touches,
-            &latent_t_abs,
+            &latent_t_neg,
+            is_solid_touch,
+            verbose,
         );
 
         // revert inversion
         if is_solid_touch {
             design.invert();
+            swap(&mut latent_t, &mut latent_t_neg);
         }
 
         loop_profiler.stop();
 
         design.visualize();
-        if I == 4 {
+
+        if counter().gt(10) {
             break;
         }
-
-        I += 1;
+        counter().inc();
     }
 
     profiler.stop();
@@ -98,15 +104,17 @@ pub fn void_step(
     return (required_pixels, resolving_touches);
 }
 
-pub fn resolve_required_pixels(
+pub fn resolve_required_void_pixels(
     design: &mut Design,
     required_pixels: &mut Vec<(usize, usize)>,
     resolving_touches: &mut Vec<(usize, usize)>,
-    latent_t_abs: &Vec<f32>,
+    latent_t_neg: &Vec<f32>,
+    is_solid_touch: bool,
+    verbose: bool,
 ) {
     let (_, n) = design.shape;
     loop {
-        sort_indices_by_value(resolving_touches, &latent_t_abs, design.shape);
+        sort_indices_by_value(resolving_touches, &latent_t_neg, design.shape);
 
         let any_required_pixels = required_pixels
             .iter()
@@ -122,45 +130,37 @@ pub fn resolve_required_pixels(
             Some(idxs) => idxs,
         };
 
-        println!("({ir} {jr})");
-        break;
+        counter().inc();
+        let (mut new_required_pixels, mut new_resolving_touches) = void_step(design, (ir, jr));
+        if verbose {
+            if is_solid_touch {
+                println!("resolve solid ({ir}, {jr}).");
+            } else {
+                println!("resolve void ({ir}, {jr}).");
+            }
+        }
 
-        // let (new_required_pixels, new_resolving_touches) =
-        //     void_step(design, (ir, jr));
+        for pos in resolving_touches.iter() {
+            let mut found = false;
+            for new_pos in new_resolving_touches.iter() {
+                if pos == new_pos {
+                    found = true;
+                }
+            }
+            if !found {
+                apply_touch(design.shape, &mut design.void_touch_resolving, *pos, false);
+            }
+        }
+        new_resolving_touches = new_resolving_touches
+            .into_iter()
+            .filter(|(i, j)| design.void_touch_resolving[*i * n + *j])
+            .collect();
 
-        // for tr in new_resolving_touches.iter() {
-        //     resolving_touches.push(*tr);
-        // }
+        swap(required_pixels, &mut new_required_pixels);
+        swap(resolving_touches, &mut new_resolving_touches);
 
-        // for pr in new_required_pixels.iter() {
-        //     required_pixels.push(*pr);
-        // }
-
-        // // TODO: remove below!
-        // loop {
-        //     match required_pixels.pop() {
-        //         Some(_) => continue,
-        //         None => break,
-        //     }
-        // }
-        // loop {
-        //     match resolving_touches.pop() {
-        //         Some(_) => continue,
-        //         None => break,
-        //     }
-        // }
-        // break
+        sort_indices_by_value(resolving_touches, &latent_t_neg, design.shape);
     }
-}
-
-pub fn solid_step(
-    design: &mut Design,
-    pos: (usize, usize),
-) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
-    design.invert();
-    let (required_pixels, resolving_touches) = void_step(design, pos);
-    design.invert();
-    return (required_pixels, resolving_touches);
 }
 
 pub fn sort_indices_by_value(

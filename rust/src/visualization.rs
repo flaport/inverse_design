@@ -249,12 +249,12 @@ impl Design {
             self.solid_pixel_required.iter(),
         )
         .map(|(i, e, _, r)| {
-            if *e {
+            if *r {
+                Status::PixelRequired
+            } else if *e {
                 Status::PixelExisting
             } else if *i {
                 Status::PixelImpossible
-            } else if *r {
-                Status::PixelRequired
             } else {
                 Status::PixelPossible
             }
@@ -272,7 +272,9 @@ impl Design {
             self.void_touch_resolving.iter(),
         )
         .map(|(r, i, e, _, f, g)| {
-            if *g {
+            if *e {
+                Status::TouchExisting
+            } else if *g {
                 Status::TouchResolving
             } else if *r {
                 Status::TouchRequired
@@ -280,8 +282,6 @@ impl Design {
                 Status::TouchFree
             } else if *i {
                 Status::TouchInvalid
-            } else if *e {
-                Status::TouchExisting
             } else {
                 Status::TouchValid
             }
@@ -299,7 +299,9 @@ impl Design {
             self.solid_touch_resolving.iter(),
         )
         .map(|(r, i, e, _, f, g)| {
-            if *g {
+            if *e {
+                Status::TouchExisting
+            } else if *g {
                 Status::TouchResolving
             } else if *r {
                 Status::TouchRequired
@@ -307,8 +309,6 @@ impl Design {
                 Status::TouchFree
             } else if *i {
                 Status::TouchInvalid
-            } else if *e {
-                Status::TouchExisting
             } else {
                 Status::TouchValid
             }

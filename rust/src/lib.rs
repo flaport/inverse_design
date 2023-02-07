@@ -1,8 +1,8 @@
 pub mod array;
 pub mod brushes;
+pub mod debug;
 pub mod design;
 pub mod generator;
-pub mod profiling;
 pub mod status;
 pub mod visualization;
 

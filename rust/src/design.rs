@@ -3,7 +3,7 @@ use super::brushes::{
     apply_brush, apply_touch, compute_big_brush, compute_very_big_square_brush, multi_apply_brush,
     multi_apply_touch, Brush,
 };
-use super::profiling::Profiler;
+use super::debug::{counter, Profiler};
 use std::mem::swap;
 
 pub fn test_design() {
@@ -224,6 +224,7 @@ impl Design {
                 self.void_pixel_existing[i_ * n + j_] | self.void_pixel_required[i_ * n + j_]
             });
             if is_free_touch {
+                counter().inc();
                 self.void_touch_at_pos(pos_);
                 self.void_brush_at_pos(pos_);
             }

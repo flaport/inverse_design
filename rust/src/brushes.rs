@@ -1,5 +1,5 @@
 use super::array::{k, new_array};
-use super::profiling::Profiler;
+use super::debug::Profiler;
 
 pub fn test_brushes() {
     let brush = Brush::notched_square(5, 1);
