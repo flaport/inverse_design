@@ -23,8 +23,8 @@ from inverse_design.design import (
 from .utils import argmax2d, argmin2d, conv2d, randn
 
 # %% ../notebooks/04_conditional_generator.ipynb 6
-def new_latent_design(shape, bias=0, r=None):
-    arr = randn(shape, r=r)
+def new_latent_design(shape, bias=0, r=None, r_scale=1):
+    arr = randn(shape, r=r)*r_scale
     arr += bias
     return jnp.asarray(arr, dtype=float)
 

@@ -7,13 +7,14 @@ __all__ = []
 from inverse_design.inverse_design import *
 from inverse_design.brushes import notched_square_brush
 from inverse_design.naive_inverse_design import (
-    viz_sim, mode_overlap, mask_combine_epsr
+    viz_sim, mode_overlap, mask_combine_epsr, init_domain
 )
 from inverse_design.conditional_generator import (
     new_latent_design, transform
 )
 from tqdm.notebook import trange
 from jax.example_libraries.optimizers import adam
+from ceviche.modes import insert_mode
 
 # %% ../notebooks/10_inverse_design_local.ipynb 4
 import jax

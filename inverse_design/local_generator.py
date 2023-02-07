@@ -421,8 +421,8 @@ import jax.numpy as jnp
 
 # %% ../notebooks/09_local_generator.ipynb 18
 def generate_feasible_design(latent_t, brush,
-  #init_touches_solid = None, 
-  #init_touches_void = None,
+  init_touches_solid = None, 
+  init_touches_void = None,
   verbose=False
   ):
 
@@ -432,7 +432,12 @@ def generate_feasible_design(latent_t, brush,
 
     global times
     times = Times()
-    state = generate(np.array(latent_t), np.array(brush))#, init_touches_solid, init_touches_void)
+    state = generate(
+      np.array(latent_t), 
+      np.array(brush), 
+      np.array(init_touches_solid) if init_touches_solid is not None else None, #Ugly
+      np.array(init_touches_void) if init_touches_void is not None else None
+    )
     return Design(
       void_pixels=state.p_v_existing*PIXEL_EXISTING, 
       solid_pixels=state.p_s_existing*PIXEL_EXISTING,
@@ -443,10 +448,20 @@ def generate_feasible_design(latent_t, brush,
 
 # %% ../notebooks/09_local_generator.ipynb 19
 @jax.custom_jvp
-def generate_feasible_design_mask(latent_t, brush): #, init_touches_solid = None, init_touches_void = None, verbose=False
-    print("evaluating fn")
-    design = generate_feasible_design(latent_t, brush)
-    #, verbose=verbose, init_touches_solid=init_touches_solid, init_touches_void=init_touches_void
+def generate_feasible_design_mask(
+    latent_t, 
+    brush,
+    init_touches_solid = None, 
+    init_touches_void = None, 
+    verbose=False
+  ): #
+    #print("evaluating fn")
+    design = generate_feasible_design(
+      latent_t, 
+      brush, 
+      init_touches_solid=init_touches_solid, 
+      init_touches_void=init_touches_void,
+      verbose=verbose)
     return design_mask(design)
 
 # %% ../notebooks/09_local_generator.ipynb 20
