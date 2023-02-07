@@ -35,7 +35,10 @@ jobs:
           pip install -e .[dev]
           pip install git+https://github.com/fancompute/ceviche
       - name: Build Rust Dependency
-        run: cd rust && maturin develop --release && cd -
+        run: |
+          cd rust && cargo build --release && cd -
+          cp rust/target/release/libinverse_design_rs.so inverse_design_rs.so
+          cp rust/target/release/libinverse_design_rs.so notebooks/inverse_design_rs.so
       - name: Run notebooks
         run: |
           papermill index.ipynb index.ipynb
