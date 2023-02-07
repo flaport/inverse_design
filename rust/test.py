@@ -13,7 +13,7 @@ from inverse_design.utils import conv2d, randn
 from inverse_design_rs import generate_feasible_design
 
 seed = 42
-m = n = 100
+m = n = 30
 
 brush = np.asarray(notched_square_brush(5, 1), dtype=np.float32)
 latent = np.asarray(new_latent_design((m,n), r=seed), dtype=np.float32)

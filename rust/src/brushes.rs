@@ -118,6 +118,39 @@ pub fn compute_big_brush(brush: &Brush) -> Brush {
     };
 }
 
+pub fn compute_very_big_square_brush(brush: &Brush) -> Brush {
+    let (m, n) = brush.shape;
+    let (m_, n_) = (3 * m, 3 * n);
+
+    let mut new_brush = Vec::new();
+    for i in 0..m_ {
+        for j in 0..n_ {
+            new_brush.push((i as i32 - m_ as i32 / 2, j as i32 - n_ as i32 / 2));
+        }
+    }
+
+    return Brush {
+        brush: new_brush,
+        shape: (m_, n_),
+    }
+}
+
+pub fn compute_big_square_brush(brush: &Brush) -> Brush {
+    let (m, n) = brush.shape;
+    let (m_, n_) = (2 * m, 2 * n);
+
+    let mut new_brush = Vec::new();
+    for i in 0..m_{
+        for j in 0..n_ {
+            new_brush.push((i as i32 - m  as i32, j as i32 - m as i32));
+        }
+    }
+    return Brush {
+        brush: new_brush,
+        shape: (m_, n_),
+    };
+}
+
 pub fn apply_touch<T: Copy>(
     shape: (usize, usize),
     array: &mut Vec<T>,

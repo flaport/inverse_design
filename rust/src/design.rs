@@ -1,6 +1,7 @@
 use super::array::new_array;
 use super::brushes::{
-    apply_brush, apply_touch, compute_big_brush, multi_apply_brush, multi_apply_touch, Brush,
+    apply_brush, apply_touch, compute_big_brush, compute_very_big_square_brush, multi_apply_brush,
+    multi_apply_touch, Brush,
 };
 use super::profiling::Profiler;
 use std::mem::swap;
@@ -12,46 +13,44 @@ pub fn test_design() {
     let brush = Brush::notched_square(brush_size, notch);
     brush.visualize();
 
-    let big_brush = compute_big_brush(&brush);
-
     println!("step 1 (new)");
-    let mut design = Design::new(shape);
+    let mut design = Design::new(shape, brush);
     design.visualize();
 
     println!("step 2 (0, 6)");
-    design.add_void_touch(&brush, &big_brush, (0, 6));
+    design.add_void_touch((0, 6));
     design.visualize();
 
     println!("step 3 (skipped)");
     design.visualize();
 
     println!("step 4 (0, 0)");
-    design.add_solid_touch(&brush, &big_brush, (0, 0));
+    design.add_solid_touch((0, 0));
     design.visualize();
 
     println!("step 5 (4, 6)");
-    design.add_void_touch(&brush, &big_brush, (4, 6));
+    design.add_void_touch((4, 6));
     design.visualize();
 
     println!("step 6 (skipped)");
     design.visualize();
 
     println!("step 7 (4, 4)");
-    design.add_void_touch(&brush, &big_brush, (4, 4));
+    design.add_void_touch((4, 4));
     design.visualize();
 
     println!("step 8 (skipped)");
     design.visualize();
 
     println!("step 9 (5, 0)");
-    design.add_void_touch(&brush, &big_brush, (5, 0));
+    design.add_void_touch((5, 0));
     design.visualize();
 
     println!("step 10 (skipped)");
     design.visualize();
 
     println!("step 11 (2, 5)");
-    design.add_void_touch(&brush, &big_brush, (2, 5));
+    design.add_void_touch((2, 5));
     design.visualize();
 
     println!("step 12 (skipped)");
@@ -60,6 +59,9 @@ pub fn test_design() {
 
 pub struct Design {
     pub shape: (usize, usize),
+    pub brush: Brush,
+    pub big_brush: Brush,
+    pub very_big_brush: Brush,
 
     pub unassigned: Vec<bool>, /*  0 */
     pub void: Vec<bool>,       /*  1 */
@@ -91,11 +93,16 @@ pub struct Design {
 }
 
 impl Design {
-    pub fn new(shape: (usize, usize)) -> Self {
+    pub fn new(shape: (usize, usize), brush: Brush) -> Self {
         let (size_x, size_y) = shape;
+        let big_brush = compute_big_brush(&brush);
+        let very_big_brush = compute_very_big_square_brush(&brush);
 
         return Self {
             shape: (size_x, size_y),
+            brush,
+            big_brush,
+            very_big_brush,
 
             unassigned: new_array(size_x * size_y, true),
             void: new_array(size_x * size_y, false),
@@ -129,38 +136,32 @@ impl Design {
 
     pub fn add_void_touch(
         &mut self,
-        brush: &Brush,
-        big_brush: &Brush,
         pos: (usize, usize),
     ) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
         let profiler = Profiler::start("add_touch");
 
-        self.void_brush_at_pos(brush, pos);
+        self.void_brush_at_pos(pos);
         self.void_touch_at_pos(pos);
-        self.big_void_brush_at_pos(big_brush, pos);
-        let required_pixels = self.find_required_pixels_around_pos(brush, big_brush, pos);
-        self.take_free_void_touches_around_pos(brush, big_brush, pos);
-        let resolving_touches =
-            self.find_resolving_touches_for_required_pixels(brush, &required_pixels);
+        self.big_void_brush_at_pos(pos);
+        let required_pixels = self.find_required_pixels_around_pos(pos);
+        self.take_free_void_touches_around_pos(pos);
+        let resolving_touches = self.find_resolving_touches_for_required_pixels(&required_pixels);
         profiler.stop();
         return (required_pixels, resolving_touches);
     }
 
     pub fn add_solid_touch(
         &mut self,
-        brush: &Brush,
-        big_brush: &Brush,
         pos: (usize, usize),
     ) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
         self.invert();
-        let (required_pixels, resolving_touches) = self.add_void_touch(brush, big_brush, pos);
+        let (required_pixels, resolving_touches) = self.add_void_touch(pos);
         self.invert();
         return (required_pixels, resolving_touches);
     }
 
     fn find_resolving_touches_for_required_pixels(
         &mut self,
-        brush: &Brush,
         required_pixels: &Vec<(usize, usize)>,
     ) -> Vec<(usize, usize)> {
         let (_, n) = self.shape;
@@ -169,7 +170,7 @@ impl Design {
             if self.void_pixel_existing[i * n + j] {
                 continue;
             }
-            for (it, jt) in brush.at((*i, *j), self.shape).iter() {
+            for (it, jt) in self.brush.at((*i, *j), self.shape).iter() {
                 if self.void_touch_invalid[*it * n + *jt] {
                     continue;
                 }
@@ -180,17 +181,13 @@ impl Design {
         return resolving_touches;
     }
 
-    fn find_required_pixels_around_pos(
-        &mut self,
-        brush: &Brush,
-        big_brush: &Brush,
-        pos: (usize, usize),
-    ) -> Vec<(usize, usize)> {
+    fn find_required_pixels_around_pos(&mut self, pos: (usize, usize)) -> Vec<(usize, usize)> {
         let (_, n) = self.shape;
-        let big_brush_pixels = big_brush.at(pos, self.shape);
 
+        let very_big_brush_pixels = self.very_big_brush.at(pos, self.shape);
         let mut relevant_pixels = Vec::new();
-        for (i, j) in big_brush_pixels.iter() {
+        for (i, j) in very_big_brush_pixels.iter() {
+            //println!("{i} {j}");
             if !(self.void_pixel_existing[i * n + j] | self.void_pixel_impossible[i * n + j]) {
                 relevant_pixels.push((*i, *j));
             }
@@ -198,7 +195,8 @@ impl Design {
 
         let mut required_pixels = Vec::new();
         for (ip, jp) in relevant_pixels.iter() {
-            let all_touches_invalid = brush
+            let all_touches_invalid = self
+                .brush
                 .at((*ip, *jp), self.shape)
                 .iter()
                 .all(|(i, j)| self.solid_touch_invalid[i * n + j]);
@@ -216,38 +214,33 @@ impl Design {
         return required_pixels;
     }
 
-    fn take_free_void_touches_around_pos(
-        &mut self,
-        brush: &Brush,
-        big_brush: &Brush,
-        pos: (usize, usize),
-    ) {
+    fn take_free_void_touches_around_pos(&mut self, pos: (usize, usize)) {
         let (_, n) = self.shape;
-        for pos_ in big_brush.at(pos, self.shape) {
+        for pos_ in self.big_brush.at(pos, self.shape) {
             if pos_ == pos {
                 continue;
             }
-            let is_free_touch = brush.at(pos_, self.shape).iter().all(|(i_, j_)| {
+            let is_free_touch = self.brush.at(pos_, self.shape).iter().all(|(i_, j_)| {
                 self.void_pixel_existing[i_ * n + j_] | self.void_pixel_required[i_ * n + j_]
             });
             if is_free_touch {
                 self.void_touch_at_pos(pos_);
-                self.void_brush_at_pos(brush, pos_);
+                self.void_brush_at_pos(pos_);
             }
         }
     }
 
-    fn big_void_brush_at_pos(&mut self, big_brush: &Brush, pos: (usize, usize)) {
+    fn big_void_brush_at_pos(&mut self, pos: (usize, usize)) {
         apply_brush(
             self.shape,
             &mut self.solid_touch_invalid,
-            big_brush,
+            &self.big_brush,
             pos,
             true,
         )
     }
 
-    fn void_brush_at_pos(&mut self, brush: &Brush, pos: (usize, usize)) {
+    fn void_brush_at_pos(&mut self, pos: (usize, usize)) {
         multi_apply_brush(
             self.shape,
             &mut vec![
@@ -262,7 +255,7 @@ impl Design {
                 &mut self.solid_pixel_possible,
                 &mut self.solid_pixel_required,
             ],
-            brush,
+            &self.brush,
             pos,
             &vec![
                 true, true, false, true, false, false, true, false, false, false,
