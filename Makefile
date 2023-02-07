@@ -8,10 +8,12 @@ all: lib docs
 docker:
 	docker build . -t id
 
+arm_env:
+	CONDA_SUBDIR=osx-arm64 conda env create -f environment.yml -n y
+
 .PHONY: rust
 rust:
-	cd rust && make build && cd -
-	cp rust/inverse_design_rs.so ./
+	cd rust && maturin develop && cd -
 
 lib: rust
 	nbdev_build_lib
@@ -64,3 +66,5 @@ reset:
 	git checkout -- docs
 	nbdev_build_lib
 	make clean
+
+

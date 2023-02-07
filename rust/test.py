@@ -1,7 +1,3 @@
-import os
-import sys;
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-
 import time
 
 import matplotlib.pyplot as plt
@@ -13,7 +9,7 @@ from inverse_design_rs import generate_feasible_design
 from inverse_design.design import Design, visualize
 
 seed = 42
-m = n = 30
+m = n = 1024
 
 brush = np.asarray(notched_square_brush(5, 1), dtype=np.float32)
 latent = np.asarray(new_latent_design((m,n), r=seed), dtype=np.float32)
@@ -22,6 +18,7 @@ latent_t = np.asarray(transform(latent, brush, beta=5.0), dtype=np.float32)
 # with open(f"latent_t_{seed}_{m}x{n}.bin", "wb") as file:
 #     file.write(latent_t.tobytes());
 
+start = time.process_time()
 void, void_touch_existing, solid_touch_existing = generate_feasible_design(
     latent_t.shape,
     latent_t.tobytes(),
@@ -29,6 +26,7 @@ void, void_touch_existing, solid_touch_existing = generate_feasible_design(
     brush.tobytes(),
     False,
 )
+print(f"took:{time.process_time()-start}s")
 void = np.asarray(void).reshape(m, n)
 void_touch_existing = np.asarray(void_touch_existing).reshape(m, n)
 solid_touch_existing = np.asarray(solid_touch_existing).reshape(m, n)

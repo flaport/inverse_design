@@ -17,9 +17,11 @@ dependencies:
   - openssl
   - papermill
   - pre-commit
-  - pymkl>=0.0.3
+  - maturin
   - rsync
   - scikit-image
   - scipy
   - pip:
     - git+https://github.com/fancompute/ceviche
+    - pymkl>=0.0.3
+    - -e .
