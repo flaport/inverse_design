@@ -2,7 +2,7 @@ import time
 
 import matplotlib.pyplot as plt
 import numpy as np
-from inverse_design_rs import generate_feasible_design
+from inverse_design_rs import generate_feasible_design, print_profiler_summary
 
 from inverse_design.brushes import notched_square_brush
 from inverse_design.conditional_generator import new_latent_design, transform
@@ -46,6 +46,8 @@ design = Design(
     np.asarray(solid_touches).reshape(m, n),
 )
 print(f"execution time: {time.time()-start_time:.3f}")
+
+print_profiler_summary()
 
 visualize(design, grid=False)
 plt.show()
