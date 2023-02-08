@@ -144,26 +144,6 @@ impl Design {
         return (required_pixels, resolving_touches);
     }
 
-    fn find_resolving_touches_for_required_pixels(
-        &mut self,
-        required_pixels: &Vec<(usize, usize)>,
-    ) -> Vec<(usize, usize)> {
-        let (_, n) = self.shape;
-        let mut resolving_touches = Vec::new();
-        for (i, j) in required_pixels.into_iter() {
-            if self.void_pixel_existing[i * n + j] {
-                continue;
-            }
-            for (it, jt) in self.brush.at((*i, *j), self.shape).iter() {
-                if self.void_touch_invalid[*it * n + *jt] {
-                    continue;
-                }
-                resolving_touches.push((*it, *jt));
-            }
-        }
-        return resolving_touches;
-    }
-
     fn big_void_brush_at_pos(&mut self, pos: (usize, usize)) {
         apply_brush(
             self.shape,
@@ -289,6 +269,25 @@ impl Design {
         profiler2.stop();
 
         return required_pixels;
+    }
+
+    fn find_resolving_touches_for_required_pixels(
+        &mut self,
+        required_pixels: &Vec<(usize, usize)>,
+    ) -> Vec<(usize, usize)> {
+        let (_, n) = self.shape;
+        let resolving_touches: Vec<(usize, usize)> = required_pixels
+            .into_iter()
+            .filter(|(i, j)| !self.void_pixel_existing[i * n + j])
+            .map(|(i, j)| {
+                self.brush
+                    .at((*i, *j), self.shape)
+                    .into_iter()
+                    .filter(|(i, j)| !self.void_touch_invalid[*i * n + j])
+            })
+            .flatten()
+            .collect();
+        return resolving_touches;
     }
 }
 
