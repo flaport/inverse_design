@@ -3,7 +3,7 @@
 d = { 'settings': { 'branch': 'master',
                 'doc_baseurl': '/inverse_design/',
                 'doc_host': 'https://flaport.github.io/',
-                'git_url': 'https://github.com/flaport/inverse_design/tree/master/',
+                'git_url': 'https://github.com/flaport/inverse_design/',
                 'lib_path': 'inverse_design'},
   'syms': { 'inverse_design.brushes': { 'inverse_design.brushes.circular_brush': ( 'notebooks/brushes.html#circular_brush',
                                                                                    'inverse_design/brushes.py'),
