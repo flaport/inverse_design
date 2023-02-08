@@ -1,4 +1,3 @@
-use super::array::k;
 use super::brushes::Brush;
 use super::debug::Profiler;
 use super::design::Design;
@@ -50,7 +49,7 @@ fn visualize_arrays<T: Copy, F: Fn(T) -> Color>(
         for j_ in 0..n_ {
             let p = j_ / (n + 1);
             let j = j_ % (n + 1);
-            let b = if j < n { arrays[p][k(i, j, n)] } else { empty };
+            let b = if j < n { arrays[p][i * n + j] } else { empty };
             full.push(b);
         }
     }
@@ -207,7 +206,8 @@ pub fn test_visualization() {
 impl Design {
     pub fn design_view(&self) -> Vec<Status> {
         let profiler = Profiler::start("design_view");
-        let result = self.void
+        let result = self
+            .void
             .iter()
             .zip(self.solid.iter())
             .map(|(v, s)| {

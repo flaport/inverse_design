@@ -7,16 +7,6 @@ pub fn test_array() {
     println!("{arr:?}")
 }
 
-pub fn k(i: usize, j: usize, n: usize) -> usize {
-    return i * n + j;
-}
-
-pub fn ij(k: usize, n: usize) -> (usize, usize) {
-    let i = k / n;
-    let j = k % n;
-    return (i, j);
-}
-
 pub fn new_array<T: Copy>(size: usize, _default: T) -> Vec<T> {
     let mut arr = Vec::new();
     for _ in 0..size {

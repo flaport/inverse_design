@@ -4,6 +4,8 @@ use super::brushes::{
     multi_apply_touch, Brush,
 };
 use super::debug::Profiler;
+use rayon::iter::ParallelBridge;
+use rayon::prelude::ParallelIterator;
 use std::mem::swap;
 
 pub fn test_design() {
@@ -268,6 +270,7 @@ impl Design {
             .very_big_brush
             .at(pos, self.shape)
             .into_iter()
+            .par_bridge()
             .filter(|pos| {
                 is_free_touch(
                     *pos,

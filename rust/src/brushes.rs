@@ -1,4 +1,4 @@
-use super::array::{k, new_array};
+use super::array::new_array;
 use super::debug::Profiler;
 
 pub fn test_brushes() {
@@ -54,7 +54,7 @@ impl Brush {
             if (size_j as i32) <= j {
                 continue;
             }
-            let idx = k(i as usize, j as usize, size_j);
+            let idx = (i as usize) * size_j + j as usize;
             mask[idx] = true;
         }
         return mask;
@@ -105,7 +105,7 @@ pub fn compute_big_brush(brush: &Brush) -> Brush {
     let mut new_brush = Vec::new();
     for i in 0..m_ {
         for j in 0..n_ {
-            if mask[k(i, j, n_)] {
+            if mask[i * n_ + j] {
                 let i = (i as i32) - (m_ as i32) / 2;
                 let j = (j as i32) - (n_ as i32) / 2;
                 new_brush.push((i + 1, j + 1)); // yes, +1
@@ -169,7 +169,7 @@ pub fn apply_touch<T: Copy>(
     let profiler = Profiler::start("apply_touch");
     let (_, size_j) = shape;
     let (m, n) = pos;
-    let idx = k(m, n, size_j);
+    let idx = m * size_j + n;
     array[idx] = value;
     profiler.stop();
 }
@@ -183,7 +183,7 @@ pub fn multi_apply_touch<T: Copy>(
     let profiler = Profiler::start("apply_touch");
     let (_, size_j) = shape;
     let (m, n) = pos;
-    let idx = k(m, n, size_j);
+    let idx = m * size_j + n;
     for (array, value) in arrays.iter_mut().zip(values.into_iter()) {
         array[idx] = *value;
     }
@@ -217,7 +217,7 @@ pub fn apply_brush<T: Copy>(
         if (size_j as i32) <= j {
             continue;
         }
-        let idx = k(i as usize, j as usize, size_j);
+        let idx = (i as usize) * size_j + j as usize;
         array[idx] = value;
     }
     profiler.stop();
@@ -250,7 +250,7 @@ pub fn multi_apply_brush<T: Copy>(
         if (size_j as i32) <= j {
             continue;
         }
-        let idx = k(i as usize, j as usize, size_j);
+        let idx = (i as usize) * size_j + j as usize;
         for (array, value) in arrays.iter_mut().zip(values.into_iter()) {
             array[idx] = *value;
         }
