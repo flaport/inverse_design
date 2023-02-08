@@ -10,10 +10,10 @@ from inverse_design.design import Design, visualize
 from inverse_design.utils import conv2d, randn
 
 seed = 42
-m = n = 256
+m = n = 256 + 128
 
 start_time = time.time()
-brush = np.asarray(notched_square_brush(13, 3), dtype=np.float32)
+brush = np.asarray(notched_square_brush(15, 3), dtype=np.float32)
 latent = np.asarray(new_latent_design((m, n), r=seed), dtype=np.float32)
 latent_t = np.asarray(transform(latent, brush, beta=5.0), dtype=np.float32)
 latent_t = latent_t + latent_t[::-1]
