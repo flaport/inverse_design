@@ -276,18 +276,12 @@ impl Design {
             self.void_touch_required.iter(),
             self.void_touch_invalid.iter(),
             self.void_touch_existing.iter(),
-            self.void_touch_free.iter(),
-            self.void_touch_resolving.iter(),
         )
-        .map(|(r, i, e, f, g)| {
+        .map(|(r, i, e)| {
             if *e {
                 Status::TouchExisting
-            } else if *g {
-                Status::TouchResolving
             } else if *r {
                 Status::TouchRequired
-            } else if *f {
-                Status::TouchFree
             } else if *i {
                 Status::TouchInvalid
             } else {
@@ -305,18 +299,12 @@ impl Design {
             self.solid_touch_required.iter(),
             self.solid_touch_invalid.iter(),
             self.solid_touch_existing.iter(),
-            self.solid_touch_free.iter(),
-            self.solid_touch_resolving.iter(),
         )
-        .map(|(r, i, e, f, g)| {
+        .map(|(r, i, e)| {
             if *e {
                 Status::TouchExisting
-            } else if *g {
-                Status::TouchResolving
             } else if *r {
                 Status::TouchRequired
-            } else if *f {
-                Status::TouchFree
             } else if *i {
                 Status::TouchInvalid
             } else {

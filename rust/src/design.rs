@@ -1,6 +1,6 @@
 use super::array::new_array;
 use super::brushes::{
-    apply_brush, apply_touch, compute_big_brush, compute_very_big_square_brush, multi_apply_brush,
+    apply_brush, compute_big_brush, compute_very_big_square_brush, multi_apply_brush,
     multi_apply_touch, Brush,
 };
 use super::debug::Profiler;
@@ -75,17 +75,13 @@ pub struct Design {
     pub solid_pixel_existing: Vec<bool>,   /*  4 */
     pub solid_pixel_required: Vec<bool>,   /*  6 */
 
-    pub void_touch_required: Vec<bool>,  /*  7 */
-    pub void_touch_invalid: Vec<bool>,   /*  8 */
-    pub void_touch_existing: Vec<bool>,  /*  9 */
-    pub void_touch_free: Vec<bool>,      /* 11 */
-    pub void_touch_resolving: Vec<bool>, /* 12 */
+    pub void_touch_required: Vec<bool>, /*  7 */
+    pub void_touch_invalid: Vec<bool>,  /*  8 */
+    pub void_touch_existing: Vec<bool>, /*  9 */
 
     pub solid_touch_required: Vec<bool>,  /*  7 */
     pub solid_touch_invalid: Vec<bool>,   /*  8 */
     pub solid_touch_existing: Vec<bool>,  /*  9 */
-    pub solid_touch_free: Vec<bool>,      /* 11 */
-    pub solid_touch_resolving: Vec<bool>, /* 12 */
 }
 
 impl Design {
@@ -115,14 +111,10 @@ impl Design {
             void_touch_required: new_array(size_x * size_y, false),
             void_touch_invalid: new_array(size_x * size_y, false),
             void_touch_existing: new_array(size_x * size_y, false),
-            void_touch_free: new_array(size_x * size_y, false),
-            void_touch_resolving: new_array(size_x * size_y, false),
 
             solid_touch_required: new_array(size_x * size_y, false),
             solid_touch_invalid: new_array(size_x * size_y, false),
             solid_touch_existing: new_array(size_x * size_y, false),
-            solid_touch_free: new_array(size_x * size_y, false),
-            solid_touch_resolving: new_array(size_x * size_y, false),
         };
     }
 
@@ -166,7 +158,6 @@ impl Design {
                 if self.void_touch_invalid[*it * n + *jt] {
                     continue;
                 }
-                apply_touch(self.shape, &mut self.void_touch_resolving, (*it, *jt), true);
                 resolving_touches.push((*it, *jt));
             }
         }
@@ -223,7 +214,7 @@ impl Design {
         }
 
         let p = Profiler::start("0");
-        for pos_ in free.into_iter(){
+        for pos_ in free.into_iter() {
             self.void_touch_at_pos(pos_);
             self.void_brush_at_pos(pos_);
         }
@@ -256,9 +247,7 @@ impl Design {
             ],
             &self.brush,
             pos,
-            &vec![
-                true, true, false, true, false, true, false,
-            ],
+            &vec![true, true, false, true, false, true, false, false],
         );
     }
 
@@ -269,17 +258,11 @@ impl Design {
                 &mut self.void_touch_required,
                 &mut self.void_touch_invalid,
                 &mut self.void_touch_existing,
-                &mut self.void_touch_free,
-                &mut self.void_touch_resolving,
                 &mut self.solid_touch_required,
                 &mut self.solid_touch_existing,
-                &mut self.solid_touch_free,
-                &mut self.solid_touch_resolving,
             ],
             pos,
-            &vec![
-                false, false, true, false, false, false, false, false, false
-            ],
+            &vec![false, false, true, false, false],
         );
     }
     pub fn invert(&mut self) {
@@ -304,11 +287,6 @@ impl Design {
         swap(
             &mut self.void_touch_existing,
             &mut self.solid_touch_existing,
-        );
-        swap(&mut self.void_touch_free, &mut self.solid_touch_free);
-        swap(
-            &mut self.void_touch_resolving,
-            &mut self.solid_touch_resolving,
         );
     }
 }

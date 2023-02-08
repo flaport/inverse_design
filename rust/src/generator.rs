@@ -1,5 +1,5 @@
 use super::array::read_f32;
-use super::brushes::{apply_touch, Brush};
+use super::brushes::Brush;
 use super::debug::{counter, Profiler};
 use super::design::Design;
 use std::mem::swap;
@@ -181,22 +181,6 @@ pub fn resolve_required_void_pixels(
                 println!("resolve void ({ir}, {jr}).");
             }
         }
-
-        for pos in resolving_touches.iter() {
-            let mut found = false;
-            for new_pos in new_resolving_touches.iter() {
-                if pos == new_pos {
-                    found = true;
-                }
-            }
-            if !found {
-                apply_touch(design.shape, &mut design.void_touch_resolving, *pos, false);
-            }
-        }
-        new_resolving_touches = new_resolving_touches
-            .into_iter()
-            .filter(|(i, j)| design.void_touch_resolving[*i * n + *j])
-            .collect();
 
         swap(required_pixels, &mut new_required_pixels);
         swap(resolving_touches, &mut new_resolving_touches);
