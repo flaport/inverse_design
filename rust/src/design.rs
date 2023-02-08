@@ -63,7 +63,6 @@ pub struct Design {
     pub big_brush: Brush,
     pub very_big_brush: Brush,
 
-    pub unassigned: Vec<bool>, /*  0 */
     pub void: Vec<bool>,       /*  1 */
     pub solid: Vec<bool>,      /*  2 */
 
@@ -96,7 +95,6 @@ impl Design {
             big_brush,
             very_big_brush,
 
-            unassigned: new_array(size_x * size_y, true),
             void: new_array(size_x * size_y, false),
             solid: new_array(size_x * size_y, false),
 
@@ -236,7 +234,6 @@ impl Design {
         multi_apply_brush(
             self.shape,
             &mut vec![
-                &mut self.unassigned,
                 &mut self.void,
                 &mut self.void_pixel_impossible,
                 &mut self.void_pixel_existing,
@@ -247,7 +244,7 @@ impl Design {
             ],
             &self.brush,
             pos,
-            &vec![true, true, false, true, false, true, false, false],
+            &vec![true, false, true, false, true, false, false],
         );
     }
 
