@@ -60,6 +60,7 @@ def run_notebook(path):
 
 if __name__ == '__main__':
     notebooks = get_notebooks(
-        skip=["10_inverse_design_local.ipynb", "11_ceviche_challenges.ipynb"]
+        #skip=["10_inverse_design_local.ipynb", "11_ceviche_challenges.ipynb"]
+        skip=[]
     )
     parallel(run_notebook, notebooks)
