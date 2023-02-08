@@ -15,6 +15,10 @@ arm_env:
 rust:
 	cd rust && maturin develop --release && cd -
 
+.PHONY: rust
+docs:
+	nbdev_docs
+
 lib: rust
 	nbdev_export
 
