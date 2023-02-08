@@ -63,8 +63,8 @@ pub struct Design {
     pub big_brush: Brush,
     pub very_big_brush: Brush,
 
-    pub void: Vec<bool>,       /*  1 */
-    pub solid: Vec<bool>,      /*  2 */
+    pub void: Vec<bool>,  /*  1 */
+    pub solid: Vec<bool>, /*  2 */
 
     pub void_pixel_impossible: Vec<bool>, /*  3 */
     pub void_pixel_existing: Vec<bool>,   /*  4 */
@@ -78,9 +78,9 @@ pub struct Design {
     pub void_touch_invalid: Vec<bool>,  /*  8 */
     pub void_touch_existing: Vec<bool>, /*  9 */
 
-    pub solid_touch_required: Vec<bool>,  /*  7 */
-    pub solid_touch_invalid: Vec<bool>,   /*  8 */
-    pub solid_touch_existing: Vec<bool>,  /*  9 */
+    pub solid_touch_required: Vec<bool>, /*  7 */
+    pub solid_touch_invalid: Vec<bool>,  /*  8 */
+    pub solid_touch_existing: Vec<bool>, /*  9 */
 }
 
 impl Design {
@@ -195,31 +195,6 @@ impl Design {
         return required_pixels;
     }
 
-    fn take_free_void_touches_around_pos(&mut self, pos: (usize, usize)) {
-        let profiler = Profiler::start("take_free");
-        let (_, n) = self.shape;
-        let mut free = Vec::new();
-        for pos_ in self.very_big_brush.at(pos, self.shape) {
-            if pos_ == pos {
-                continue;
-            }
-            let is_free_touch = self.brush.at(pos_, self.shape).iter().all(|(i_, j_)| {
-                self.void_pixel_existing[i_ * n + j_] | self.void_pixel_required[i_ * n + j_]
-            });
-            if is_free_touch {
-                free.push(pos_);
-            }
-        }
-
-        let p = Profiler::start("0");
-        for pos_ in free.into_iter() {
-            self.void_touch_at_pos(pos_);
-            self.void_brush_at_pos(pos_);
-        }
-        p.stop();
-        profiler.stop();
-    }
-
     fn big_void_brush_at_pos(&mut self, pos: (usize, usize)) {
         apply_brush(
             self.shape,
@@ -286,4 +261,45 @@ impl Design {
             &mut self.solid_touch_existing,
         );
     }
+    fn take_free_void_touches_around_pos(&mut self, pos: (usize, usize)) {
+        let profiler = Profiler::start("take_free");
+
+        let free: Vec<(usize, usize)> = self
+            .very_big_brush
+            .at(pos, self.shape)
+            .into_iter()
+            .filter(|pos| {
+                is_free_touch(
+                    *pos,
+                    &self.brush,
+                    self.shape,
+                    &self.void_pixel_existing,
+                    &self.void_pixel_required,
+                )
+            })
+            .collect();
+
+        let p = Profiler::start("0");
+        for pos in free.into_iter() {
+            self.void_touch_at_pos(pos);
+            self.void_brush_at_pos(pos);
+        }
+        p.stop();
+        profiler.stop();
+    }
+}
+
+fn is_free_touch(
+    pos: (usize, usize),
+    brush: &Brush,
+    shape: (usize, usize),
+    void_pixel_existing: &Vec<bool>,
+    void_pixel_required: &Vec<bool>,
+) -> bool {
+    let (_, n) = shape;
+    let is_free_touch = brush
+        .at(pos, shape)
+        .iter()
+        .all(|(i_, j_)| void_pixel_existing[i_ * n + j_] | void_pixel_required[i_ * n + j_]);
+    return is_free_touch;
 }
