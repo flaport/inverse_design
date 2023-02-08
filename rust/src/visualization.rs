@@ -1,5 +1,6 @@
 use super::array::k;
 use super::brushes::Brush;
+use super::debug::Profiler;
 use super::design::Design;
 use super::status::Status;
 use itertools::izip;
@@ -205,7 +206,8 @@ pub fn test_visualization() {
 
 impl Design {
     pub fn design_view(&self) -> Vec<Status> {
-        self.void
+        let profiler = Profiler::start("design_view");
+        let result = self.void
             .iter()
             .zip(self.solid.iter())
             .map(|(v, s)| {
@@ -217,11 +219,14 @@ impl Design {
                     Status::Unassigned
                 }
             })
-            .collect()
+            .collect();
+        profiler.stop();
+        return result;
     }
 
     pub fn void_pixel_view(&self) -> Vec<Status> {
-        izip!(
+        let profiler = Profiler::start("void_pixel_view");
+        let result = izip!(
             self.void_pixel_impossible.iter(),
             self.void_pixel_existing.iter(),
             self.void_pixel_possible.iter(),
@@ -238,11 +243,14 @@ impl Design {
                 Status::PixelPossible
             }
         })
-        .collect()
+        .collect();
+        profiler.stop();
+        return result;
     }
 
     pub fn solid_pixel_view(&self) -> Vec<Status> {
-        izip!(
+        let profiler = Profiler::start("solid_pixel_view");
+        let result = izip!(
             self.solid_pixel_impossible.iter(),
             self.solid_pixel_existing.iter(),
             self.solid_pixel_possible.iter(),
@@ -259,11 +267,14 @@ impl Design {
                 Status::PixelPossible
             }
         })
-        .collect()
+        .collect();
+        profiler.stop();
+        return result;
     }
 
     pub fn void_touches_view(&self) -> Vec<Status> {
-        izip!(
+        let profiler = Profiler::start("void_touches_view");
+        let result = izip!(
             self.void_touch_required.iter(),
             self.void_touch_invalid.iter(),
             self.void_touch_existing.iter(),
@@ -286,11 +297,14 @@ impl Design {
                 Status::TouchValid
             }
         })
-        .collect()
+        .collect();
+        profiler.stop();
+        return result;
     }
 
     pub fn solid_touches_view(&self) -> Vec<Status> {
-        izip!(
+        let profiler = Profiler::start("solid_touches_view");
+        let result = izip!(
             self.solid_touch_required.iter(),
             self.solid_touch_invalid.iter(),
             self.solid_touch_existing.iter(),
@@ -313,6 +327,8 @@ impl Design {
                 Status::TouchValid
             }
         })
-        .collect()
+        .collect();
+        profiler.stop();
+        return result;
     }
 }

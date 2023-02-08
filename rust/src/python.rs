@@ -20,11 +20,9 @@ pub fn generate_feasible_design(
     brush_bytes: Vec<u8>,
     verbose: bool,
 ) -> (Vec<bool>, Vec<bool>, Vec<bool>) {
-    // -> PyResult<(Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>)> {
     let latent_t = parse_f32(&latent_t_bytes);
     let brush = Brush::from_f32_mask(brush_shape, &parse_f32(&brush_bytes));
     let design = generate_feasible_design_rs(latent_t_shape, &latent_t, brush, verbose);
-    // design.visualize();
     return (
         design.void,
         design.void_touch_existing,
