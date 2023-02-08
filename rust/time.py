@@ -23,8 +23,6 @@ for brush_size in brushes:
     for m in (pb:=tqdm(ms)):
         pb.set_postfix(m=m, pixels=m**2, brush_size=brush_size)
         latent = np.asarray(new_latent_design((m, m), r=seed), dtype=np.float32)
-        print(latent.dtype)
-        print(brush.dtype)
         latent_t = np.asarray(transform(latent, brush, beta=5.0), dtype=np.float32)
 
         start_time = time.time()

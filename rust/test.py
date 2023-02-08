@@ -29,7 +29,7 @@ void, void_touch_existing, solid_touch_existing = generate_feasible_design(
     brush.tobytes(),
     False,
 )
-print(f"took: {time.process_time()-start}s")
+print(f"took: {time.time()-start}s")
 void = np.asarray(void).reshape(m, n)
 void_touch_existing = np.asarray(void_touch_existing).reshape(m, n)
 solid_touch_existing = np.asarray(solid_touch_existing).reshape(m, n)

@@ -39,8 +39,6 @@ pub fn generate_feasible_design(
     let mut prev_idxs = vec![(m, n), (m, n)];
     let mut prev_indexer = 0;
     loop {
-        let loop_profiler = Profiler::start("loop_body");
-
         let ijv = void_indices.pop();
         let ijs = solid_indices.pop();
 
@@ -116,8 +114,6 @@ pub fn generate_feasible_design(
             design.invert();
             swap(&mut solid_latent_t, &mut void_latent_t);
         }
-
-        loop_profiler.stop();
 
         //design.visualize();
 

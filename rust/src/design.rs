@@ -122,7 +122,7 @@ impl Design {
         &mut self,
         pos: (usize, usize),
     ) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
-        let profiler = Profiler::start("add_touch");
+        let profiler = Profiler::start("add_void_touch");
 
         self.void_brush_at_pos(pos);
         self.void_touch_at_pos(pos);
@@ -162,39 +162,6 @@ impl Design {
             }
         }
         return resolving_touches;
-    }
-
-    fn find_required_pixels_around_pos(&mut self, pos: (usize, usize)) -> Vec<(usize, usize)> {
-        let (_, n) = self.shape;
-
-        let very_big_brush_pixels = self.very_big_brush.at(pos, self.shape);
-        let mut relevant_pixels = Vec::new();
-        for (i, j) in very_big_brush_pixels.iter() {
-            //println!("{i} {j}");
-            if !(self.void_pixel_existing[i * n + j] | self.void_pixel_impossible[i * n + j]) {
-                relevant_pixels.push((*i, *j));
-            }
-        }
-
-        let mut required_pixels = Vec::new();
-        for (ip, jp) in relevant_pixels.iter() {
-            let all_touches_invalid = self
-                .brush
-                .at((*ip, *jp), self.shape)
-                .iter()
-                .all(|(i, j)| self.solid_touch_invalid[i * n + j]);
-            if all_touches_invalid {
-                multi_apply_touch(
-                    self.shape,
-                    &mut vec![&mut self.void_pixel_required],
-                    (*ip, *jp),
-                    &vec![true],
-                );
-                required_pixels.push((*ip, *jp));
-            }
-        }
-
-        return required_pixels;
     }
 
     fn big_void_brush_at_pos(&mut self, pos: (usize, usize)) {
@@ -264,8 +231,7 @@ impl Design {
         );
     }
     fn take_free_void_touches_around_pos(&mut self, pos: (usize, usize)) {
-        let profiler = Profiler::start("take_free");
-
+        let profiler1 = Profiler::start("find_free");
         let free: Vec<(usize, usize)> = self
             .very_big_brush
             .at(pos, self.shape)
@@ -281,15 +247,69 @@ impl Design {
                 )
             })
             .collect();
+        profiler1.stop();
 
-        let p = Profiler::start("0");
+        let profiler2 = Profiler::start("take_free");
         for pos in free.into_iter() {
             self.void_touch_at_pos(pos);
             self.void_brush_at_pos(pos);
         }
-        p.stop();
-        profiler.stop();
+        profiler2.stop();
     }
+    fn find_required_pixels_around_pos(&mut self, pos: (usize, usize)) -> Vec<(usize, usize)> {
+        let profiler1 = Profiler::start("find_required");
+
+        let required_pixels: Vec<(usize, usize)> = self
+            .very_big_brush
+            .at(pos, self.shape)
+            .into_iter()
+            .par_bridge()
+            .filter(|pos| {
+                is_required_pixel(
+                    *pos,
+                    self.shape,
+                    &self.brush,
+                    &self.void_pixel_existing,
+                    &self.void_pixel_impossible,
+                    &self.solid_touch_invalid,
+                )
+            })
+            .collect();
+        profiler1.stop();
+
+        let profiler2 = Profiler::start("flag_required");
+        for (ip, jp) in required_pixels.iter() {
+            multi_apply_touch(
+                self.shape,
+                &mut vec![&mut self.void_pixel_required],
+                (*ip, *jp),
+                &vec![true],
+            );
+        }
+        profiler2.stop();
+
+        return required_pixels;
+    }
+}
+
+fn is_required_pixel(
+    pos: (usize, usize),
+    shape: (usize, usize),
+    brush: &Brush,
+    void_pixel_existing: &Vec<bool>,
+    void_pixel_impossible: &Vec<bool>,
+    solid_touch_invalid: &Vec<bool>,
+) -> bool {
+    let (ip, jp) = pos;
+    let (_, n) = shape;
+    if void_pixel_existing[ip * n + jp] | void_pixel_impossible[ip * n + jp] {
+        return false;
+    }
+    let all_touches_invalid = brush
+        .at((ip, jp), shape)
+        .iter()
+        .all(|(i, j)| solid_touch_invalid[i * n + j]);
+    return all_touches_invalid;
 }
 
 fn is_free_touch(
