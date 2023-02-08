@@ -119,20 +119,29 @@ pub fn compute_big_brush(brush: &Brush) -> Brush {
 }
 
 pub fn compute_very_big_square_brush(brush: &Brush) -> Brush {
+    let profiler = Profiler::start("compute_very_big_square_brush");
     let (m, n) = brush.shape;
     let (m_, n_) = (3 * m, 3 * n);
+    // let brush_pixels = brush.at((m_/2, n_/2), (m_, n_));
 
     let mut new_brush = Vec::new();
     for i in 0..m_ {
         for j in 0..n_ {
+            // let is_within_orig_brush = brush_pixels.iter().any(|(i_, j_)| (*i_, *j_) == (i, j));
+            // if is_within_orig_brush{
+            //     continue
+            // }
             new_brush.push((i as i32 - m_ as i32 / 2, j as i32 - n_ as i32 / 2));
         }
     }
 
-    return Brush {
+    let brush = Brush {
         brush: new_brush,
         shape: (m_, n_),
     };
+    profiler.stop();
+    // brush.visualize();
+    return brush;
 }
 
 pub fn compute_big_square_brush(brush: &Brush) -> Brush {

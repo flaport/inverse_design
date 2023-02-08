@@ -80,14 +80,12 @@ pub struct Design {
     pub void_touch_required: Vec<bool>,  /*  7 */
     pub void_touch_invalid: Vec<bool>,   /*  8 */
     pub void_touch_existing: Vec<bool>,  /*  9 */
-    pub void_touch_valid: Vec<bool>,     /* 10 */
     pub void_touch_free: Vec<bool>,      /* 11 */
     pub void_touch_resolving: Vec<bool>, /* 12 */
 
     pub solid_touch_required: Vec<bool>,  /*  7 */
     pub solid_touch_invalid: Vec<bool>,   /*  8 */
     pub solid_touch_existing: Vec<bool>,  /*  9 */
-    pub solid_touch_valid: Vec<bool>,     /* 10 */
     pub solid_touch_free: Vec<bool>,      /* 11 */
     pub solid_touch_resolving: Vec<bool>, /* 12 */
 }
@@ -121,14 +119,12 @@ impl Design {
             void_touch_required: new_array(size_x * size_y, false),
             void_touch_invalid: new_array(size_x * size_y, false),
             void_touch_existing: new_array(size_x * size_y, false),
-            void_touch_valid: new_array(size_x * size_y, true),
             void_touch_free: new_array(size_x * size_y, false),
             void_touch_resolving: new_array(size_x * size_y, false),
 
             solid_touch_required: new_array(size_x * size_y, false),
             solid_touch_invalid: new_array(size_x * size_y, false),
             solid_touch_existing: new_array(size_x * size_y, false),
-            solid_touch_valid: new_array(size_x * size_y, true),
             solid_touch_free: new_array(size_x * size_y, false),
             solid_touch_resolving: new_array(size_x * size_y, false),
         };
@@ -215,8 +211,9 @@ impl Design {
     }
 
     fn take_free_void_touches_around_pos(&mut self, pos: (usize, usize)) {
+        let profiler = Profiler::start("take_free");
         let (_, n) = self.shape;
-        let mut found_free_touches = false;
+        let mut free = Vec::new();
         for pos_ in self.very_big_brush.at(pos, self.shape) {
             if pos_ == pos {
                 continue;
@@ -225,16 +222,17 @@ impl Design {
                 self.void_pixel_existing[i_ * n + j_] | self.void_pixel_required[i_ * n + j_]
             });
             if is_free_touch {
-                found_free_touches = true;
-                self.void_touch_at_pos(pos_);
-                self.void_brush_at_pos(pos_);
+                free.push(pos_);
             }
         }
-        if found_free_touches {
-            // counter().inc();
-            // println!("iteration {}", counter().value());
-            // println!("take free.");
+
+        let p = Profiler::start("0");
+        for pos_ in free.into_iter(){
+            self.void_touch_at_pos(pos_);
+            self.void_brush_at_pos(pos_);
         }
+        p.stop();
+        profiler.stop();
     }
 
     fn big_void_brush_at_pos(&mut self, pos: (usize, usize)) {
@@ -277,12 +275,10 @@ impl Design {
                 &mut self.void_touch_required,
                 &mut self.void_touch_invalid,
                 &mut self.void_touch_existing,
-                &mut self.void_touch_valid,
                 &mut self.void_touch_free,
                 &mut self.void_touch_resolving,
                 &mut self.solid_touch_required,
                 &mut self.solid_touch_existing,
-                &mut self.solid_touch_valid,
                 &mut self.solid_touch_free,
                 &mut self.solid_touch_resolving,
             ],
@@ -319,7 +315,6 @@ impl Design {
             &mut self.void_touch_existing,
             &mut self.solid_touch_existing,
         );
-        swap(&mut self.void_touch_valid, &mut self.solid_touch_valid);
         swap(&mut self.void_touch_free, &mut self.solid_touch_free);
         swap(
             &mut self.void_touch_resolving,

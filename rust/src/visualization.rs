@@ -229,10 +229,9 @@ impl Design {
         let result = izip!(
             self.void_pixel_impossible.iter(),
             self.void_pixel_existing.iter(),
-            self.void_pixel_possible.iter(),
             self.void_pixel_required.iter(),
         )
-        .map(|(i, e, _, r)| {
+        .map(|(i, e, r)| {
             if *r {
                 Status::PixelRequired
             } else if *e {
@@ -253,10 +252,9 @@ impl Design {
         let result = izip!(
             self.solid_pixel_impossible.iter(),
             self.solid_pixel_existing.iter(),
-            self.solid_pixel_possible.iter(),
             self.solid_pixel_required.iter(),
         )
-        .map(|(i, e, _, r)| {
+        .map(|(i, e, r)| {
             if *r {
                 Status::PixelRequired
             } else if *e {
@@ -278,11 +276,10 @@ impl Design {
             self.void_touch_required.iter(),
             self.void_touch_invalid.iter(),
             self.void_touch_existing.iter(),
-            self.void_touch_valid.iter(),
             self.void_touch_free.iter(),
             self.void_touch_resolving.iter(),
         )
-        .map(|(r, i, e, _, f, g)| {
+        .map(|(r, i, e, f, g)| {
             if *e {
                 Status::TouchExisting
             } else if *g {
@@ -308,11 +305,10 @@ impl Design {
             self.solid_touch_required.iter(),
             self.solid_touch_invalid.iter(),
             self.solid_touch_existing.iter(),
-            self.solid_touch_valid.iter(),
             self.solid_touch_free.iter(),
             self.solid_touch_resolving.iter(),
         )
-        .map(|(r, i, e, _, f, g)| {
+        .map(|(r, i, e, f, g)| {
             if *e {
                 Status::TouchExisting
             } else if *g {

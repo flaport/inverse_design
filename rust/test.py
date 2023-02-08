@@ -10,10 +10,10 @@ from inverse_design.design import Design, visualize
 from inverse_design.utils import conv2d, randn
 
 seed = 42
-m = n = 128
+m = n = 256
 
 start_time = time.time()
-brush = np.asarray(notched_square_brush(5, 1), dtype=np.float32)
+brush = np.asarray(notched_square_brush(13, 3), dtype=np.float32)
 latent = np.asarray(new_latent_design((m, n), r=seed), dtype=np.float32)
 latent_t = np.asarray(transform(latent, brush, beta=5.0), dtype=np.float32)
 latent_t = latent_t + latent_t[::-1]
@@ -29,7 +29,7 @@ void, void_touch_existing, solid_touch_existing = generate_feasible_design(
     brush.tobytes(),
     False,
 )
-print(f"took:{time.process_time()-start}s")
+print(f"took: {time.process_time()-start}s")
 void = np.asarray(void).reshape(m, n)
 void_touch_existing = np.asarray(void_touch_existing).reshape(m, n)
 solid_touch_existing = np.asarray(solid_touch_existing).reshape(m, n)
@@ -49,5 +49,5 @@ print(f"execution time: {time.time()-start_time:.3f}")
 
 print_profiler_summary()
 
-visualize(design, grid=False)
-plt.show()
+#visualize(design, grid=False)
+#plt.show()

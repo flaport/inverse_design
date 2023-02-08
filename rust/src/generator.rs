@@ -137,7 +137,7 @@ pub fn void_step(
 ) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
     let (_, n) = design.shape;
     let (i, j) = pos;
-    if (!design.void_touch_valid[i * n + j]) | (design.void_touch_existing[i * n + j]) {
+    if (design.void_touch_invalid[i * n + j]) | (design.void_touch_existing[i * n + j]) {
         return (Vec::new(), Vec::new());
     }
     let (required_pixels, resolving_touches) = design.add_void_touch(pos);
@@ -152,6 +152,7 @@ pub fn resolve_required_void_pixels(
     is_solid_touch: bool,
     verbose: bool,
 ) {
+    let profiler = Profiler::start("resolving");
     let (_, n) = design.shape;
     loop {
         sort_indices_by_value(resolving_touches, &void_latent_t, design.shape);
@@ -202,6 +203,7 @@ pub fn resolve_required_void_pixels(
 
         sort_indices_by_value(resolving_touches, &void_latent_t, design.shape);
     }
+    profiler.stop();
 }
 
 pub fn sort_indices_by_value(
