@@ -37,9 +37,10 @@ def run_notebook(path):
     print(f"START {fn}")
     cwd = os.path.dirname(path)
 
-    #sys.stdout, old_stdout = open(os.devnull, "w"), sys.stdout
-    #sys.stderr, old_stderr = sys.stdout, sys.stderr
-    success = True
+    sys.stdout, old_stdout = open(os.devnull, "w"), sys.stdout
+    sys.stderr, old_stderr = sys.stdout, sys.stderr
+    start_time = time.time()
+    status = "SUCCESS"
     try:
         papermill.execute_notebook(
             input_path=path,
@@ -48,17 +49,17 @@ def run_notebook(path):
             progress_bar=False,
         )
     except Exception:
-        success = False
-        return
+        status = "FAIL"
     finally:
-        pass
-        #sys.stdout = old_stdout
-        #sys.stderr = old_stderr
-    print(f"SUCCESS {fn}" if success else f"FAIL {fn}")
+        time_spent = time.time() - start_time
+        sys.stdout = old_stdout
+        sys.stderr = old_stderr
+
+    print(f"{status} {fn} [time: {time_spent:.0f}s]")
 
 
 if __name__ == '__main__':
     notebooks = get_notebooks(
-        skip=["11_ceviche_challenges.ipynb", "10_inverse_design_local.ipynb"]
+        skip=["10_inverse_design_local.ipynb", "11_ceviche_challenges.ipynb"]
     )
     parallel(run_notebook, notebooks)
