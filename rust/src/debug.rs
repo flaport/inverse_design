@@ -1,4 +1,5 @@
 use once_cell::sync::Lazy;
+use std::cmp::{Ord, Ordering};
 use std::collections::HashMap;
 use std::sync::{Mutex, MutexGuard};
 use std::time::SystemTime;
@@ -25,15 +26,10 @@ pub fn profiler_summary() -> HashMap<String, S> {
 
 pub fn print_profiler_summary() {
     let summary = profiler_summary();
-    let mut keys: Vec<String> = summary.iter().map(|(k, _)| k.to_string()).collect();
-    keys.sort();
-    for key in keys.into_iter() {
-        match summary.get(&key) {
-            None => continue,
-            Some(value) => {
-                println!("{key}:\n  {value:?}");
-            }
-        }
+    let mut summary_vec: Vec<(&String, &S)> = summary.iter().collect();
+    summary_vec.sort_by(|a, b| b.1.cmp(a.1));
+    for (key, value) in summary_vec.into_iter() {
+        println!("{key}:\n  {value:?}");
     }
 }
 
@@ -80,6 +76,26 @@ impl S {
         };
     }
 }
+
+impl Ord for S {
+    fn cmp(&self, other: &Self) -> Ordering {
+        f32::partial_cmp(&self.total, &other.total).unwrap()
+    }
+}
+
+impl PartialOrd for S {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        f32::partial_cmp(&self.total, &other.total)
+    }
+}
+
+impl PartialEq for S {
+    fn eq(&self, other: &Self) -> bool {
+        self.total == other.total
+    }
+}
+
+impl Eq for S {}
 
 pub fn now() -> SystemTime {
     SystemTime::now()
