@@ -294,7 +294,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="generating-a-latent-space-representation" class="level2">
 <h2 class="anchored" data-anchor-id="generating-a-latent-space-representation">Generating a latent space representation</h2>
 <p>To make it more “understandable” where material is placed we generate a slowly varying landscape by interpolation of a low resolution map.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T03:14:28.565990Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T03:14:28.565649Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T03:14:28.926150Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T03:14:28.925437Z&quot;}" data-papermill="{&quot;duration&quot;:0.368302,&quot;end_time&quot;:&quot;2023-02-08T03:14:28.928027&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T03:14:28.559725&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="3">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T05:21:25.292076Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T05:21:25.291693Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T05:21:25.607603Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T05:21:25.606995Z&quot;}" data-papermill="{&quot;duration&quot;:0.333006,&quot;end_time&quot;:&quot;2023-02-08T05:21:25.609630&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T05:21:25.276624&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_heatmap(features <span class="op">=</span> <span class="dv">8</span>, zoom <span class="op">=</span> <span class="dv">16</span>):</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  heatmap <span class="op">=</span> np.random.random((features,features))<span class="op">-</span><span class="fl">0.5</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  large_heatmap <span class="op">=</span> scipy.ndimage.zoom(heatmap, zoom)</span>
@@ -312,7 +312,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="generating-the-brush" class="level2">
 <h2 class="anchored" data-anchor-id="generating-the-brush">Generating the brush</h2>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T03:14:28.970811Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T03:14:28.970352Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T03:14:28.974933Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T03:14:28.974281Z&quot;}" data-papermill="{&quot;duration&quot;:0.023211,&quot;end_time&quot;:&quot;2023-02-08T03:14:28.979972&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T03:14:28.956761&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="4">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T05:21:25.635941Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T05:21:25.635527Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T05:21:25.640279Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T05:21:25.639593Z&quot;}" data-papermill="{&quot;duration&quot;:0.013944,&quot;end_time&quot;:&quot;2023-02-08T05:21:25.642124&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T05:21:25.628180&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> circular_brush(diameter):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    radius <span class="op">=</span> diameter <span class="op">/</span> <span class="dv">2</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    X, Y <span class="op">=</span> np.mgrid[<span class="op">-</span>radius : radius : <span class="ot">1j</span> <span class="op">*</span> diameter, <span class="op">-</span>radius : radius : <span class="ot">1j</span> <span class="op">*</span> diameter]</span>
@@ -320,7 +320,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    brush <span class="op">=</span> _int(X) <span class="op">**</span> <span class="dv">2</span> <span class="op">+</span> _int(Y) <span class="op">**</span> <span class="dv">2</span> <span class="op">&lt;</span> radius <span class="op">**</span> <span class="dv">2</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> brush</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T03:14:29.003889Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T03:14:29.003432Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T03:14:29.371663Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T03:14:29.371072Z&quot;}" data-papermill="{&quot;duration&quot;:0.384333,&quot;end_time&quot;:&quot;2023-02-08T03:14:29.373427&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T03:14:28.989094&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="5">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T05:21:25.655790Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T05:21:25.655438Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T05:21:25.914705Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T05:21:25.914126Z&quot;}" data-papermill="{&quot;duration&quot;:0.268317,&quot;end_time&quot;:&quot;2023-02-08T05:21:25.916579&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T05:21:25.648262&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>kernel_size<span class="op">=</span><span class="dv">9</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>brush <span class="op">=</span> np.ones((kernel_size, kernel_size))</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>brush[<span class="dv">0</span>,<span class="dv">0</span>] <span class="op">=</span> <span class="dv">0</span></span>
@@ -350,7 +350,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="09_local_generator_files/figure-html/cell-4-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T03:14:29.391145Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T03:14:29.390618Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T03:14:30.488031Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T03:14:30.486680Z&quot;}" data-papermill="{&quot;duration&quot;:1.109457,&quot;end_time&quot;:&quot;2023-02-08T03:14:30.489838&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T03:14:29.380381&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="6">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T05:21:25.932333Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T05:21:25.932049Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T05:21:27.066186Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T05:21:27.065617Z&quot;}" data-papermill="{&quot;duration&quot;:1.144544,&quot;end_time&quot;:&quot;2023-02-08T05:21:27.067716&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T05:21:25.923172&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>conv_brush <span class="op">=</span> scipy.ndimage.binary_dilation(np.pad(brush, <span class="bu">len</span>(brush)<span class="op">//</span><span class="dv">2</span>), brush)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>show_brush(conv_brush)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span>
@@ -360,7 +360,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>show_brush(double_conv_brush)</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
-<pre><code>&lt;matplotlib.colorbar.Colorbar at 0x7f8d786467f0&gt;</code></pre>
+<pre><code>&lt;matplotlib.colorbar.Colorbar at 0x7fe9a05877f0&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="09_local_generator_files/figure-html/cell-5-output-2.png" class="img-fluid"></p>
@@ -408,7 +408,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <pre><code> log (*args, level=1)</code></pre>
 </blockquote>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T03:14:30.732019Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T03:14:30.731747Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T03:14:30.751714Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T03:14:30.751073Z&quot;}" data-papermill="{&quot;duration&quot;:0.038619,&quot;end_time&quot;:&quot;2023-02-08T03:14:30.753257&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T03:14:30.714638&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="12">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T05:21:27.310456Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T05:21:27.310187Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T05:21:27.328117Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T05:21:27.327513Z&quot;}" data-papermill="{&quot;duration&quot;:0.034629,&quot;end_time&quot;:&quot;2023-02-08T05:21:27.329520&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T05:21:27.294891&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compare(s_try, s_actual, v_try, v_actual, name):</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">"""</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">  Compares properties of a new implementation and the original slow one.</span></span>
@@ -600,12 +600,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <pre><code> generate_feasible_design_mask_jvp (primals, tangents)</code></pre>
 </blockquote>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T03:14:31.615057Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T03:14:31.614776Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T03:14:35.327510Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T03:14:35.326943Z&quot;}" data-papermill="{&quot;duration&quot;:3.738769,&quot;end_time&quot;:&quot;2023-02-08T03:14:35.329325&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T03:14:31.590556&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="18">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T05:21:28.131430Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T05:21:28.131164Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T05:21:32.426783Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T05:21:32.425728Z&quot;}" data-papermill="{&quot;duration&quot;:4.310956,&quot;end_time&quot;:&quot;2023-02-08T05:21:32.428391&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T05:21:28.117435&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>times <span class="op">=</span> Times()</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>debug<span class="op">=</span><span class="dv">0</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>generate(large_heatmap, brush)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="18">
-<pre><code>&lt;__main__.GeneratorState at 0x7f8d68d6da60&gt;</code></pre>
+<pre><code>&lt;__main__.GeneratorState at 0x7fe98fc90850&gt;</code></pre>
 </div>
 </div>
 </section>
@@ -615,26 +615,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>With partial tracking of existing: 6.09s</p>
 <p>With full tracking of existing: 5.72s</p>
 <p>With tracking of existing, impossible touches and possible pixels: 3.77s</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T03:14:35.387665Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T03:14:35.387382Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T03:14:35.391942Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T03:14:35.391395Z&quot;}" data-papermill="{&quot;duration&quot;:0.027131,&quot;end_time&quot;:&quot;2023-02-08T03:14:35.397188&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T03:14:35.370057&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="19">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T05:21:32.488846Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T05:21:32.488558Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T05:21:32.493318Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T05:21:32.492787Z&quot;}" data-papermill="{&quot;duration&quot;:0.0238,&quot;end_time&quot;:&quot;2023-02-08T05:21:32.494824&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T05:21:32.471024&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>times.__dict__</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="19">
-<pre><code>{'update': 0.830396900000002,
- 'dilate': 0.7946170000000086,
- 'required': 0.003847099999998882,
- 'resolving': 0.7989738999999876,
- 'select': 1.8993295999999997,
- 'convolute': 1.065539099999996,
- 'existing': 0.23868759999999778,
+<pre><code>{'update': 0.9707159999999906,
+ 'dilate': 0.9252460000000218,
+ 'required': 0.004511299999995444,
+ 'resolving': 0.9309883000000028,
+ 'select': 2.0607704999999963,
+ 'convolute': 1.1823336999999912,
+ 'existing': 0.20874789999999432,
  'impossible': 0,
  'possible': 0,
- 'valid': 0.010559000000003316,
- 'free': 0.0720962000000025,
- 'local_required': 0.00537710000000402,
- 'local_resolving': 0.3063355999999997,
- 'local_dilate': 0.41442789999998375}</code></pre>
+ 'valid': 0.012094700000012892,
+ 'free': 0.07817279999999993,
+ 'local_required': 0.006230299999998579,
+ 'local_resolving': 0.3403223999999865,
+ 'local_dilate': 0.458937299999997}</code></pre>
 </div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T03:14:35.432083Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T03:14:35.431799Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T03:14:35.719842Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T03:14:35.719241Z&quot;}" data-papermill="{&quot;duration&quot;:0.311577,&quot;end_time&quot;:&quot;2023-02-08T03:14:35.721910&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T03:14:35.410333&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="20">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T05:21:32.524706Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T05:21:32.524438Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T05:21:32.859795Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T05:21:32.859188Z&quot;}" data-papermill="{&quot;duration&quot;:0.352435,&quot;end_time&quot;:&quot;2023-02-08T05:21:32.861693&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T05:21:32.509258&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm.notebook <span class="im">import</span> tqdm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -642,11 +642,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>debug=0 df = [] for features in tqdm([2, 4, 8, 10, 12, 13, 14, 15, 16, 17, 18], desc=“features”, position=0):</p>
 <p>for i in tqdm(range(50//features), desc=“iteration”, position=1, leave=False): heatmap = generate_heatmap(features, zoom=16) times = Times() generate(heatmap) dic = times.__dict__ dic[“features”] = features df.append(dic)</p>
 <p>df = pd.DataFrame(df)</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T03:14:35.756997Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T03:14:35.756715Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T03:14:35.759757Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T03:14:35.759177Z&quot;}" data-papermill="{&quot;duration&quot;:0.015007,&quot;end_time&quot;:&quot;2023-02-08T03:14:35.762352&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T03:14:35.747345&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="21">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T05:21:32.918286Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T05:21:32.918010Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T05:21:32.921083Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T05:21:32.920530Z&quot;}" data-papermill="{&quot;duration&quot;:0.021024,&quot;end_time&quot;:&quot;2023-02-08T05:21:32.925244&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-02-08T05:21:32.904220&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#df.to_pickle("timing.pkl")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><span id="papermill-error-cell" style="color:red; font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:2em;">Execution using papermill encountered an exception here and stopped:</span></p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T03:14:35.780215Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T03:14:35.779942Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T03:14:36.244969Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T03:14:36.243380Z&quot;}" data-papermill="{&quot;duration&quot;:0.475709,&quot;end_time&quot;:&quot;2023-02-08T03:14:36.246212&quot;,&quot;exception&quot;:true,&quot;start_time&quot;:&quot;2023-02-08T03:14:35.770503&quot;,&quot;status&quot;:&quot;failed&quot;}" data-tags="[]" data-execution_count="22">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-02-08T05:21:32.960459Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-02-08T05:21:32.960180Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-02-08T05:21:33.541488Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-02-08T05:21:33.540580Z&quot;}" data-papermill="{&quot;duration&quot;:0.603917,&quot;end_time&quot;:&quot;2023-02-08T05:21:33.542467&quot;,&quot;exception&quot;:true,&quot;start_time&quot;:&quot;2023-02-08T05:21:32.938550&quot;,&quot;status&quot;:&quot;failed&quot;}" data-tags="[]" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_pickle(<span class="st">"../resources/timing.pkl"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>FileNotFoundError: [Errno 2] No such file or directory: '../resources/timing.pkl'</code></pre>
