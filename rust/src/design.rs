@@ -69,12 +69,10 @@ pub struct Design {
 
     pub void_pixel_impossible: Vec<bool>, /*  3 */
     pub void_pixel_existing: Vec<bool>,   /*  4 */
-    pub void_pixel_possible: Vec<bool>,   /*  5 */
     pub void_pixel_required: Vec<bool>,   /*  6 */
 
     pub solid_pixel_impossible: Vec<bool>, /*  3 */
     pub solid_pixel_existing: Vec<bool>,   /*  4 */
-    pub solid_pixel_possible: Vec<bool>,   /*  5 */
     pub solid_pixel_required: Vec<bool>,   /*  6 */
 
     pub void_touch_required: Vec<bool>,  /*  7 */
@@ -108,12 +106,10 @@ impl Design {
 
             void_pixel_impossible: new_array(size_x * size_y, false),
             void_pixel_existing: new_array(size_x * size_y, false),
-            void_pixel_possible: new_array(size_x * size_y, true),
             void_pixel_required: new_array(size_x * size_y, false),
 
             solid_pixel_impossible: new_array(size_x * size_y, false),
             solid_pixel_existing: new_array(size_x * size_y, false),
-            solid_pixel_possible: new_array(size_x * size_y, true),
             solid_pixel_required: new_array(size_x * size_y, false),
 
             void_touch_required: new_array(size_x * size_y, false),
@@ -253,17 +249,15 @@ impl Design {
                 &mut self.void,
                 &mut self.void_pixel_impossible,
                 &mut self.void_pixel_existing,
-                &mut self.void_pixel_possible,
                 &mut self.void_pixel_required,
                 &mut self.solid_pixel_impossible,
                 &mut self.solid_pixel_existing,
-                &mut self.solid_pixel_possible,
                 &mut self.solid_pixel_required,
             ],
             &self.brush,
             pos,
             &vec![
-                true, true, false, true, false, false, true, false, false, false,
+                true, true, false, true, false, true, false,
             ],
         );
     }
@@ -284,7 +278,7 @@ impl Design {
             ],
             pos,
             &vec![
-                false, false, true, false, false, false, false, false, false, false, false,
+                false, false, true, false, false, false, false, false, false
             ],
         );
     }
@@ -297,10 +291,6 @@ impl Design {
         swap(
             &mut self.void_pixel_existing,
             &mut self.solid_pixel_existing,
-        );
-        swap(
-            &mut self.void_pixel_possible,
-            &mut self.solid_pixel_possible,
         );
         swap(
             &mut self.void_pixel_required,
