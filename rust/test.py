@@ -16,7 +16,7 @@ start_time = time.time()
 brush = np.asarray(notched_square_brush(15, 3), dtype=np.float32)
 latent = np.asarray(new_latent_design((m, n), r=seed), dtype=np.float32)
 latent_t = np.asarray(transform(latent, brush, beta=5.0), dtype=np.float32)
-latent_t = latent_t + latent_t[::-1]
+#latent_t = latent_t + latent_t[::-1]
 
 # with open(f"latent_t_{seed}_{m}x{n}.bin", "wb") as file:
 #     file.write(latent_t.tobytes());
@@ -49,5 +49,5 @@ print(f"execution time: {time.time()-start_time:.3f}")
 
 print_profiler_summary()
 
-#visualize(design, grid=False)
-#plt.show()
+visualize(design, grid=False)
+plt.show()

@@ -2,6 +2,7 @@ use super::array::parse_f32;
 use super::brushes::Brush;
 use super::debug::print_profiler_summary as print_profiler_summary_rs;
 use super::generator::generate_feasible_design as generate_feasible_design_rs;
+use super::generator::Symmetry;
 use pyo3::prelude::{pyfunction, pymodule, PyModule, PyResult, Python};
 use pyo3::wrap_pyfunction;
 
@@ -22,7 +23,8 @@ pub fn generate_feasible_design(
 ) -> (Vec<bool>, Vec<bool>, Vec<bool>) {
     let latent_t = parse_f32(&latent_t_bytes);
     let brush = Brush::from_f32_mask(brush_shape, &parse_f32(&brush_bytes));
-    let design = generate_feasible_design_rs(latent_t_shape, &latent_t, brush, verbose);
+    let design =
+        generate_feasible_design_rs(latent_t_shape, &latent_t, brush, Symmetry::None, verbose);
     return (
         design.void,
         design.void_touch_existing,

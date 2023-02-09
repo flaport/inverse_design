@@ -4,6 +4,7 @@ use super::brushes::{
     multi_apply_touch, Brush,
 };
 use super::debug::Profiler;
+use super::generator::Symmetry;
 use rayon::iter::ParallelBridge;
 use rayon::prelude::ParallelIterator;
 use std::mem::swap;
@@ -20,39 +21,39 @@ pub fn test_design() {
     design.visualize();
 
     println!("step 2 (0, 6)");
-    design.add_void_touch((0, 6));
+    design.add_void_touch((0, 6), Symmetry::None);
     design.visualize();
 
     println!("step 3 (skipped)");
     design.visualize();
 
     println!("step 4 (0, 0)");
-    design.add_solid_touch((0, 0));
+    design.add_solid_touch((0, 0), Symmetry::None);
     design.visualize();
 
     println!("step 5 (4, 6)");
-    design.add_void_touch((4, 6));
+    design.add_void_touch((4, 6), Symmetry::None);
     design.visualize();
 
     println!("step 6 (skipped)");
     design.visualize();
 
     println!("step 7 (4, 4)");
-    design.add_void_touch((4, 4));
+    design.add_void_touch((4, 4), Symmetry::None);
     design.visualize();
 
     println!("step 8 (skipped)");
     design.visualize();
 
     println!("step 9 (5, 0)");
-    design.add_void_touch((5, 0));
+    design.add_void_touch((5, 0), Symmetry::None);
     design.visualize();
 
     println!("step 10 (skipped)");
     design.visualize();
 
     println!("step 11 (2, 5)");
-    design.add_void_touch((2, 5));
+    design.add_void_touch((2, 5), Symmetry::None);
     design.visualize();
 
     println!("step 12 (skipped)");
@@ -121,6 +122,7 @@ impl Design {
     pub fn add_void_touch(
         &mut self,
         pos: (usize, usize),
+        symmetry: Symmetry,
     ) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
         let profiler = Profiler::start("add_void_touch");
 
@@ -137,9 +139,10 @@ impl Design {
     pub fn add_solid_touch(
         &mut self,
         pos: (usize, usize),
+        symmetry: Symmetry,
     ) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
         self.invert();
-        let (required_pixels, resolving_touches) = self.add_void_touch(pos);
+        let (required_pixels, resolving_touches) = self.add_void_touch(pos, symmetry);
         self.invert();
         return (required_pixels, resolving_touches);
     }

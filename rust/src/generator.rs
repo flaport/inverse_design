@@ -13,7 +13,7 @@ pub fn test_generator() {
     let latent_t = read_f32(&format!("latent_t_{seed}_{m}x{n}.bin"));
     brush.visualize();
     // visualize_f32_array((m, n), &latent_t);
-    let design = generate_feasible_design((m, n), &latent_t, brush, false);
+    let design = generate_feasible_design((m, n), &latent_t, brush, Symmetry::None, false);
     design.visualize();
     profiler.stop();
 }
@@ -22,6 +22,7 @@ pub fn generate_feasible_design(
     shape: (usize, usize),
     latent_t: &Vec<f32>,
     brush: Brush,
+    symmetry: Symmetry,
     verbose: bool,
 ) -> Design {
     let profiler = Profiler::start("generate_feasible_design");
@@ -98,7 +99,8 @@ pub fn generate_feasible_design(
             }
         }
 
-        let (mut required_pixels, mut resolving_touches) = void_step(&mut design, (i, j));
+        let (mut required_pixels, mut resolving_touches) =
+            design.add_void_touch((i, j), symmetry);
 
         resolve_required_void_pixels(
             &mut design,
@@ -107,6 +109,7 @@ pub fn generate_feasible_design(
             &void_latent_t,
             is_solid_touch,
             verbose,
+            symmetry,
         );
 
         // revert inversion
@@ -127,19 +130,6 @@ pub fn generate_feasible_design(
     return design;
 }
 
-pub fn void_step(
-    design: &mut Design,
-    pos: (usize, usize),
-) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
-    let (_, n) = design.shape;
-    let (i, j) = pos;
-    if (design.void_touch_invalid[i * n + j]) | (design.void_touch_existing[i * n + j]) {
-        return (Vec::new(), Vec::new());
-    }
-    let (required_pixels, resolving_touches) = design.add_void_touch(pos);
-    return (required_pixels, resolving_touches);
-}
-
 pub fn resolve_required_void_pixels(
     design: &mut Design,
     required_pixels: &mut Vec<(usize, usize)>,
@@ -147,6 +137,7 @@ pub fn resolve_required_void_pixels(
     void_latent_t: &Vec<f32>,
     is_solid_touch: bool,
     verbose: bool,
+    symmetry: Symmetry,
 ) {
     let profiler = Profiler::start("resolving");
     let (_, n) = design.shape;
@@ -168,7 +159,8 @@ pub fn resolve_required_void_pixels(
         };
 
         counter().inc();
-        let (mut new_required_pixels, mut new_resolving_touches) = void_step(design, (ir, jr));
+        let (mut new_required_pixels, mut new_resolving_touches) =
+            design.add_void_touch((ir, jr), symmetry);
         if verbose {
             println!("iteration {}", counter().value());
             if is_solid_touch {
@@ -180,8 +172,6 @@ pub fn resolve_required_void_pixels(
 
         swap(required_pixels, &mut new_required_pixels);
         swap(resolving_touches, &mut new_resolving_touches);
-
-        sort_indices_by_value(resolving_touches, &void_latent_t, design.shape);
     }
     profiler.stop();
 }
@@ -193,4 +183,11 @@ pub fn sort_indices_by_value(
 ) {
     let (_, n) = shape;
     indices.sort_by(|(i, j), (k, l)| values[*i * n + j].partial_cmp(&values[*k * n + l]).unwrap());
+}
+
+#[derive(Clone, Copy, Eq, PartialEq)]
+pub enum Symmetry {
+    None,
+    Flip,
+    Invert,
 }
