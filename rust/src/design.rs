@@ -125,13 +125,40 @@ impl Design {
         symmetry: Symmetry,
     ) -> (Vec<(usize, usize)>, Vec<(usize, usize)>) {
         let profiler = Profiler::start("add_void_touch");
+        let (m, _) = self.shape;
+        let (i, j) = pos;
+        let pos_ = match symmetry {
+            Symmetry::None => {
+                self.void_brush_at_pos(pos);
+                self.void_touch_at_pos(pos);
+                self.big_void_brush_at_pos(pos);
+                let required_pixels = self.find_required_pixels_around_pos(pos);
+                self.take_free_void_touches_around_pos(pos, Symmetry::None);
+                let resolving_touches =
+                    self.find_resolving_touches_for_required_pixels(&required_pixels);
+                profiler.stop();
+                return (required_pixels, resolving_touches);
+            }
+            Symmetry::Mirror => (m - 1 - i, j),
+            Symmetry::Transpose => (j, i),
+        };
 
         self.void_brush_at_pos(pos);
+        self.void_brush_at_pos(pos_);
         self.void_touch_at_pos(pos);
+        self.void_touch_at_pos(pos_);
         self.big_void_brush_at_pos(pos);
-        let required_pixels = self.find_required_pixels_around_pos(pos);
-        self.take_free_void_touches_around_pos(pos);
+        self.big_void_brush_at_pos(pos_);
+
+        let mut required_pixels = self.find_required_pixels_around_pos(pos);
+        let required_pixels_ = self.find_required_pixels_around_pos(pos_);
+        required_pixels.extend(required_pixels_.into_iter());
+
+        self.take_free_void_touches_around_pos(pos, symmetry);
+        self.take_free_void_touches_around_pos(pos_, symmetry);
+
         let resolving_touches = self.find_resolving_touches_for_required_pixels(&required_pixels);
+
         profiler.stop();
         return (required_pixels, resolving_touches);
     }
@@ -213,7 +240,8 @@ impl Design {
             &mut self.solid_touch_existing,
         );
     }
-    fn take_free_void_touches_around_pos(&mut self, pos: (usize, usize)) {
+    fn take_free_void_touches_around_pos(&mut self, pos: (usize, usize), symmetry: Symmetry) {
+        let (m, _) = self.shape;
         let profiler1 = Profiler::start("find_free");
         let free: Vec<(usize, usize)> = self
             .very_big_brush
@@ -234,8 +262,20 @@ impl Design {
 
         let profiler2 = Profiler::start("take_free");
         for pos in free.into_iter() {
+            let (i, j) = pos;
+            let pos_ = match symmetry {
+                Symmetry::None => {
+                    self.void_touch_at_pos(pos);
+                    self.void_brush_at_pos(pos);
+                    continue;
+                }
+                Symmetry::Mirror => (m - 1 - i, j),
+                Symmetry::Transpose => (j, i),
+            };
             self.void_touch_at_pos(pos);
+            self.void_touch_at_pos(pos_);
             self.void_brush_at_pos(pos);
+            self.void_brush_at_pos(pos_);
         }
         profiler2.stop();
     }

@@ -6,6 +6,7 @@ __all__ = ['new_latent_design', 'transform', 'conditional_algirithm_step', 'cond
 
 # %% ../notebooks/04_conditional_generator.ipynb 2
 import warnings
+from typing import Optional, Literal, Union
 
 import jax
 import jax.numpy as jnp
@@ -120,21 +121,27 @@ def conditional_generator(latent_t, brush, verbose=False):
         yield design
 
 # %% ../notebooks/04_conditional_generator.ipynb 15
-def generate_feasible_design(latent_t, brush, verbose=False, backend='auto'): # backend: 'auto', 'rust', 'python'
+def generate_feasible_design(
+    latent_t: np.ndarray,
+    brush: np.ndarray,
+    symmetry: Optional[Union[Literal["none"], Literal["mirror"], Literal["transpose"]]] = None,  # symmetry: "none", "flip", "invert"
+    verbose: bool = False,
+    backend: Union[Literal["auto"], Literal["rust"], Literal["python"]] = "auto",  # backend: 'auto', 'rust', 'python'
+):
     try:
         from inverse_design_rs import generate_feasible_design as generate_feasible_design_rs
-        if backend == 'auto':
-            backend = 'rust'
+        if backend == "auto":
+            backend = "rust"
     except ImportError:
         warnings.warn("falling back on slower python-based feasible design generation!")
-        if backend == 'auto':
-            backend = 'python'
-            
-    if backend == 'rust':
-        return _generate_feasible_design_rust(latent_t, brush, verbose=verbose)
+        if backend == "auto":
+            backend = "python"
+
+    if backend == "rust":
+        return _generate_feasible_design_rust(latent_t, brush, symmetry, verbose=verbose)
     else:
         return _generate_feasible_design_python(latent_t, brush, verbose=verbose)
-        
+
 
 def _generate_feasible_design_python(latent_t, brush, verbose=False):
     design = None
@@ -142,24 +149,34 @@ def _generate_feasible_design_python(latent_t, brush, verbose=False):
         continue
     return design
 
-def _generate_feasible_design_rust(latent_t, brush, verbose=False):
-    from inverse_design_rs import generate_feasible_design as generate_feasible_design_rs
-    m, n = latent_t.shape
 
+def _generate_feasible_design_rust(latent_t, brush, symmetry, verbose=False):
+    from inverse_design_rs import generate_feasible_design as generate_feasible_design_rs
+    
+    if str(symmetry).lower() == "none":
+        symmetry_int = 0
+    elif str(symmetry).lower() == "mirror":
+        symmetry_int = 1
+    elif str(symmetry).lower() == "transpose":
+        symmetry_int = 2
+    else:
+        raise ValueError(
+            f'Invalid symmetry given. Got: {symmetry}. Valid options: "none", "mirror", "transpose"'
+        )
+    m, n = latent_t.shape
     brush = np.asarray(brush, dtype=np.float32)
     latent_t = np.asarray(latent_t, dtype=np.float32)
-
     void, void_touch_existing, solid_touch_existing = generate_feasible_design_rs(
         latent_t.shape,
         latent_t.tobytes(),
         brush.shape,
         brush.tobytes(),
+        symmetry_int,
         verbose,
     )
     void = np.asarray(void).reshape(m, n)
     void_touch_existing = np.asarray(void_touch_existing).reshape(m, n)
     solid_touch_existing = np.asarray(solid_touch_existing).reshape(m, n)
-
     void_pixels = np.asarray(np.where(void, 4, 3), dtype=np.uint8)
     solid_pixels = np.asarray(np.where(void, 3, 4), dtype=np.uint8)
     void_touches = np.asarray(np.where(void_touch_existing, 9, 8), dtype=np.uint8)

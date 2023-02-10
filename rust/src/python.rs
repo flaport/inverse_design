@@ -19,12 +19,18 @@ pub fn generate_feasible_design(
     latent_t_bytes: Vec<u8>,
     brush_shape: (usize, usize),
     brush_bytes: Vec<u8>,
+    symmetry: u8,
     verbose: bool,
 ) -> (Vec<bool>, Vec<bool>, Vec<bool>) {
     let latent_t = parse_f32(&latent_t_bytes);
     let brush = Brush::from_f32_mask(brush_shape, &parse_f32(&brush_bytes));
-    let design =
-        generate_feasible_design_rs(latent_t_shape, &latent_t, brush, Symmetry::None, verbose);
+    let design = generate_feasible_design_rs(
+        latent_t_shape,
+        &latent_t,
+        brush,
+        Symmetry::from_u8(symmetry),
+        verbose,
+    );
     return (
         design.void,
         design.void_touch_existing,

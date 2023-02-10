@@ -188,6 +188,16 @@ pub fn sort_indices_by_value(
 #[derive(Clone, Copy, Eq, PartialEq)]
 pub enum Symmetry {
     None,
-    Flip,
-    Invert,
+    Mirror,
+    Transpose,
+}
+
+impl Symmetry {
+    pub fn from_u8(num: u8) -> Self {
+        match num {
+            1 => Self::Mirror,
+            2 => Self::Transpose,
+            _ => Self::None,
+        }
+    }
 }
